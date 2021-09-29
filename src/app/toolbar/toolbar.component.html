@@ -1,0 +1,13 @@
+<nav mat-tab-nav-bar backgroundColor="primary">
+  <h1>ASPLABEL</h1>
+
+  <a
+    mat-tab-link
+    *ngFor="let option of options"
+    (click)="activeOption = option"
+    [active]="activeOption == option"
+  >
+    {{ option }}
+  </a>
+  <a mat-tab-link disabled>MENU</a>
+</nav>
