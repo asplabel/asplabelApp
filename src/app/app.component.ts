@@ -1,5 +1,5 @@
 import { Component } from '@angular/core'
-import { IjobTitle } from './job-title/job-title.model'
+//import { IjobTitle } from './job-title/job-title.model'
 
 @Component({
   selector: 'app-root',
@@ -8,9 +8,9 @@ import { IjobTitle } from './job-title/job-title.model'
 })
 export class AppComponent {
   title = 'asplabelApp'
-  storedJobTitles: IjobTitle[] = []
+  /*storedJobTitles: IjobTitle[] = []
 
   onJobTitleAdded(jobTitle) {
     this.storedJobTitles.push(jobTitle)
-  }
+  }*/
 }

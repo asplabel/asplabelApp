@@ -6,7 +6,14 @@ import { Component, OnInit } from '@angular/core'
   styleUrls: ['./toolbar.component.css'],
 })
 export class ToolbarComponent implements OnInit {
-  options = ['Monitor', 'Colaboradores', 'tarjetas', 'ajustes']
+  options = ['Monitor', 'Departamentos', 'Cargos', 'Tarjetas', 'Colaboradores']
+  links = [
+    '/monitor',
+    '/department/list',
+    'jobTitle/list',
+    '/card/list',
+    '/user/list',
+  ]
   activeOption = this.options[0]
   constructor() {}
 

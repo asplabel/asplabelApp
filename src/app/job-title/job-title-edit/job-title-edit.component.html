@@ -1,1 +1,57 @@
-<p>job-title-edit works!</p>
+<mat-card>
+  <form action="" (submit)="editJobTitle(JobTitleForm)" #JobTitleForm="ngForm">
+    <!-- Input job title name-->
+    <section>
+      <mat-form-field
+        class="example-form-field"
+        appearance="fill"
+        style="display: block;"
+      >
+        <mat-label>Ingrese el nuevo nombre del cargo:</mat-label>
+        <input
+          matInput
+          type="text"
+          name="nameJobTitle"
+          [ngModel]="jobTitle.name"
+          required
+          maxlength="150"
+          #name2="ngModel"
+        />
+        <mat-error *ngIf="name2.invalid">
+          Por favor ingrese el nombre del cargo.
+        </mat-error>
+        <button
+          *ngIf="JobTitleForm.value.nameJobTitle"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="JobTitleForm.reset()"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+      <mat-form-field style="display: block;">
+        <mat-label>
+          Modifica el departamento al que pertenece el cargo
+        </mat-label>
+        <mat-select ngModel name="selected" #selected>
+          <mat-option value="none">
+            Ninguno
+          </mat-option>
+          <mat-option
+            *ngFor="let department of departments"
+            value="{{ department.name }}"
+          >
+            {{ department.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </section>
+    <!-- Button to save new Job title -->
+    <section>
+      <button mat-raised-button color="primary" type="submit">
+        Guardar cambios
+      </button>
+    </section>
+  </form>
+</mat-card>

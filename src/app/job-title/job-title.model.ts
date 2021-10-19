@@ -1,5 +1,5 @@
 export interface IjobTitle {
-  id: number
+  id: string
   name: string
-  departmentName: string
+  department_id: string
 }

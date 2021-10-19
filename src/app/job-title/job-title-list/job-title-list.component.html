@@ -1,10 +1,10 @@
 <mat-card>
-  <button mat-button mat-flat-button color="primary">
+  <a mat-button mat-flat-button color="primary" routerLink="/jobTitle/create">
     Agregar un cargo nuevo
-  </button>
+  </a>
 </mat-card>
 
-<div *ngIf="!dataSource">
+<div *ngIf="jobTitles.length <= 0" class="message">
   <span>No hay cargos en la base de datos, ¡Crea uno nuevo!</span>
 </div>
 
@@ -20,26 +20,33 @@
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
     <td mat-cell *matCellDef="let element">{{ element.name }}</td>
   </ng-container>
-  <!--Name Column-->
+  <!--department Column-->
   <ng-container matColumnDef="departmentName">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Departamento</th>
-    <td mat-cell *matCellDef="let element">{{ element.departmentName }}</td>
+    <td mat-cell *matCellDef="let element">{{ element.department_id }}</td>
   </ng-container>
 
   <!--Options Column-->
   <ng-container matColumnDef="action">
     <th mat-header-cell *matHeaderCellDef>Opciones</th>
     <td mat-cell *matCellDef="let element" class="action-link">
-      <a>
-        <mat-icon aria-hidden="false" aria-label="Example home icon">
-          edit
-        </mat-icon>
-      </a>
-      <a>
-        <mat-icon aria-hidden="false" aria-label="Example home icon">
-          delete
-        </mat-icon>
-      </a>
+      <mat-action-row>
+        <a
+          mat-button
+          color="primary"
+          (click)="editJobTitle(element.id)"
+          [routerLink]="['/jobTitle/edit', element.id]"
+        >
+          <mat-icon aria-hidden="false" aria-label="Example edit icon">
+            edit
+          </mat-icon>
+        </a>
+        <a mat-button color="warn" (click)="deleteJobTitle(element.id)">
+          <mat-icon aria-hidden="false" aria-label="Example delete icon">
+            delete
+          </mat-icon>
+        </a>
+      </mat-action-row>
     </td>
   </ng-container>
 

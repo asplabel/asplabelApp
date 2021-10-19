@@ -1,49 +1,61 @@
+<br />
+
+<br />
 <mat-card>
-  <!-- Input job title name-->
-  <section>
-    <mat-form-field
-      class="example-form-field"
-      appearance="fill"
-      style="display: block;"
-    >
-      <mat-label>Nombre del Cargo:</mat-label>
-      <input
-        matInput
-        type="text"
-        [(ngModel)]="name"
-        placeholder="Ingrese el título del cargo"
-      />
-      <button
-        *ngIf="name"
-        matSuffix
-        mat-icon-button
-        aria-label="Clear"
-        (click)="name = ''"
+  <form action="" (submit)="addJobTitle(JobTitleForm)" #JobTitleForm="ngForm">
+    <!-- Input job title name-->
+    <section>
+      <mat-form-field
+        class="example-form-field"
+        appearance="fill"
+        style="display: block;"
       >
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-form-field>
-    <mat-form-field style="display: block;">
-      <mat-label>
-        Selecciona el departamento al que pertenece el cargo
-      </mat-label>
-      <mat-select [(value)]="selected">
-        <mat-option value="none">
-          Ninguno
-        </mat-option>
-        <mat-option
-          *ngFor="let department of ELEMENT_DATA"
-          value="{{ department.name }}"
+        <mat-label>Nombre del Cargo:</mat-label>
+        <input
+          matInput
+          type="text"
+          name="nameJobTitle"
+          ngModel
+          placeholder="Ingrese el título del cargo"
+          required
+          maxlength="150"
+          #name2="ngModel"
+        />
+        <mat-error *ngIf="name2.invalid">
+          Por favor ingrese el nombre del cargo.
+        </mat-error>
+        <button
+          *ngIf="JobTitleForm.value.nameJobTitle"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="JobTitleForm.reset()"
         >
-          {{ department.name }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </section>
-  <!-- Button to save new Job title -->
-  <section>
-    <button mat-raised-button color="primary" (click)="addJobTitle()">
-      Crear cargo
-    </button>
-  </section>
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+      <mat-form-field style="display: block;">
+        <mat-label>
+          Selecciona el departamento al que pertenece el cargo
+        </mat-label>
+        <mat-select ngModel name="selected" #selected>
+          <mat-option value="none">
+            Ninguno
+          </mat-option>
+          <mat-option
+            *ngFor="let department of departments"
+            value="{{ department.id }}"
+          >
+            {{ department.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </section>
+    <!-- Button to save new Job title -->
+    <section>
+      <button mat-raised-button color="primary" type="submit">
+        Crear cargo
+      </button>
+    </section>
+  </form>
 </mat-card>

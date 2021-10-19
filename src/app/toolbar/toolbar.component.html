@@ -1,13 +1,22 @@
-<nav mat-tab-nav-bar backgroundColor="primary">
-  <h1>ASPLABEL</h1>
-
+<nav mat-tab-nav-bar backgroundColor="primary" class="nav">
+  <picture>
+    <img src="./logoAsplabel.jpg" alt="ASPLABEL" width="160" height="55" />
+  </picture>
+  <span class="space"></span>
   <a
     mat-tab-link
-    *ngFor="let option of options"
+    *ngFor="let option of options; let i = index"
     (click)="activeOption = option"
     [active]="activeOption == option"
+    class="options"
+    routerLink="{{ links[i] }}"
   >
     {{ option }}
   </a>
-  <a mat-tab-link disabled>MENU</a>
+  <a mat-button [matMenuTriggerFor]="menu" style="margin-right: 25px;">
+    <mat-icon class="menu">keyboard_arrow_down</mat-icon>
+  </a>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item routerLink="/logout">Cerrar Sesión</button>
+  </mat-menu>
 </nav>

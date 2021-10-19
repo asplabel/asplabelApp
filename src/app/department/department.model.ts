@@ -1,4 +1,4 @@
 export interface IDepartment {
-  id: number
+  id: string
   name: string
 }

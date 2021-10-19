@@ -1,0 +1,20 @@
+.nav {
+  background-color: #ef7f01 !important;
+  color: #ef7f01 !important;
+}
+.options {
+  font-family: 'Bauhaus 93';
+  font-size: 28px;
+  text-align: center;
+  color: #f9e800 !important;
+  border-color: #008f38 !important;
+  border-width: thick !important;
+}
+
+.menu {
+  color: #f9e800 !important;
+}
+
+.space {
+  flex: 1 1 auto;
+}
