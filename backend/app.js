@@ -1,9 +1,13 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
+const moment = require('moment')
 
 const JobTitleModel = require('./models/jobTitle')
 const DepartmentModel = require('./models/department')
+const CardModel = require('./models/card')
+const UserModel = require('./models/user')
+const RecordModel = require('./models/record')
 
 const app = express()
 
@@ -115,8 +119,64 @@ app.delete('/deleteJobTitle/:id', (req, res, next) => {
 /* READ */
 app.get('/validateAccess/:uid', (req, res, next) => {
   console.log(req.params.uid)
-  res.json({
-    message: 'Funciona',
+  CardModel.findOne({ UID: req.params.uid }).then((result) => {
+    //console.log(result)
+    if (result != null) {
+      if (result.is_active == true) {
+        UserModel.findOne({ card_id: result._id }).then((user) => {
+          //console.log(user)
+          if (user != null) {
+            if (result.state == 'Salida') {
+              const record = new RecordModel({
+                firstname: user.firstname,
+                lastname: user.lastname,
+                date: moment(Date().now).format('YYYY-MM-DD'),
+                time: moment(Date().now).format('HH:mm'),
+                type: 'Ingreso',
+              })
+              record.save().then((response) => {
+                //console.log(response)
+                res.status(201).json({
+                  message: '3', // La tarjeta existe, tiene usuario y está activa. Se concede el acceso
+                  type: 'Ingreso',
+                })
+              })
+            }
+            if (result.state == 'Ingreso') {
+              const record = new RecordModel({
+                firstname: user.firstname,
+                lastname: user.lastname,
+                date: moment(Date().now).format('YYYY-MM-DD'),
+                time: moment(Date().now).format('HH:mm'),
+                type: 'Salida',
+              })
+              record.save().then((response) => {
+                //console.log(response)
+                res.status(201).json({
+                  message: '3', // La tarjeta existe, tiene usuario y está activa. Se concede el acceso
+                  type: 'Salida',
+                })
+              })
+            }
+          } else {
+            console.log('La tarjeta no tiene usuario')
+            res.status(201).json({
+              message: '2', // La tarjeta no tiene usuario
+            })
+          }
+        })
+      } else {
+        console.log('La tarjeta está desactivada')
+        res.status(201).json({
+          message: '1', // La tarjeta está desactivada
+        })
+      }
+    } else {
+      console.log('UID no encontrado en la base de datos')
+      res.status(201).json({
+        message: '0', // La tarjeta no existe en la base de datos
+      })
+    }
   })
 })
 
