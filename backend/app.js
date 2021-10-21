@@ -116,68 +116,86 @@ app.delete('/deleteJobTitle/:id', (req, res, next) => {
  ***************************************************************
  */
 
-/* READ */
+/* VALIDATE ACCESS AND ADD A RECORD*/
 app.get('/validateAccess/:uid', (req, res, next) => {
   console.log(req.params.uid)
-  CardModel.findOne({ UID: req.params.uid }).then((result) => {
-    //console.log(result)
-    if (result != null) {
-      if (result.is_active == true) {
-        UserModel.findOne({ card_id: result._id }).then((user) => {
-          //console.log(user)
-          if (user != null) {
-            if (result.state == 'Salida') {
-              const record = new RecordModel({
-                firstname: user.firstname,
-                lastname: user.lastname,
-                date: moment(Date().now).format('YYYY-MM-DD'),
-                time: moment(Date().now).format('HH:mm'),
-                type: 'Ingreso',
-              })
-              record.save().then((response) => {
-                //console.log(response)
-                res.status(201).json({
-                  message: '3', // La tarjeta existe, tiene usuario y está activa. Se concede el acceso
+  CardModel.findOne({ UID: req.params.uid })
+    .then((result) => {
+      //console.log(result)
+      if (result != null) {
+        if (result.is_active == true) {
+          UserModel.findOne({ card_id: result._id }).then((user) => {
+            //console.log(user)
+            if (user != null) {
+              if (result.state == 'Salida') {
+                const record = new RecordModel({
+                  firstname: user.firstname,
+                  lastname: user.lastname,
+                  date: moment(Date().now).format('YYYY-MM-DD'),
+                  time: moment(Date().now).format('HH:mm'),
                   type: 'Ingreso',
                 })
-              })
-            }
-            if (result.state == 'Ingreso') {
-              const record = new RecordModel({
-                firstname: user.firstname,
-                lastname: user.lastname,
-                date: moment(Date().now).format('YYYY-MM-DD'),
-                time: moment(Date().now).format('HH:mm'),
-                type: 'Salida',
-              })
-              record.save().then((response) => {
-                //console.log(response)
-                res.status(201).json({
-                  message: '3', // La tarjeta existe, tiene usuario y está activa. Se concede el acceso
+                record.save().then((response) => {
+                  //console.log(response)
+                  CardModel.findOneAndUpdate(
+                    { UID: req.params.uid },
+                    { state: 'Ingreso' },
+                    { new: true },
+                  ).then((updated) => {
+                    console.log(updated)
+                    res.status(201).json({
+                      message: '3', // La tarjeta existe, tiene usuario y está activa. Se concede el acceso
+                      type: 'Ingreso',
+                    })
+                  })
+                })
+              }
+              if (result.state == 'Ingreso') {
+                const record = new RecordModel({
+                  firstname: user.firstname,
+                  lastname: user.lastname,
+                  date: moment(Date().now).format('YYYY-MM-DD'),
+                  time: moment(Date().now).format('HH:mm'),
                   type: 'Salida',
                 })
+                record.save().then((response) => {
+                  //console.log(response)
+                  CardModel.findOneAndUpdate(
+                    { UID: req.params.uid },
+                    { state: 'Salida' },
+                    { new: true },
+                  ).then((updated) => {
+                    console.log(updated)
+                    res.status(201).json({
+                      message: '3', // La tarjeta existe, tiene usuario y está activa. Se concede el acceso
+                      type: 'Salida',
+                    })
+                  })
+                })
+              }
+            } else {
+              console.log('La tarjeta no tiene usuario')
+              res.status(201).json({
+                message: '2', // La tarjeta no tiene usuario
               })
             }
-          } else {
-            console.log('La tarjeta no tiene usuario')
-            res.status(201).json({
-              message: '2', // La tarjeta no tiene usuario
-            })
-          }
-        })
+          })
+        } else {
+          console.log('La tarjeta está desactivada')
+          res.status(201).json({
+            message: '1', // La tarjeta está desactivada
+          })
+        }
       } else {
-        console.log('La tarjeta está desactivada')
+        console.log('UID no encontrado en la base de datos')
         res.status(201).json({
-          message: '1', // La tarjeta está desactivada
+          message: '0', // La tarjeta no existe en la base de datos
         })
       }
-    } else {
-      console.log('UID no encontrado en la base de datos')
-      res.status(201).json({
-        message: '0', // La tarjeta no existe en la base de datos
-      })
-    }
-  })
+    })
+    .catch((err) => {
+      console.log(err)
+    })
 })
 
 // exportar
