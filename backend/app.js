@@ -53,6 +53,14 @@ app.get('/getRecords', (req, res, next) => {
   })
 })
 
+app.delete('/deleteRecord/:id', (req, res, next) => {
+  RecordModel.deleteOne({ _id: req.params.id }).then((result) => {
+    res.status(201).json({
+      message: 'Cargo eliminado exitosamente',
+    })
+  })
+})
+
 /*
  ***************************************************************
  ***********   DEPARTMENT CRUD *********************************
@@ -78,6 +86,16 @@ app.get('/getDepartments', (req, res, next) => {
     res.status(200).json({
       message: 'Cargos enviado con éxito',
       departments: departments,
+    })
+  })
+})
+
+/* DELETE */
+app.delete('/deleteDepartment/:id', (req, res, next) => {
+  DepartmentModel.deleteOne({ _id: req.params.id }).then((result) => {
+    //console.log(result)
+    res.status(201).json({
+      message: 'Cargo eliminado exitosamente',
     })
   })
 })
@@ -156,7 +174,7 @@ app.get('/validateAccess/:uid', (req, res, next) => {
                     { state: 'Ingreso' },
                     { new: true },
                   ).then((updated) => {
-                    console.log(updated)
+                    //console.log(updated)
                     res.status(201).json({
                       message: '3', // La tarjeta existe, tiene usuario y está activa. Se concede el acceso
                       type: 'Ingreso',
@@ -179,7 +197,7 @@ app.get('/validateAccess/:uid', (req, res, next) => {
                     { state: 'Salida' },
                     { new: true },
                   ).then((updated) => {
-                    console.log(updated)
+                    //console.log(updated)
                     res.status(201).json({
                       message: '3', // La tarjeta existe, tiene usuario y está activa. Se concede el acceso
                       type: 'Salida',

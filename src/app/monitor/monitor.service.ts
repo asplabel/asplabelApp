@@ -41,4 +41,15 @@ export class MonitorService {
   getSubjectRecords() {
     return this.subjectRecord.asObservable()
   }
+
+  deleteRecord(id: string) {
+    this.http
+      .delete(this.url + '/deleteRecord/' + id)
+      .subscribe((result: { message: string }) => {
+        const updatedRecords = this.records.filter((record) => record.id != id)
+        this.records = updatedRecords
+        this.subjectRecord.next([...this.records])
+        console.log(result.message)
+      })
+  }
 }

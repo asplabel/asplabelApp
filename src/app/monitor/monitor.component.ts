@@ -29,7 +29,7 @@ export class MonitorComponent implements OnInit, AfterViewInit, OnDestroy {
   records: IRecord[] = []
   subRecord: Subscription
   dataSource: MatTableDataSource<IRecord>
-  
+
   constructor(private recordService: MonitorService) {}
 
   @ViewChild(MatSort) sort: MatSort
@@ -62,6 +62,7 @@ export class MonitorComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   deleteRecord(id: string) {
-    console.log(id)
+    //console.log(id)
+    this.recordService.deleteRecord(id)
   }
 }
