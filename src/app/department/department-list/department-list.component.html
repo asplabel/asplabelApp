@@ -4,10 +4,6 @@
   </a>
 </mat-card>
 
-<div *ngIf="departments.length <= 0" class="message">
-  <span>No hay departamentos en la base de datos, ¡Crea uno nuevo!</span>
-</div>
-
 <table
   class="mat-elevation-z8"
   mat-table
@@ -48,3 +44,7 @@
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 </table>
+
+<div *ngIf="departments.length <= 0" class="message">
+  <span>No hay departamentos en la base de datos, ¡Crea uno nuevo!</span>
+</div>

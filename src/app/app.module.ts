@@ -15,16 +15,17 @@ import { MatFormFieldModule } from '@angular/material/form-field'
 import { MatTableModule } from '@angular/material/table'
 import { MatIconModule } from '@angular/material/icon'
 import { MatMenuModule } from '@angular/material/menu'
+import { MatSelectModule } from '@angular/material/select'
 
 import { ToolbarComponent } from './toolbar/toolbar.component'
 import { JobTitleModule } from './job-title/job-title.module'
-import { MatSelectModule } from '@angular/material/select'
 import { MonitorComponent } from './monitor/monitor.component'
 import { LogInComponent } from './log-in/log-in.component'
-
 import { LogOutComponent } from './log-out/log-out.component'
 import { AppRoutingModule } from './app-routing.module'
 import { DepartmentModule } from './department/department.module'
+import { MatPaginatorModule } from '@angular/material/paginator'
+import { MatSortModule } from '@angular/material/sort'
 
 @NgModule({
   declarations: [
@@ -53,6 +54,8 @@ import { DepartmentModule } from './department/department.module'
     MatIconModule,
     MatSelectModule,
     MatMenuModule,
+    MatPaginatorModule,
+    MatSortModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -4,10 +4,6 @@
   </a>
 </mat-card>
 
-<div *ngIf="jobTitles.length <= 0" class="message">
-  <span>No hay cargos en la base de datos, ¡Crea uno nuevo!</span>
-</div>
-
 <table
   class="mat-elevation-z8"
   mat-table
@@ -42,7 +38,7 @@
           </mat-icon>
         </a>
         <a mat-button color="warn" (click)="deleteJobTitle(element.id)">
-          <mat-icon aria-hidden="false" aria-label="Example delete icon">
+          <mat-icon aria-hidden="false" aria-label="Delete button">
             delete
           </mat-icon>
         </a>
@@ -53,3 +49,6 @@
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 </table>
+<div *ngIf="jobTitles.length <= 0" class="message">
+  <span>No hay cargos en la base de datos, ¡Crea uno nuevo!</span>
+</div>
