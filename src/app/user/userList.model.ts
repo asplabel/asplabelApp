@@ -1,4 +1,4 @@
-export interface IUser {
+export interface IUserList {
   id: string
   firstname: string
   lastname: string

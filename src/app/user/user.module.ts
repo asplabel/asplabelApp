@@ -5,6 +5,9 @@ import { UserEditComponent } from './user-edit/user-edit.component'
 import { UserCreateComponent } from './user-create/user-create.component'
 import { UserDeleteComponent } from './user-delete/user-delete.component'
 import { MatCardModule } from '@angular/material/card'
+import { MatButtonModule } from '@angular/material/button'
+import { MatTableModule } from '@angular/material/table'
+import { MatSortModule } from '@angular/material/sort'
 
 @NgModule({
   declarations: [
@@ -19,6 +22,12 @@ import { MatCardModule } from '@angular/material/card'
     UserCreateComponent,
     UserDeleteComponent,
   ],
-  imports: [CommonModule, MatCardModule],
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatButtonModule,
+    MatTableModule,
+    MatSortModule,
+  ],
 })
 export class UserModule {}

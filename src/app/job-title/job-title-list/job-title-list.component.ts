@@ -26,15 +26,7 @@ export class JobTitleListComponent implements AfterViewInit, OnInit, OnDestroy {
 
   @ViewChild(MatSort) sort: MatSort
 
-  ngOnInit() {
-    this.jobTitleService.getJobTitles()
-    this.subJobTitle = this.jobTitleService
-      .getSubjectJobTitles()
-      .subscribe((data: IjobTitle[]) => {
-        this.jobTitles = data
-        this.dataSource = new MatTableDataSource<IjobTitle>(this.jobTitles)
-      })
-  }
+  ngOnInit() {}
 
   ngAfterViewInit() {
     this.jobTitleService.getJobTitles()
