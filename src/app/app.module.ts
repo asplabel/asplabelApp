@@ -26,6 +26,8 @@ import { AppRoutingModule } from './app-routing.module'
 import { DepartmentModule } from './department/department.module'
 import { MatPaginatorModule } from '@angular/material/paginator'
 import { MatSortModule } from '@angular/material/sort'
+import { CardModule } from './card/card.module'
+import { UserModule } from './user/user.module'
 
 @NgModule({
   declarations: [
@@ -41,6 +43,8 @@ import { MatSortModule } from '@angular/material/sort'
     FormsModule,
     JobTitleModule,
     DepartmentModule,
+    CardModule,
+    UserModule,
     BrowserAnimationsModule,
     HttpClientModule,
     MatInputModule,

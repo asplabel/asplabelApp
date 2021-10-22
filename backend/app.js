@@ -8,6 +8,9 @@ const DepartmentModel = require('./models/department')
 const CardModel = require('./models/card')
 const UserModel = require('./models/user')
 const RecordModel = require('./models/record')
+const card = require('./models/card')
+const user = require('./models/user')
+const department = require('./models/department')
 
 const app = express()
 
@@ -140,6 +143,129 @@ app.delete('/deleteJobTitle/:id', (req, res, next) => {
       message: 'Cargo eliminado exitosamente',
     })
   })
+})
+
+/*
+ ***************************************************************
+ ***********   CARD CRUD *********************************
+ ***************************************************************
+ */
+/* CREATE */
+/* READ */
+app.get('/getCards', async (req, res, next) => {
+  var cards = await CardModel.find()
+  for (let i = 0; i < cards.length; i++) {
+    let card = cards[i]
+    var user = await UserModel.findOne({ card_id: card._id })
+    if (user != null) {
+      card = {
+        id: card._id,
+        UID: card.UID,
+        type: card.type,
+        is_active: card.is_active,
+        state: card.state,
+        user_id: user._id,
+        firstname: user.firstname,
+        lastname: user.lastname,
+      }
+    } else {
+      card = {
+        id: card._id,
+        UID: card.UID,
+        type: card.type,
+        is_active: card.is_active,
+        state: card.state,
+        user_id: null,
+        firstname: null,
+        lastname: null,
+      }
+    }
+    cards[i] = card
+  }
+  res.status(201).json(cards)
+})
+
+/*
+ ***************************************************************
+ ***********   USER CRUD *********************************
+ ***************************************************************
+ */
+app.get('/getUsers', async (req, res, next) => {
+  var users = await UserModel.find()
+  for (let i = 0; i < users.length; i++) {
+    var user = users[i]
+    let isJobTitle = false
+    let isCard = false
+    var card
+    var jobTitle
+    var department
+    if (user.job_title_id != null) {
+      jobTitle = await JobTitleModel.findOne({ _id: user.job_title_id })
+      console.log(jobTitle)
+      department = await DepartmentModel.findOne({
+        _id: jobTitle.department_id,
+      })
+      isJobTitle = true
+    }
+    if (user.card_id != null) {
+      card = await CardModel.findOne({ _id: user.card_id })
+      isCard = true
+    }
+    if (isCard & isJobTitle) {
+      var newUser = {
+        id: user._id,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        jobTitle: jobTitle.name,
+        department: department.name,
+        type: user.type,
+        is_active: user.is_active,
+        card_UID: card.UID,
+      }
+      users[i] = newUser
+    } else {
+      if (isJobTitle) {
+        var newUser = {
+          id: user._id,
+          firstname: user.firstname,
+          lastname: user.lastname,
+          jobTitle: jobTitle.name,
+          department: department.name,
+          type: user.type,
+          is_active: user.is_active,
+          card_UID: null,
+        }
+        users[i] = newUser
+      }
+      if (isCard) {
+        var newUser = {
+          id: user._id,
+          firstname: user.firstname,
+          lastname: user.lastname,
+          jobTitle: null,
+          department: null,
+          type: user.type,
+          is_active: user.is_active,
+          card_UID: card.UID,
+        }
+        users[i] = newUser
+        if (!isJobTitle & !isCard) {
+          var newUser = {
+            id: user._id,
+            firstname: user.firstname,
+            lastname: user.lastname,
+            jobTitle: null,
+            department: null,
+            type: user.type,
+            is_active: user.is_active,
+            card_UID: null,
+          }
+          users[i] = newUser
+        }
+      }
+    }
+  }
+  res.status(201).json(users)
 })
 
 /*
