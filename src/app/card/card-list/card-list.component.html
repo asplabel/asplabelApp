@@ -1,10 +1,81 @@
 <mat-card>
-  <a
-    mat-button
-    mat-flat-button
-    color="primary"
-    routerLink="/card/create"
-    routerLinkActive="router-link-active"
-  ></a>
+  <a mat-button mat-flat-button color="primary" routerLink="/card/create">
+    Agregar una tarjeta nueva
+  </a>
 </mat-card>
-<table></table>
+
+<table
+  class="mat-elevation-z8"
+  mat-table
+  [dataSource]="dataSource"
+  matSort
+  #CardTable
+>
+  <!--UID Column-->
+  <ng-container matColumnDef="UID">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>UID</th>
+    <td mat-cell *matCellDef="let element">{{ element.UID }}</td>
+  </ng-container>
+  <!--Tipo Column-->
+  <ng-container matColumnDef="type">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipo</th>
+    <td mat-cell *matCellDef="let element">{{ element.type }}</td>
+  </ng-container>
+
+  <!-- Active Column -->
+  <ng-container matColumnDef="is_active">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Activa</th>
+    <td mat-cell *matCellDef="let element">
+      <span *ngIf="element.is_active == true">Sí</span>
+      <span *ngIf="element.is_active == false">No</span>
+    </td>
+  </ng-container>
+
+  <!--State Column-->
+  <ng-container matColumnDef="state">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+    <td mat-cell *matCellDef="let element">{{ element.state }}</td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="firstname">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+    <td mat-cell *matCellDef="let element">{{ element.firstname }}</td>
+  </ng-container>
+
+  <!-- Lastname Column -->
+  <ng-container matColumnDef="lastname">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Apellido</th>
+    <td mat-cell *matCellDef="let element">{{ element.lastname }}</td>
+  </ng-container>
+
+  <!--Options Column-->
+  <ng-container matColumnDef="options">
+    <th mat-header-cell *matHeaderCellDef>Opciones</th>
+    <td mat-cell *matCellDef="let element" class="action-link">
+      <mat-action-row>
+        <a
+          mat-button
+          color="primary"
+          (click)="editCard(element.id)"
+          [routerLink]="['/card/edit', element.id]"
+        >
+          <mat-icon aria-hidden="false" aria-label="Edit button">
+            edit
+          </mat-icon>
+        </a>
+        <a mat-button color="warn" (click)="deleteCard(element.id)">
+          <mat-icon aria-hidden="false" aria-label="Delete button">
+            delete
+          </mat-icon>
+        </a>
+      </mat-action-row>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
+<div *ngIf="cards.length <= 0" class="message">
+  <span>No hay cargos en la base de datos, ¡Crea uno nuevo!</span>
+</div>

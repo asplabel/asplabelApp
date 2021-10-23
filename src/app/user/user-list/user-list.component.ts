@@ -9,8 +9,19 @@ import { MatTableDataSource } from '@angular/material/table'
 import { Subscription } from 'rxjs'
 import { IUserList } from '../userList.model'
 import { UserService } from '../user.service'
-import { IjobTitle } from 'src/app/job-title/job-title.model'
 import { MatSort } from '@angular/material/sort'
+const userData: IUserList[] = [
+  {
+    id: '6167065ccb06eba131faee6d',
+    firstname: 'Karol Liseth',
+    lastname: 'Rojas Bermudez',
+    jobTitle: 'Desarrollador Software',
+    department: 'Administración',
+    type: 'Permanente',
+    is_active: true,
+    card_UID: '937e4d03',
+  },
+]
 
 @Component({
   selector: 'app-user-list',
@@ -38,6 +49,7 @@ export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {}
 
   ngAfterViewInit() {
+    //this.users = userData
     this.userService.getUsers()
     this.userService.getSubjectUser().subscribe((data: IUserList[]) => {
       this.users = data

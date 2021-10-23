@@ -8,6 +8,9 @@ import { MatTableModule } from '@angular/material/table'
 import { MatSortModule } from '@angular/material/sort'
 import { MatPaginatorModule } from '@angular/material/paginator'
 import { MatCardModule } from '@angular/material/card'
+import { MatButtonModule } from '@angular/material/button'
+import { AppRoutingModule } from '../app-routing.module'
+import { MatIconModule } from '@angular/material/icon'
 
 @NgModule({
   declarations: [
@@ -24,10 +27,13 @@ import { MatCardModule } from '@angular/material/card'
   ],
   imports: [
     CommonModule,
+    AppRoutingModule,
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
     MatCardModule,
+    MatButtonModule,
+    MatIconModule,
   ],
 })
 export class CardModule {}
