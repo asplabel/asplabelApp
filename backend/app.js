@@ -138,7 +138,7 @@ app.get('/getJobTitles', (req, res, next) => {
 /* DELETE */
 app.delete('/deleteJobTitle/:id', (req, res, next) => {
   JobTitleModel.deleteOne({ _id: req.params.id }).then((result) => {
-    console.log(result)
+    //console.log(result)
     res.status(201).json({
       message: 'Cargo eliminado exitosamente',
     })
@@ -201,7 +201,7 @@ app.get('/getUsers', async (req, res, next) => {
     var department
     if (user.job_title_id != null) {
       jobTitle = await JobTitleModel.findOne({ _id: user.job_title_id })
-      console.log(jobTitle)
+      // console.log(jobTitle)
       department = await DepartmentModel.findOne({
         _id: jobTitle.department_id,
       })
@@ -276,7 +276,7 @@ app.get('/getUsers', async (req, res, next) => {
 
 /* VALIDATE ACCESS AND ADD A RECORD*/
 app.get('/validateAccess/:uid', (req, res, next) => {
-  console.log(req.params.uid)
+  //console.log(req.params.uid)
   CardModel.findOne({ UID: req.params.uid })
     .then((result) => {
       //console.log(result)
@@ -332,20 +332,20 @@ app.get('/validateAccess/:uid', (req, res, next) => {
                 })
               }
             } else {
-              console.log('La tarjeta no tiene usuario')
+              //console.log('La tarjeta no tiene usuario')
               res.status(201).json({
                 message: '2', // La tarjeta no tiene usuario
               })
             }
           })
         } else {
-          console.log('La tarjeta está desactivada')
+          //console.log('La tarjeta está desactivada')
           res.status(201).json({
             message: '1', // La tarjeta está desactivada
           })
         }
       } else {
-        console.log('UID no encontrado en la base de datos')
+        //console.log('UID no encontrado en la base de datos')
         res.status(201).json({
           message: '0', // La tarjeta no existe en la base de datos
         })

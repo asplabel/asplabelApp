@@ -1,17 +1,21 @@
-import { Component, NgModule } from '@angular/core'
+import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
+
 import { CardCreateComponent } from './card/card-create/card-create.component'
 import { CardDeleteComponent } from './card/card-delete/card-delete.component'
 import { CardEditComponent } from './card/card-edit/card-edit.component'
 import { CardListComponent } from './card/card-list/card-list.component'
+
 import { DepartmentCreateComponent } from './department/department-create/department-create.component'
 import { DepartmentDeleteComponent } from './department/department-delete/department-delete.component'
 import { DepartmentEditComponent } from './department/department-edit/department-edit.component'
 import { DepartmentListComponent } from './department/department-list/department-list.component'
+
 import { JobTitleCreateComponent } from './job-title/job-title-create/job-title-create.component'
 import { JobTitleDeleteComponent } from './job-title/job-title-delete/job-title-delete.component'
 import { JobTitleEditComponent } from './job-title/job-title-edit/job-title-edit.component'
 import { JobTitleListComponent } from './job-title/job-title-list/job-title-list.component'
+
 import { LogInComponent } from './log-in/log-in.component'
 import { LogOutComponent } from './log-out/log-out.component'
 import { MonitorComponent } from './monitor/monitor.component'
