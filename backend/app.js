@@ -48,12 +48,14 @@ app.use((req, res, next) => {
  ***************************************************************
  */
 app.get('/getRecords', (req, res, next) => {
-  RecordModel.find().then((records) => {
-    res.status(201).json({
-      message: 'Cargos enviado con éxito',
-      records: records,
+  RecordModel.find()
+    .sort({ date: -1, time: -1 })
+    .then((records) => {
+      res.status(201).json({
+        message: 'Cargos enviado con éxito',
+        records: records,
+      })
     })
-  })
 })
 
 app.delete('/deleteRecord/:id', (req, res, next) => {
@@ -151,6 +153,20 @@ app.delete('/deleteJobTitle/:id', (req, res, next) => {
  ***************************************************************
  */
 /* CREATE */
+app.post('/addCard', (req, res, next) => {
+  const card = new CardModel({
+    UID: req.body.uid,
+    type: req.body.type,
+    is_active: false,
+    state: 'Salida',
+  })
+  card.save().then((card) => {
+    res.status(201).json({
+      message: 'Tarjeta agregada con éxito',
+      card: card,
+    })
+  })
+})
 /* READ */
 app.get('/getCards', async (req, res, next) => {
   var cards = await CardModel.find()
@@ -276,14 +292,11 @@ app.get('/getUsers', async (req, res, next) => {
 
 /* VALIDATE ACCESS AND ADD A RECORD*/
 app.get('/validateAccess/:uid', (req, res, next) => {
-  //console.log(req.params.uid)
   CardModel.findOne({ UID: req.params.uid })
     .then((result) => {
-      //console.log(result)
       if (result != null) {
         if (result.is_active == true) {
           UserModel.findOne({ card_id: result._id }).then((user) => {
-            //console.log(user)
             if (user != null) {
               if (result.state == 'Salida') {
                 const record = new RecordModel({
@@ -294,17 +307,14 @@ app.get('/validateAccess/:uid', (req, res, next) => {
                   type: 'Ingreso',
                 })
                 record.save().then((response) => {
-                  //console.log(response)
                   CardModel.findOneAndUpdate(
                     { UID: req.params.uid },
                     { state: 'Ingreso' },
                     { new: true },
                   ).then((updated) => {
-                    //console.log(updated)
-                    res.status(201).json({
-                      message: '3', // La tarjeta existe, tiene usuario y está activa. Se concede el acceso
-                      type: 'Ingreso',
-                    })
+                    // La tarjeta existe, tiene usuario y está activa.
+                    // Se concede el acceso: Ingreso
+                    res.status(201).json(4)
                   })
                 })
               }
@@ -317,38 +327,28 @@ app.get('/validateAccess/:uid', (req, res, next) => {
                   type: 'Salida',
                 })
                 record.save().then((response) => {
-                  //console.log(response)
                   CardModel.findOneAndUpdate(
                     { UID: req.params.uid },
                     { state: 'Salida' },
                     { new: true },
                   ).then((updated) => {
-                    //console.log(updated)
-                    res.status(201).json({
-                      message: '3', // La tarjeta existe, tiene usuario y está activa. Se concede el acceso
-                      type: 'Salida',
-                    })
+                    // La tarjeta existe, tiene usuario y está activa. Se concede el acceso de Salida
+                    res.status(201).json(3)
                   })
                 })
               }
             } else {
-              //console.log('La tarjeta no tiene usuario')
-              res.status(201).json({
-                message: '2', // La tarjeta no tiene usuario
-              })
+              // La tarjeta no tiene usuario
+              res.status(201).json(2)
             }
           })
         } else {
-          //console.log('La tarjeta está desactivada')
-          res.status(201).json({
-            message: '1', // La tarjeta está desactivada
-          })
+          // La tarjeta está desactivada
+          res.status(201).json(1)
         }
       } else {
-        //console.log('UID no encontrado en la base de datos')
-        res.status(201).json({
-          message: '0', // La tarjeta no existe en la base de datos
-        })
+        // La tarjeta no existe en la base de datos
+        res.status(201).json(0)
       }
     })
     .catch((err) => {
