@@ -155,7 +155,7 @@ app.delete('/deleteJobTitle/:id', (req, res, next) => {
 /* CREATE */
 app.post('/addCard', (req, res, next) => {
   const card = new CardModel({
-    UID: req.body.uid,
+    UID: req.body.UID,
     type: req.body.type,
     is_active: false,
     state: 'Salida',
@@ -163,7 +163,7 @@ app.post('/addCard', (req, res, next) => {
   card.save().then((card) => {
     res.status(201).json({
       message: 'Tarjeta agregada con éxito',
-      card: card,
+      card: card._id,
     })
   })
 })

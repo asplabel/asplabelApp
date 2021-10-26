@@ -1,1 +1,56 @@
-<p>card-create works!</p>
+<br />
+<br />
+<mat-card>
+  <form action="" (submit)="addCard(CardForm)" #CardForm="ngForm">
+    <!-- Input Card UID-->
+    <section>
+      <mat-form-field
+        class="example-form-field"
+        appearance="fill"
+        style="display: block;"
+      >
+        <mat-label>Código UID:</mat-label>
+        <input
+          type="text"
+          matInput
+          name="cardName"
+          ngModel
+          placeholder="Ingrese el cógido UID de la tarjeta"
+          required
+          maxlength="8"
+          minlength="8"
+          #cardName="ngModel"
+        />
+        <mat-error *ngIf="cardName.invalid">
+          Por favor ingrese un código UID de 8 caracteres
+        </mat-error>
+        <button
+          *ngIf="CardForm.value.cardName"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="CardForm.reset()"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+      <!--- TYPE Selection --->
+      <mat-form-field style="display: block;">
+        <mat-label>
+          Selecciona de que tipo es la tarjeta
+        </mat-label>
+        <mat-select ngModel name="type" placeholder="Seleccionar el tipo">
+          <mat-option value="Permanente">
+            Permanente
+          </mat-option>
+          <mat-option value="Temporal">Temporal</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </section>
+    <section>
+      <button mat-raised-button color="primary" type="submit">
+        Agregar tarjeta
+      </button>
+    </section>
+  </form>
+</mat-card>

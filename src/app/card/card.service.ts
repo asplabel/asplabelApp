@@ -22,4 +22,15 @@ export class CardService {
   getSubjectCards() {
     return this.subjectCard.asObservable()
   }
+
+  addCard(newCard: ICard) {
+    this.http
+      .post<{ message: string; cardID: string }>(this.url + '/addCard', newCard)
+      .subscribe((responseData) => {
+        console.log(responseData.message)
+        newCard.id = responseData.cardID
+        this.cards.push(newCard)
+        this.subjectCard.next([...this.cards])
+      })
+  }
 }

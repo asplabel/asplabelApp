@@ -11,6 +11,9 @@ import { MatCardModule } from '@angular/material/card'
 import { MatButtonModule } from '@angular/material/button'
 import { AppRoutingModule } from '../app-routing.module'
 import { MatIconModule } from '@angular/material/icon'
+import { FormsModule, NgForm } from '@angular/forms'
+import { MatInputModule } from '@angular/material/input'
+import { MatSelectModule } from '@angular/material/select'
 
 @NgModule({
   declarations: [
@@ -28,12 +31,15 @@ import { MatIconModule } from '@angular/material/icon'
   imports: [
     CommonModule,
     AppRoutingModule,
+    FormsModule,
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
     MatCardModule,
     MatButtonModule,
     MatIconModule,
+    MatInputModule,
+    MatSelectModule,
   ],
 })
 export class CardModule {}

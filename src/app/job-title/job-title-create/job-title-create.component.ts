@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core'
+import { Component, OnInit} from '@angular/core'
 import { NgForm } from '@angular/forms'
 import { Subscription } from 'rxjs'
 import { IDepartment } from 'src/app/department/department.model'
