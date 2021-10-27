@@ -317,7 +317,8 @@ app.post('/addUser', (req, res, next) => {
     date_of_birth: req.body.date_of_birth,
     is_active: req.body.is_active,
     job_title_id: req.body.job_title_id,
-
+    role_id: null,
+    card_id: null,
     type: req.body.type,
   })
   user.save().then((user) => {

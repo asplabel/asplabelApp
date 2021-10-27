@@ -99,6 +99,26 @@ export class UserCreateComponent implements OnInit {
     if (form.invalid) {
       return
     }
+    console.dir(this.userBirth)
+    let date
+    if (this.userBirth._f) {
+      date = this.userBirth._i
+    } else {
+      if (this.userBirth._i.date < 10) {
+        date = '0' + this.userBirth._i.date + '/'
+      }
+      if (this.userBirth._i.month + 1 < 10) {
+        date =
+          date +
+          '0' +
+          (this.userBirth._i.month + 1) +
+          '/' +
+          this.userBirth._i.year
+      } else {
+        date =
+          date + (this.userBirth._i.month + 1) + '/' + this.userBirth._i.year
+      }
+    }
     let user: IUserCreate = {
       id: null,
       firstname: form.value.userFirstname,
@@ -107,12 +127,7 @@ export class UserCreateComponent implements OnInit {
       phone: form.value.userPhone,
       document: form.value.userDocument,
       address: form.value.userAddress,
-      date_of_birth:
-        this.userBirth._i.date +
-        '/' +
-        this.userBirth._i.month +
-        '/' +
-        this.userBirth._i.month,
+      date_of_birth: date,
       is_active: form.value.userIsactive,
       job_title_id: form.value.jobtitle_id,
       type: form.value.userType,
@@ -121,5 +136,7 @@ export class UserCreateComponent implements OnInit {
     this.userService.addUser(user)
 
     form.reset()
+    this.userEmail = ''
+    this.userBirth = ''
   }
 }

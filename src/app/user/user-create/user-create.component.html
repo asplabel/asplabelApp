@@ -181,7 +181,7 @@
         <mat-label>
           ¿El colaborador está activo?
         </mat-label>
-        <mat-select ngModel name="userIsactive">
+        <mat-select ngModel name="userIsactive" required>
           <mat-option value="true">
             sí
           </mat-option>
@@ -211,7 +211,7 @@
         <mat-label>
           Selecciona el tipo de contrato del colaborador:
         </mat-label>
-        <mat-select ngModel name="userType">
+        <mat-select ngModel name="userType" required>
           <mat-option value="Permanente">
             Permanente
           </mat-option>
