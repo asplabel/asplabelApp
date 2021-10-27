@@ -234,6 +234,7 @@ app.get('/getUsers', async (req, res, next) => {
     var user = users[i]
     let isJobTitle = false
     let isCard = false
+    let isDepartment = false
     var card
     var jobTitle
     var department
@@ -243,13 +244,16 @@ app.get('/getUsers', async (req, res, next) => {
       department = await DepartmentModel.findOne({
         _id: jobTitle.department_id,
       })
+      if (department != null) {
+        isDepartment = true
+      }
       isJobTitle = true
     }
     if (user.card_id != null) {
       card = await CardModel.findOne({ _id: user.card_id })
       isCard = true
     }
-    if (isCard & isJobTitle) {
+    if (isCard & isJobTitle & isDepartment) {
       var newUser = {
         id: user._id,
         firstname: user.firstname,
@@ -263,17 +267,31 @@ app.get('/getUsers', async (req, res, next) => {
       users[i] = newUser
     } else {
       if (isJobTitle) {
-        var newUser = {
-          id: user._id,
-          firstname: user.firstname,
-          lastname: user.lastname,
-          jobTitle: jobTitle.name,
-          department: department.name,
-          type: user.type,
-          is_active: user.is_active,
-          card_UID: null,
+        if (isDepartment) {
+          var newUser = {
+            id: user._id,
+            firstname: user.firstname,
+            lastname: user.lastname,
+            jobTitle: jobTitle.name,
+            department: department.name,
+            type: user.type,
+            is_active: user.is_active,
+            card_UID: null,
+          }
+          users[i] = newUser
+        } else {
+          var newUser = {
+            id: user._id,
+            firstname: user.firstname,
+            lastname: user.lastname,
+            jobTitle: jobTitle.name,
+            department: null,
+            type: user.type,
+            is_active: user.is_active,
+            card_UID: null,
+          }
+          users[i] = newUser
         }
-        users[i] = newUser
       }
       if (isCard) {
         var newUser = {
