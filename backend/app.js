@@ -123,12 +123,35 @@ app.post('/addJobTitle', (req, res, next) => {
 })
 
 /* READ */
-app.get('/getJobTitles', (req, res, next) => {
-  JobTitleModel.find().then((jobTitles) => {
-    res.status(200).json({
-      message: 'Cargos enviado con éxito',
-      jobTitles: jobTitles,
+app.get('/getJobTitles', async (req, res, next) => {
+  let jobTitles = await JobTitleModel.find()
+
+  for (let i = 0; i < jobTitles.length; i++) {
+    let jobTitle = jobTitles[i]
+    var department = await DepartmentModel.findOne({
+      _id: jobTitle.department_id,
     })
+
+    if (department != null) {
+      jobTitle = {
+        id: jobTitle._id,
+        name: jobTitle.name,
+        department_id: jobTitle.department,
+        department_name: department.name,
+      }
+    } else {
+      jobTitle = {
+        id: jobTitle._id,
+        name: jobTitle.name,
+        department_id: jobTitle.department,
+        department_name: null,
+      }
+    }
+    jobTitles[i] = jobTitle
+  }
+  res.status(201).json({
+    message: 'Cargos listados',
+    jobTitles: jobTitles,
   })
 })
 
@@ -205,7 +228,6 @@ app.get('/getCards', async (req, res, next) => {
  */
 app.get('/getUsers', async (req, res, next) => {
   var users = await UserModel.find()
-  console.dir(users)
   for (let i = 0; i < users.length; i++) {
     var user = users[i]
     let isJobTitle = false

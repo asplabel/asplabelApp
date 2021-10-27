@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { NgForm } from '@angular/forms'
 import { Subscription } from 'rxjs'
 import { IDepartment } from 'src/app/department/department.model'
@@ -41,12 +41,14 @@ export class JobTitleCreateComponent implements OnInit {
         id: null,
         name: form.value.nameJobTitle,
         department_id: null,
+        department_name: null,
       }
     } else {
       jobTitle = {
         id: null,
         name: form.value.nameJobTitle,
         department_id: form.value.selected,
+        department_name: null,
       }
       form.reset()
     }

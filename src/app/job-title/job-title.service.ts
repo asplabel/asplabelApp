@@ -16,21 +16,12 @@ export class JobTitleService {
 
   getJobTitles() {
     this.http
-      .get<{ message: string; jobTitles: any }>(this.url + '/getJobTitles')
-      .pipe(
-        map((jobTitleData) => {
-          return jobTitleData.jobTitles.map((jobTitle) => {
-            return {
-              id: jobTitle._id,
-              name: jobTitle.name,
-              department_id: jobTitle.department_id,
-            }
-          })
-        }),
+      .get<{ message: string; jobTitles: IjobTitle[] }>(
+        this.url + '/getJobTitles',
       )
-      .subscribe((jobTitlesData) => {
-        this.jobTitles = jobTitlesData
-        //console.log(jobTitlesData.message)
+      .subscribe((response: { message: string; jobTitles: IjobTitle[] }) => {
+        this.jobTitles = response.jobTitles
+        console.log(response.message)
         this.subjectJobTitle.next([...this.jobTitles])
       })
     //return [...this.jobTitles]
@@ -71,7 +62,5 @@ export class JobTitleService {
       })
   }
 
-  editJobTitle(){
-    
-  }
+  editJobTitle() {}
 }

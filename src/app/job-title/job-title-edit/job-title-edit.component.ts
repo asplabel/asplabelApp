@@ -50,12 +50,14 @@ export class JobTitleEditComponent implements OnInit {
         id: null,
         name: form.value.nameJobTitle,
         department_id: null,
+        department_name: null,
       }
     } else {
       jobTitle = {
         id: null,
         name: form.value.nameJobTitle,
         department_id: form.value.selected,
+        department_name: null,
       }
       form.reset()
     }
