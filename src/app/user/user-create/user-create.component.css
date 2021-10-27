@@ -1,0 +1,13 @@
+.example-full-width {
+  width: 100%;
+}
+.example-form-field {
+  width: 45%;
+  margin: 0px 15px;
+}
+section {
+  margin: 10px 0px;
+}
+button {
+  margin-left: 40%;
+}

@@ -1,0 +1,234 @@
+<br />
+
+<br />
+<mat-card>
+  <form action="" (submit)="addUser(UserForm)" #UserForm="ngForm">
+    <!-- Input user firstname-->
+    <section>
+      <mat-form-field class="example-form-field" appearance="fill">
+        <mat-label>Nombres:</mat-label>
+        <input
+          matInput
+          type="text"
+          name="userFirstname"
+          ngModel
+          placeholder="Ingrese el nombre completo del colaborador"
+          required
+          maxlength="150"
+          #userName="ngModel"
+        />
+        <mat-error *ngIf="userName.invalid">
+          Por favor ingrese el nombre del colaborador.
+        </mat-error>
+        <button
+          *ngIf="UserForm.value.userFirstname"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="userName.reset()"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <!-- Input User lastname-->
+
+      <mat-form-field class="example-form-field" appearance="fill">
+        <mat-label>Apellidos:</mat-label>
+        <input
+          matInput
+          type="text"
+          name="userLastname"
+          ngModel
+          placeholder="Ingrese los apellidos del colaborador"
+          required
+          maxlength="150"
+          #lastname="ngModel"
+        />
+        <mat-error *ngIf="lastname.invalid">
+          Por favor ingrese los apellidos del colaborador.
+        </mat-error>
+        <button
+          *ngIf="UserForm.value.userLastname"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="lastname.reset()"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+    </section>
+    <!--  Input Email-->
+    <section>
+      <mat-form-field class="example-form-field" appearance="fill">
+        <mat-label>Correo Electrónico:</mat-label>
+        <input
+          [(ngModel)]="userEmail"
+          matInput
+          type="email"
+          [formControl]="emailFormControl"
+          [errorStateMatcher]="matcher"
+          placeholder="Ejemplo: minombre@asplabel.co"
+        />
+        <mat-error
+          *ngIf="
+            emailFormControl.hasError('email') &&
+            !emailFormControl.hasError('required')
+          "
+        >
+          Por favor ingrese un correo electrónico válido
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Input Phone -->
+
+      <mat-form-field class="example-form-field" appearance="fill">
+        <mat-label>Número de contacto</mat-label>
+        <input
+          name="userPhone"
+          type="tel"
+          matInput
+          placeholder="315-596-0681 | 860-77-77"
+          maxlength="20"
+          ngModel
+          #tel="ngModel"
+        />
+        <mat-icon matSuffix>phone</mat-icon>
+        <button
+          *ngIf="UserForm.value.userPhone"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="tel.reset()"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+    </section>
+    <!-- Input Document -->
+    <section>
+      <mat-form-field class="example-form-field" appearance="fill">
+        <mat-label>Número del documento de identidad:</mat-label>
+        <input
+          matInput
+          type="text"
+          name="userDocument"
+          ngModel
+          placeholder="Ingrese el número del documento de identidad del colaborador"
+          required
+          maxlength="150"
+          #document="ngModel"
+        />
+        <mat-error *ngIf="document.invalid">
+          Por favor ingrese el número del documento de identidad del
+          colaborador.
+        </mat-error>
+        <button
+          *ngIf="UserForm.value.userDocument"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="document.reset()"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <!-- Input Address -->
+
+      <mat-form-field class="example-form-field" appearance="fill">
+        <mat-label>Dirección:</mat-label>
+        <input
+          matInput
+          type="text"
+          name="userAddress"
+          ngModel
+          placeholder="Ingrese la dirección del colaborador"
+          required
+          maxlength="150"
+          #direccion="ngModel"
+        />
+        <mat-error *ngIf="direccion.invalid">
+          Por favor ingrese la dirección del colaborador.
+        </mat-error>
+        <button
+          *ngIf="UserForm.value.userAddress"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="direccion.reset()"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+    </section>
+    <!-- Fecha de Nacimiento -->
+    <section>
+      <mat-form-field class="example-form-field" appearance="fill">
+        <mat-label>Fecha de Nacimiento</mat-label>
+        <input
+          [(ngModel)]="userBirth"
+          matInput
+          [matDatepicker]="picker"
+          [formControl]="date"
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <!-- ES ACTIVO -->
+      <mat-form-field class="example-form-field" appearance="fill">
+        <mat-label>
+          ¿El colaborador está activo?
+        </mat-label>
+        <mat-select ngModel name="userIsactive">
+          <mat-option value="true">
+            sí
+          </mat-option>
+          <mat-option value="false">
+            No
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </section>
+    <section>
+      <!-- Cargo -->
+      <mat-form-field class="example-form-field" appearance="fill">
+        <mat-label>
+          Selecciona el cargo que desempeña el colaborador:
+        </mat-label>
+        <mat-select ngModel name="jobtitle_id">
+          <mat-option
+            *ngFor="let jobTitle of jobTitles"
+            value="{{ jobTitle.id }}"
+          >
+            {{ jobTitle.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <!-- Tipo de contrato -->
+      <mat-form-field class="example-form-field" appearance="fill">
+        <mat-label>
+          Selecciona el tipo de contrato del colaborador:
+        </mat-label>
+        <mat-select ngModel name="userType">
+          <mat-option value="Permanente">
+            Permanente
+          </mat-option>
+          <mat-option value="Tiempo parcial">
+            Tiempo Parcial
+          </mat-option>
+          <mat-option value="Temporal">
+            Temporal
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </section>
+    <!-- Button to save new User -->
+    <section>
+      <button mat-raised-button color="primary" type="submit">
+        Crear colaborador
+      </button>
+    </section>
+  </form>
+</mat-card>

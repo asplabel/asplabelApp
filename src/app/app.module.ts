@@ -26,6 +26,9 @@ import { AppRoutingModule } from './app-routing.module'
 import { DepartmentModule } from './department/department.module'
 import { MatPaginatorModule } from '@angular/material/paginator'
 import { MatSortModule } from '@angular/material/sort'
+import { MatDatepickerModule } from '@angular/material/datepicker'
+import { MatNativeDateModule } from '@angular/material/core'
+import { MatMomentDateModule } from '@angular/material-moment-adapter'
 import { CardModule } from './card/card.module'
 import { UserModule } from './user/user.module'
 
@@ -37,6 +40,7 @@ import { UserModule } from './user/user.module'
     LogInComponent,
     LogOutComponent,
   ],
+  exports: [MatDatepickerModule, MatNativeDateModule],
   imports: [
     AppRoutingModule,
     BrowserModule,
@@ -60,6 +64,9 @@ import { UserModule } from './user/user.module'
     MatMenuModule,
     MatPaginatorModule,
     MatSortModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatMomentDateModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

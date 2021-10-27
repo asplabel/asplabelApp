@@ -17,8 +17,6 @@ export class JobTitleCreateComponent implements OnInit {
   departments: IDepartment[]
   subDepartments: Subscription
 
-  //@Output() jobTitleCreated = new EventEmitter<IjobTitle>()
-
   constructor(
     public jobTitleService: JobTitleService,
     public departmentService: DepartmentService,

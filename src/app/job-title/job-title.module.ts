@@ -8,7 +8,6 @@ import { JobTitleDeleteComponent } from './job-title-delete/job-title-delete.com
 import { JobTitleCreateComponent } from './job-title-create/job-title-create.component'
 import { JobTitleListComponent } from './job-title-list/job-title-list.component'
 
-
 import { MatInputModule } from '@angular/material/input'
 import { MatButtonModule } from '@angular/material/button'
 import { MatCardModule } from '@angular/material/card'
@@ -16,7 +15,6 @@ import { MatTableModule } from '@angular/material/table'
 import { MatSortModule } from '@angular/material/sort'
 import { MatIconModule } from '@angular/material/icon'
 import { MatSelectModule } from '@angular/material/select'
-
 
 @NgModule({
   declarations: [

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { Subject } from 'rxjs'
-import { map } from 'rxjs/operators'
+import { IUserCreate } from './UserCreate.model'
 import { IUserList } from './userList.model'
 
 @Injectable({
@@ -25,5 +25,19 @@ export class UserService {
 
   getSubjectUser() {
     return this.subjectUser.asObservable()
+  }
+
+  addUser(newUser: IUserCreate) {
+    console.log('add User')
+    this.http
+      .post<{ message: string; user_id: string }>(
+        this.url + '/addUser',
+        newUser,
+      )
+      .subscribe((responseData) => {
+        console.log(responseData.message)
+        newUser.id = responseData.user_id
+        this.getUsers()
+      })
   }
 }

@@ -8,9 +8,6 @@ const DepartmentModel = require('./models/department')
 const CardModel = require('./models/card')
 const UserModel = require('./models/user')
 const RecordModel = require('./models/record')
-const card = require('./models/card')
-const user = require('./models/user')
-const department = require('./models/department')
 
 const app = express()
 
@@ -208,6 +205,7 @@ app.get('/getCards', async (req, res, next) => {
  */
 app.get('/getUsers', async (req, res, next) => {
   var users = await UserModel.find()
+  console.dir(users)
   for (let i = 0; i < users.length; i++) {
     var user = users[i]
     let isJobTitle = false
@@ -284,6 +282,27 @@ app.get('/getUsers', async (req, res, next) => {
   res.status(201).json(users)
 })
 
+app.post('/addUser', (req, res, next) => {
+  const user = new UserModel({
+    firstname: req.body.firstname,
+    lastname: req.body.lastname,
+    email: req.body.email,
+    phone: req.body.phone,
+    document: req.body.document,
+    address: req.body.address,
+    date_of_birth: req.body.date_of_birth,
+    is_active: req.body.is_active,
+    job_title_id: req.body.job_title_id,
+
+    type: req.body.type,
+  })
+  user.save().then((user) => {
+    res.status(201).json({
+      message: 'Usuario agregado con éxito',
+      user_id: user._id,
+    })
+  })
+})
 /*
  ***************************************************************
  ***********   ESP8266 ACCESO *********************************

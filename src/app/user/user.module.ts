@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
-import { FormsModule } from '@angular/forms'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { AppRoutingModule } from '../app-routing.module'
 
 import { UserListComponent } from './user-list/user-list.component'
@@ -13,6 +13,12 @@ import { MatButtonModule } from '@angular/material/button'
 import { MatTableModule } from '@angular/material/table'
 import { MatSortModule } from '@angular/material/sort'
 import { MatIconModule } from '@angular/material/icon'
+import { MatFormFieldModule } from '@angular/material/form-field'
+import { MatInputModule } from '@angular/material/input'
+import { MatSelectModule } from '@angular/material/select'
+import { MatDatepickerModule } from '@angular/material/datepicker'
+import { MatNativeDateModule } from '@angular/material/core'
+import { MatMomentDateModule } from '@angular/material-moment-adapter'
 
 @NgModule({
   declarations: [
@@ -31,11 +37,18 @@ import { MatIconModule } from '@angular/material/icon'
     CommonModule,
     AppRoutingModule,
     FormsModule,
-    MatCardModule,
+    ReactiveFormsModule,
+    MatInputModule,
     MatButtonModule,
+    MatCardModule,
     MatTableModule,
     MatSortModule,
     MatIconModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    
   ],
 })
 export class UserModule {}
