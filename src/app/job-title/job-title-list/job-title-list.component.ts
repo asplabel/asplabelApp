@@ -17,7 +17,7 @@ import { JobTitleService } from '../job-title.service'
   styleUrls: ['./job-title-list.component.css'],
 })
 export class JobTitleListComponent implements AfterViewInit, OnInit, OnDestroy {
-  displayedColumns: string[] = ['name', 'departmentName', 'action']
+  displayedColumns: string[] = ['name', 'department_name', 'action']
   jobTitles: IjobTitle[] = []
   subJobTitle: Subscription
   dataSource: MatTableDataSource<IjobTitle>

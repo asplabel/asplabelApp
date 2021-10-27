@@ -6,7 +6,7 @@ export interface IUserCreate {
   phone: string | null
   document: string
   address: string | null
-  date_of_birth: Date | null
+  date_of_birth: string | null
   is_active: boolean
   job_title_id: string
   type: string

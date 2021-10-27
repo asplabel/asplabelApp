@@ -84,12 +84,14 @@ app.post('/addDepartment', (req, res, next) => {
 
 /* READ */
 app.get('/getDepartments', (req, res, next) => {
-  DepartmentModel.find().then((departments) => {
-    res.status(200).json({
-      message: 'Cargos enviado con éxito',
-      departments: departments,
+  DepartmentModel.find()
+    .sort({ name: 1 })
+    .then((departments) => {
+      res.status(200).json({
+        message: 'Cargos enviado con éxito',
+        departments: departments,
+      })
     })
-  })
 })
 
 /* DELETE */
@@ -124,7 +126,7 @@ app.post('/addJobTitle', (req, res, next) => {
 
 /* READ */
 app.get('/getJobTitles', async (req, res, next) => {
-  let jobTitles = await JobTitleModel.find()
+  let jobTitles = await JobTitleModel.find().sort({ name: 1 })
 
   for (let i = 0; i < jobTitles.length; i++) {
     let jobTitle = jobTitles[i]

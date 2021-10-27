@@ -107,7 +107,12 @@ export class UserCreateComponent implements OnInit {
       phone: form.value.userPhone,
       document: form.value.userDocument,
       address: form.value.userAddress,
-      date_of_birth: this.userBirth._i,
+      date_of_birth:
+        this.userBirth._i.date +
+        '/' +
+        this.userBirth._i.month +
+        '/' +
+        this.userBirth._i.month,
       is_active: form.value.userIsactive,
       job_title_id: form.value.jobtitle_id,
       type: form.value.userType,
