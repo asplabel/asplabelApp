@@ -21,7 +21,7 @@ import { Subscription } from 'rxjs'
 import { IjobTitle } from 'src/app/job-title/job-title.model'
 import { JobTitleService } from 'src/app/job-title/job-title.service'
 import { UserService } from '../user.service'
-import { IUserCreate } from '../UserCreate.model'
+import { IUser } from '../user.model'
 import { Location } from '@angular/common'
 
 const moment = _rollupMoment || _moment
@@ -121,7 +121,7 @@ export class UserCreateComponent implements OnInit {
           date + (this.userBirth._i.month + 1) + '/' + this.userBirth._i.year
       }
     }
-    let user: IUserCreate = {
+    let user: IUser = {
       id: null,
       firstname: form.value.userFirstname,
       lastname: form.value.userLastname,
@@ -133,8 +133,11 @@ export class UserCreateComponent implements OnInit {
       is_active: form.value.userIsactive,
       job_title_id: form.value.jobtitle_id,
       type: form.value.userType,
+      job_title_name: null,
+      department_name: null,
+      card_UID: null,
     }
-    console.dir(user)
+    //console.dir(user)
     this.userService.addUser(user)
 
     form.reset()

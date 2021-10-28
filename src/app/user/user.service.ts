@@ -1,33 +1,30 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { Subject } from 'rxjs'
-import { IUserCreate } from './UserCreate.model'
-import { IUserList } from './userList.model'
+import { IUser } from './user.model'
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  users: IUserList[] = []
-  subjectUser = new Subject<IUserList[]>()
+  users: IUser[] = []
+  subjectUser = new Subject<IUser[]>()
   url: string = 'http://localhost:3000'
 
   constructor(private http: HttpClient) {}
 
   getUsers() {
-    this.http
-      .get(this.url + '/getUsers')
-      .subscribe((usersData: IUserList[]) => {
-        this.users = usersData
-        this.subjectUser.next([...this.users])
-      })
+    this.http.get(this.url + '/getUsers').subscribe((usersData: IUser[]) => {
+      this.users = usersData
+      this.subjectUser.next([...this.users])
+    })
   }
 
   getSubjectUser() {
     return this.subjectUser.asObservable()
   }
 
-  addUser(newUser: IUserCreate) {
+  addUser(newUser: IUser) {
     console.log('add User')
     this.http
       .post<{ message: string; user_id: string }>(

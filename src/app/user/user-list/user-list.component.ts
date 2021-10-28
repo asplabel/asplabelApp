@@ -7,7 +7,7 @@ import {
 } from '@angular/core'
 import { MatTableDataSource } from '@angular/material/table'
 import { Subscription } from 'rxjs'
-import { IUserList } from '../userList.model'
+import { IUser } from '../user.model'
 import { UserService } from '../user.service'
 import { MatSort } from '@angular/material/sort'
 import { MatPaginator } from '@angular/material/paginator'
@@ -27,8 +27,8 @@ export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
     'active',
     'actions',
   ]
-  users: IUserList[]
-  dataSource: MatTableDataSource<IUserList>
+  users: IUser[]
+  dataSource: MatTableDataSource<IUser>
   subUsers: Subscription
 
   constructor(private userService: UserService) {}
@@ -42,7 +42,7 @@ export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.userService.getUsers()
     this.subUsers = this.userService.getSubjectUser().subscribe((data) => {
       this.users = data
-      this.dataSource = new MatTableDataSource<IUserList>(this.users)
+      this.dataSource = new MatTableDataSource<IUser>(this.users)
       this.dataSource.sort = this.sort
       this.dataSource.paginator = this.paginator
     })
