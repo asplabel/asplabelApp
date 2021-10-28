@@ -5,6 +5,7 @@ import {
   OnInit,
   OnDestroy,
 } from '@angular/core'
+import { MatPaginator } from '@angular/material/paginator'
 import { MatSort } from '@angular/material/sort'
 import { MatTableDataSource } from '@angular/material/table'
 import { Subscription } from 'rxjs'
@@ -25,7 +26,7 @@ export class JobTitleListComponent implements AfterViewInit, OnInit, OnDestroy {
   constructor(public jobTitleService: JobTitleService) {}
 
   @ViewChild(MatSort) sort: MatSort
-
+  @ViewChild(MatPaginator) paginator: MatPaginator
   ngOnInit() {}
 
   ngAfterViewInit() {
@@ -36,6 +37,7 @@ export class JobTitleListComponent implements AfterViewInit, OnInit, OnDestroy {
         this.jobTitles = data
         this.dataSource = new MatTableDataSource<IjobTitle>(this.jobTitles)
         this.dataSource.sort = this.sort
+        this.dataSource.paginator = this.paginator
       })
   }
 

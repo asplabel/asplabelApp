@@ -33,4 +33,15 @@ export class CardService {
         this.subjectCard.next([...this.cards])
       })
   }
+
+  deleteCard(id: string) {
+    this.http
+      .delete(this.url + '/deleteCard/' + id)
+      .subscribe((result: { message: string }) => {
+        const updatedCards = this.cards.filter((card) => card.id != id)
+        this.cards = updatedCards
+        this.subjectCard.next([...this.cards])
+        console.log(result.message)
+      })
+  }
 }

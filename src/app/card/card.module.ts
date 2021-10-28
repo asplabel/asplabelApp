@@ -40,6 +40,7 @@ import { MatSelectModule } from '@angular/material/select'
     MatIconModule,
     MatInputModule,
     MatSelectModule,
+    MatPaginatorModule,
   ],
 })
 export class CardModule {}

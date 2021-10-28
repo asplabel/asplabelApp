@@ -3,6 +3,7 @@
     Agregar un nuevo colaborador
   </a>
 </mat-card>
+
 <table
   class="mat-elevation-z8"
   mat-table
@@ -56,14 +57,14 @@
         <a
           mat-button
           color="primary"
-          (click)="editJobTitle(element.id)"
-          [routerLink]="['/jobTitle/edit', element.id]"
+          (click)="editUser(element.id)"
+          [routerLink]="['/user/edit', element.id]"
         >
-          <mat-icon aria-hidden="false" aria-label="Example edit icon">
+          <mat-icon aria-hidden="false" aria-label="Edit button">
             edit
           </mat-icon>
         </a>
-        <a mat-button color="warn" (click)="deleteJobTitle(element.id)">
+        <a mat-button color="warn" (click)="deleteUser(element.id)">
           <mat-icon aria-hidden="false" aria-label="Delete button">
             delete
           </mat-icon>
@@ -74,3 +75,10 @@
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 </table>
+<br />
+<mat-paginator
+  [pageSizeOptions]="[20, 50, 70]"
+  showFirstLastButtons
+  aria-label="Pagina seleccionada de registros"
+></mat-paginator>
+<br />

@@ -5,6 +5,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core'
+import { MatPaginator } from '@angular/material/paginator'
 import { MatSort } from '@angular/material/sort'
 import { MatTableDataSource } from '@angular/material/table'
 import { Subscription } from 'rxjs'
@@ -31,6 +32,7 @@ export class CardListComponent implements OnInit, AfterViewInit, OnDestroy {
   dataSource: MatTableDataSource<ICard>
 
   @ViewChild(MatSort) sort: MatSort
+  @ViewChild(MatPaginator) paginator: MatPaginator
   constructor(private cardService: CardService) {}
 
   ngOnInit(): void {}
@@ -43,6 +45,7 @@ export class CardListComponent implements OnInit, AfterViewInit, OnDestroy {
         this.cards = data
         this.dataSource = new MatTableDataSource<ICard>(this.cards)
         this.dataSource.sort = this.sort
+        this.dataSource.paginator = this.paginator
       })
   }
 
@@ -50,6 +53,8 @@ export class CardListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subCard.unsubscribe()
   }
 
-  deleteCard() {}
+  deleteCard(id: string) {
+    this.cardService.deleteCard(id)
+  }
   editCard() {}
 }

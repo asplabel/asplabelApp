@@ -19,6 +19,7 @@ import { MatSelectModule } from '@angular/material/select'
 import { MatDatepickerModule } from '@angular/material/datepicker'
 import { MatNativeDateModule } from '@angular/material/core'
 import { MatMomentDateModule } from '@angular/material-moment-adapter'
+import { MatPaginatorModule } from '@angular/material/paginator'
 
 @NgModule({
   declarations: [
@@ -48,7 +49,7 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter'
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    
+    MatPaginatorModule,
   ],
 })
 export class UserModule {}

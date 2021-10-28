@@ -5,6 +5,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core'
+import { MatPaginator } from '@angular/material/paginator'
 import { MatSort } from '@angular/material/sort'
 import { MatTableDataSource } from '@angular/material/table'
 import { Subscription } from 'rxjs'
@@ -26,16 +27,9 @@ export class DepartmentListComponent
   constructor(public departmentService: DepartmentService) {}
 
   @ViewChild(MatSort) sort: MatSort
+  @ViewChild(MatPaginator) paginator: MatPaginator
 
-  ngOnInit(): void {
-    this.departmentService.getDepartments()
-    this.subDepartment = this.departmentService
-      .getSubjectDepartments()
-      .subscribe((data: IDepartment[]) => {
-        this.departments = data
-        this.dataSource = new MatTableDataSource<IDepartment>(this.departments)
-      })
-  }
+  ngOnInit(): void {}
 
   ngAfterViewInit() {
     this.departmentService.getDepartments()
@@ -45,6 +39,7 @@ export class DepartmentListComponent
         this.departments = data
         this.dataSource = new MatTableDataSource<IDepartment>(this.departments)
         this.dataSource.sort = this.sort
+        this.dataSource.paginator = this.paginator
       })
   }
 

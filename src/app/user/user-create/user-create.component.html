@@ -97,7 +97,8 @@
         <mat-icon matSuffix>phone</mat-icon>
         <button
           *ngIf="UserForm.value.userPhone"
-          matSuffix
+          matPrefix
+          style="margin-inline-start: 5px;"
           mat-icon-button
           aria-label="Clear"
           (click)="tel.reset()"

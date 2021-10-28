@@ -15,6 +15,7 @@ import { MatButtonModule } from '@angular/material/button'
 import { MatSortModule } from '@angular/material/sort'
 import { MatIconModule } from '@angular/material/icon'
 import { MatSelectModule } from '@angular/material/select'
+import { MatPaginatorModule } from '@angular/material/paginator'
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { MatSelectModule } from '@angular/material/select'
     MatSortModule,
     MatIconModule,
     MatSelectModule,
+    MatPaginatorModule,
   ],
 })
 export class DepartmentModule {}

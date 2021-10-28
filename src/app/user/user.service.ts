@@ -40,4 +40,14 @@ export class UserService {
         this.getUsers()
       })
   }
+
+  deleteUser(id: string) {
+    this.http
+      .delete(this.url + '/deleteUser/' + id)
+      .subscribe((result: { message: string }) => {
+        const updatedUsers = this.users.filter((user) => user.id != id)
+        this.users = updatedUsers
+        this.subjectUser.next([...this.users])
+      })
+  }
 }

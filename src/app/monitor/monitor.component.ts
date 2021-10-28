@@ -35,15 +35,7 @@ export class MonitorComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatSort) sort: MatSort
   @ViewChild(MatPaginator) paginator: MatPaginator
 
-  ngOnInit(): void {
-    this.recordService.getRecords()
-    this.subRecord = this.recordService
-      .getSubjectRecords()
-      .subscribe((data: IRecord[]) => {
-        this.records = data
-        this.dataSource = new MatTableDataSource<IRecord>(this.records)
-      })
-  }
+  ngOnInit(): void {}
 
   ngAfterViewInit() {
     this.recordService.getRecords()

@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs'
 import { IUserList } from '../userList.model'
 import { UserService } from '../user.service'
 import { MatSort } from '@angular/material/sort'
+import { MatPaginator } from '@angular/material/paginator'
 @Component({
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
@@ -24,7 +25,7 @@ export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
     'UID',
     'type',
     'active',
-    'actions'
+    'actions',
   ]
   users: IUserList[]
   dataSource: MatTableDataSource<IUserList>
@@ -33,6 +34,8 @@ export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(private userService: UserService) {}
 
   @ViewChild(MatSort) sort: MatSort
+  @ViewChild(MatPaginator) paginator: MatPaginator
+
   ngOnInit(): void {}
 
   ngAfterViewInit() {
@@ -41,13 +44,14 @@ export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
       this.users = data
       this.dataSource = new MatTableDataSource<IUserList>(this.users)
       this.dataSource.sort = this.sort
+      this.dataSource.paginator = this.paginator
     })
   }
   ngOnDestroy() {
     this.subUsers.unsubscribe()
   }
   deleteUser(id: string) {
-    console.log(id)
+    this.userService.deleteUser(id)
   }
   editUser(id: string) {
     console.log(id)

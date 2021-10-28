@@ -76,6 +76,15 @@
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 </table>
+<br />
+<mat-paginator
+  [pageSizeOptions]="[20, 50, 70]"
+  showFirstLastButtons
+  aria-label="Pagina seleccionada de registros"
+></mat-paginator>
+<br />
+
 <div *ngIf="cards.length <= 0" class="message">
   <span>No hay tarjetas en la base de datos, ¡Crea una nuevo!</span>
 </div>
+<br />

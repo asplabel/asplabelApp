@@ -58,7 +58,7 @@ app.get('/getRecords', (req, res, next) => {
 app.delete('/deleteRecord/:id', (req, res, next) => {
   RecordModel.deleteOne({ _id: req.params.id }).then((result) => {
     res.status(201).json({
-      message: 'Cargo eliminado exitosamente',
+      message: 'Registro eliminado exitosamente',
     })
   })
 })
@@ -88,7 +88,7 @@ app.get('/getDepartments', (req, res, next) => {
     .sort({ name: 1 })
     .then((departments) => {
       res.status(200).json({
-        message: 'Cargos enviado con éxito',
+        message: 'Departamentos enviados con éxito',
         departments: departments,
       })
     })
@@ -99,10 +99,12 @@ app.delete('/deleteDepartment/:id', (req, res, next) => {
   DepartmentModel.deleteOne({ _id: req.params.id }).then((result) => {
     //console.log(result)
     res.status(201).json({
-      message: 'Cargo eliminado exitosamente',
+      message: 'Departamento eliminado exitosamente',
     })
   })
 })
+
+/*  UPDATE */
 
 /*
  ***************************************************************
@@ -221,6 +223,16 @@ app.get('/getCards', async (req, res, next) => {
     cards[i] = card
   }
   res.status(201).json(cards)
+})
+
+/* DELETE */
+app.delete('/deleteCard/:id', (req, res, next) => {
+  CardModel.deleteOne({ _id: req.params.id }).then((result) => {
+    //console.log(result)
+    res.status(201).json({
+      message: 'Tarjeta eliminada exitosamente',
+    })
+  })
 })
 
 /*
@@ -346,6 +358,17 @@ app.post('/addUser', (req, res, next) => {
     })
   })
 })
+
+/* DELETE */
+app.delete('/deleteUser/:id', (req, res, next) => {
+  UserModel.deleteOne({ _id: req.params.id }).then((result) => {
+    console.log(result)
+    res.status(201).json({
+      message: 'Usuario eliminado exitosamente',
+    })
+  })
+})
+
 /*
  ***************************************************************
  ***********   ESP8266 ACCESO *********************************
