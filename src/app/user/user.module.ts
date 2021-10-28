@@ -20,6 +20,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker'
 import { MatNativeDateModule } from '@angular/material/core'
 import { MatMomentDateModule } from '@angular/material-moment-adapter'
 import { MatPaginatorModule } from '@angular/material/paginator'
+import { BrandModule } from '../brand/brand.module'
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { MatPaginatorModule } from '@angular/material/paginator'
     MatDatepickerModule,
     MatNativeDateModule,
     MatPaginatorModule,
+    BrandModule,
   ],
 })
 export class UserModule {}

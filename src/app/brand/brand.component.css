@@ -1,0 +1,16 @@
+div {
+  background-color: #008f38;
+  width: 100%;
+  height: 50px;
+}
+
+h1 {
+  font-family: 'Bauhaus 93';
+  font-size: 28px;
+  text-align: left;
+  padding-left: 20px;
+  padding-top: 10px;
+  color: #f9e800 !important;
+  border-color: #008f38 !important;
+  border-width: thick !important;
+}

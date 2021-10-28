@@ -16,6 +16,7 @@ import { MatSortModule } from '@angular/material/sort'
 import { MatIconModule } from '@angular/material/icon'
 import { MatSelectModule } from '@angular/material/select'
 import { MatPaginatorModule } from '@angular/material/paginator'
+import { BrandModule } from '../brand/brand.module'
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { MatPaginatorModule } from '@angular/material/paginator'
     MatIconModule,
     MatSelectModule,
     MatPaginatorModule,
+    BrandModule,
   ],
 })
 export class DepartmentModule {}

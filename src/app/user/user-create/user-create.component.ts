@@ -22,6 +22,7 @@ import { IjobTitle } from 'src/app/job-title/job-title.model'
 import { JobTitleService } from 'src/app/job-title/job-title.service'
 import { UserService } from '../user.service'
 import { IUserCreate } from '../UserCreate.model'
+import { Location } from '@angular/common'
 
 const moment = _rollupMoment || _moment
 
@@ -85,6 +86,7 @@ export class UserCreateComponent implements OnInit {
   constructor(
     private jobTitleService: JobTitleService,
     private userService: UserService,
+    private _location: Location,
   ) {}
 
   ngOnInit(): void {
@@ -138,5 +140,6 @@ export class UserCreateComponent implements OnInit {
     form.reset()
     this.userEmail = ''
     this.userBirth = ''
+    this._location.back()
   }
 }

@@ -1,3 +1,4 @@
+import { Location } from '@angular/common'
 import { Component, OnInit } from '@angular/core'
 import { NgForm } from '@angular/forms'
 import { Subscription } from 'rxjs'
@@ -20,6 +21,7 @@ export class JobTitleCreateComponent implements OnInit {
   constructor(
     public jobTitleService: JobTitleService,
     public departmentService: DepartmentService,
+    private _location: Location,
   ) {}
 
   ngOnInit(): void {
@@ -53,9 +55,6 @@ export class JobTitleCreateComponent implements OnInit {
       form.reset()
     }
     this.jobTitleService.addJobTitle(jobTitle)
-    //this.jobTitleCreated.emit(jobTitle)
-    /*console.dir(
-      'cargo a emitir: ' + jobTitle.name + ' | ' + jobTitle.departmentName,
-    )*/
+    this._location.back()
   }
 }

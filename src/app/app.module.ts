@@ -31,6 +31,7 @@ import { MatNativeDateModule } from '@angular/material/core'
 import { MatMomentDateModule } from '@angular/material-moment-adapter'
 import { CardModule } from './card/card.module'
 import { UserModule } from './user/user.module'
+import { BrandModule } from './brand/brand.module'
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import { UserModule } from './user/user.module'
     MatDatepickerModule,
     MatNativeDateModule,
     MatMomentDateModule,
+    BrandModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

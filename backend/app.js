@@ -362,7 +362,6 @@ app.post('/addUser', (req, res, next) => {
 /* DELETE */
 app.delete('/deleteUser/:id', (req, res, next) => {
   UserModel.deleteOne({ _id: req.params.id }).then((result) => {
-    console.log(result)
     res.status(201).json({
       message: 'Usuario eliminado exitosamente',
     })

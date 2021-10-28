@@ -14,6 +14,7 @@ import { MatIconModule } from '@angular/material/icon'
 import { FormsModule, NgForm } from '@angular/forms'
 import { MatInputModule } from '@angular/material/input'
 import { MatSelectModule } from '@angular/material/select'
+import { BrandModule } from '../brand/brand.module'
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { MatSelectModule } from '@angular/material/select'
     MatInputModule,
     MatSelectModule,
     MatPaginatorModule,
+    BrandModule,
   ],
 })
 export class CardModule {}

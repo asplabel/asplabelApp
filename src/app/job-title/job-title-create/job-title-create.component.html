@@ -1,6 +1,7 @@
 <br />
 
 <br />
+<app-brand title="Agregar cargo"></app-brand>
 <mat-card>
   <form action="" (submit)="addJobTitle(JobTitleForm)" #JobTitleForm="ngForm">
     <!-- Input job title name-->
@@ -35,6 +36,7 @@
         </button>
       </mat-form-field>
     </section>
+    <br />
     <section>
       <mat-form-field style="display: block;">
         <mat-label>
@@ -53,9 +55,10 @@
         </mat-select>
       </mat-form-field>
     </section>
+    <br />
     <!-- Button to save new Job title -->
     <section>
-      <button mat-raised-button color="primary" type="submit">
+      <button mat-raised-button class="button" type="submit">
         Crear cargo
       </button>
     </section>

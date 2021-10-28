@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core'
 import { NgForm } from '@angular/forms'
 import { IDepartment } from '../department.model'
 import { DepartmentService } from '../department.service'
+import { Location } from '@angular/common'
+import { delay } from 'rxjs/operators'
 
 @Component({
   selector: 'app-department-create',
@@ -9,7 +11,10 @@ import { DepartmentService } from '../department.service'
   styleUrls: ['./department-create.component.css'],
 })
 export class DepartmentCreateComponent implements OnInit {
-  constructor(public departmentService: DepartmentService) {}
+  constructor(
+    public departmentService: DepartmentService,
+    private _location: Location,
+  ) {}
 
   ngOnInit(): void {}
 
@@ -22,5 +27,8 @@ export class DepartmentCreateComponent implements OnInit {
       name: form.value.nameDepartment,
     }
     this.departmentService.addDepartment(newDepartment)
+    form.reset()
+    alert
+    this._location.back()
   }
 }

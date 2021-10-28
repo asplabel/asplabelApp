@@ -1,5 +1,6 @@
 <br />
 <br />
+<app-brand title="Agregar tarjeta"></app-brand>
 <mat-card>
   <form action="" (submit)="addCard(CardForm)" #CardForm="ngForm">
     <!-- Input Card UID-->
@@ -34,6 +35,7 @@
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
+      <br />
       <!--- TYPE Selection --->
       <mat-form-field style="display: block;">
         <mat-label>
@@ -47,9 +49,10 @@
         </mat-select>
       </mat-form-field>
     </section>
+    <br />
     <section>
-      <button mat-raised-button color="primary" type="submit">
-        Agregar tarjeta
+      <button mat-raised-button class="button" type="submit">
+        Crear tarjeta
       </button>
     </section>
   </form>

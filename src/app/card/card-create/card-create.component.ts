@@ -1,3 +1,4 @@
+import { Location } from '@angular/common'
 import { Component, OnInit } from '@angular/core'
 import { NgForm } from '@angular/forms'
 import { ICard } from '../card.model'
@@ -10,7 +11,7 @@ import { CardService } from '../card.service'
 })
 export class CardCreateComponent implements OnInit {
   type = ''
-  constructor(private cardService: CardService) {}
+  constructor(private cardService: CardService, private _location: Location) {}
 
   ngOnInit(): void {}
 
@@ -28,5 +29,6 @@ export class CardCreateComponent implements OnInit {
     }
     this.cardService.addCard(card)
     form.reset()
+    this._location.back()
   }
 }
