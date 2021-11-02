@@ -20,6 +20,7 @@ export class JobTitleService {
       )
       .subscribe((response: { message: string; jobTitles: IjobTitle[] }) => {
         this.jobTitles = response.jobTitles
+        //console.dir(this.jobTitles)
         this.subjectJobTitle.next([...this.jobTitles])
       })
   }
@@ -54,7 +55,7 @@ export class JobTitleService {
   }
 
   updateJobTitle(id: string, nombre: string, d_id: string) {
-    //console.log(id+" "+nombre+" "+d_id)
+    //console.log(id + ' ' + nombre + ' ' + d_id)
     this.http
       .put(this.url + '/updateJobTitle', {
         id: id,
@@ -62,7 +63,7 @@ export class JobTitleService {
         department_id: d_id,
       })
       .subscribe((response: { message: string }) => {
-        console.log(response)
+        //console.log(response)
         this.getJobTitles()
       })
   }

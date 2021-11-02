@@ -138,25 +138,23 @@ app.post('/addJobTitle', (req, res, next) => {
 /* READ */
 app.get('/getJobTitles', async (req, res, next) => {
   let jobTitles = await JobTitleModel.find().sort({ name: 1 })
-
   for (let i = 0; i < jobTitles.length; i++) {
     let jobTitle = jobTitles[i]
-    var department = await DepartmentModel.findOne({
-      _id: jobTitle.department_id,
-    })
-
-    if (department != null) {
+    if ((jobTitle.department_id != null) & (jobTitle.department_id != '')) {
+      var department = await DepartmentModel.findOne({
+        _id: jobTitle.department_id,
+      })
       jobTitle = {
         id: jobTitle._id,
         name: jobTitle.name,
-        department_id: jobTitle.department,
+        department_id: jobTitle.department_id,
         department_name: department.name,
       }
     } else {
       jobTitle = {
         id: jobTitle._id,
         name: jobTitle.name,
-        department_id: jobTitle.department,
+        department_id: null,
         department_name: null,
       }
     }
@@ -173,17 +171,31 @@ app.put('/updateJobTitle', (req, res, next) => {
   let id = req.body.id
   let name = req.body.name
   let department_id = req.body.department_id
-  console.log(id + ' ' + name + ' ' + department_id)
-  JobTitleModel.updateOne(
-    { _id: id },
-    { name: name, department_id: department_id },
-    { new: true },
-  ).then((result) => {
-    console.log(result)
-    res.status(201).json({
-      message: 'Cargo editado con éxito',
+  if ((department_id != null) & (department_id != '')) {
+    console.log(id + ' ' + name + ' ' + department_id)
+    JobTitleModel.updateOne(
+      { _id: id },
+      { name: name, department_id: department_id },
+      { new: true },
+    ).then((result) => {
+      console.log(result)
+      res.status(201).json({
+        message: 'Cargo editado con éxito',
+      })
     })
-  })
+  } else {
+    console.log(id + ' ' + name + ' ' + department_id)
+    JobTitleModel.updateOne(
+      { _id: id },
+      { name: name, department_id: null },
+      { new: true },
+    ).then((result) => {
+      console.log(result)
+      res.status(201).json({
+        message: 'Cargo editado con éxito',
+      })
+    })
+  }
 })
 
 /* DELETE */

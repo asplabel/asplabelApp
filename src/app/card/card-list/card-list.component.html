@@ -58,8 +58,7 @@
         <a
           mat-button
           color="primary"
-          (click)="editCard(element.id)"
-          [routerLink]="['/card/edit', element.id]"
+          (click)="openDialog(element.id, element.UID)"
         >
           <mat-icon aria-hidden="false" aria-label="Edit button">
             edit

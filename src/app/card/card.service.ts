@@ -53,4 +53,6 @@ export class CardService {
         this.subjectCard.next([...this.cards])
       })
   }
+
+  updateCard(id, result) {}
 }

@@ -5,10 +5,12 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core'
+import { MatDialog } from '@angular/material/dialog'
 import { MatPaginator } from '@angular/material/paginator'
 import { MatSort } from '@angular/material/sort'
 import { MatTableDataSource } from '@angular/material/table'
 import { Subscription } from 'rxjs'
+import { CardEditComponent } from '../card-edit/card-edit.component'
 import { ICard } from '../card.model'
 import { CardService } from '../card.service'
 
@@ -33,7 +35,7 @@ export class CardListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild(MatSort) sort: MatSort
   @ViewChild(MatPaginator) paginator: MatPaginator
-  constructor(private cardService: CardService) {}
+  constructor(private cardService: CardService, public dialog: MatDialog) {}
 
   ngOnInit(): void {}
 
@@ -56,5 +58,15 @@ export class CardListComponent implements OnInit, AfterViewInit, OnDestroy {
   deleteCard(id: string) {
     this.cardService.deleteCard(id)
   }
-  editCard() {}
+
+  openDialog(id: string, name: string): void {
+    const dialogRef = this.dialog.open(CardEditComponent, {
+      width: '450px',
+      data: { id: id, name: name },
+    })
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.cardService.updateCard(id, result)
+    })
+  }
 }
