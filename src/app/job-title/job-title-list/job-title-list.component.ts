@@ -5,9 +5,11 @@ import {
   OnInit,
   OnDestroy,
 } from '@angular/core'
+import { MatDialog } from '@angular/material/dialog'
 import { MatPaginator } from '@angular/material/paginator'
 import { MatSort } from '@angular/material/sort'
 import { MatTableDataSource } from '@angular/material/table'
+import { JobTitleEditComponent } from '../job-title-edit/job-title-edit.component'
 import { Subscription } from 'rxjs'
 import { IjobTitle } from '../job-title.model'
 import { JobTitleService } from '../job-title.service'
@@ -23,7 +25,10 @@ export class JobTitleListComponent implements AfterViewInit, OnInit, OnDestroy {
   subJobTitle: Subscription
   dataSource: MatTableDataSource<IjobTitle>
 
-  constructor(public jobTitleService: JobTitleService) {}
+  constructor(
+    public jobTitleService: JobTitleService,
+    public dialog: MatDialog,
+  ) {}
 
   @ViewChild(MatSort) sort: MatSort
   @ViewChild(MatPaginator) paginator: MatPaginator
@@ -46,11 +51,18 @@ export class JobTitleListComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   deleteJobTitle(id: string) {
-    //console.log(id)
     this.jobTitleService.deleteJobTitle(id)
   }
-  editJobTitle(id: string) {
-    console.log(id)
-    //this.jobTitleService.deleteJobTitle(id)
+
+  openDialog(id: string, name: string, department_id: string): void {
+    const dialogRef = this.dialog.open(JobTitleEditComponent, {
+      width: '450px',
+      data: { id: id, name: name, department_id: department_id },
+    })
+    dialogRef
+      .afterClosed()
+      .subscribe((result: { nombre: string; d_id: string }) => {
+        this.jobTitleService.updateJobTitle(id, result.nombre, result.d_id)
+      })
   }
 }

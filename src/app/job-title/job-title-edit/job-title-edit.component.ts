@@ -1,11 +1,20 @@
-import { Component, OnInit } from '@angular/core'
-import { NgForm } from '@angular/forms'
-import { ActivatedRoute, ParamMap } from '@angular/router'
+import { Component, Inject, OnInit } from '@angular/core'
 import { Subscription } from 'rxjs'
 import { IDepartment } from 'src/app/department/department.model'
 import { DepartmentService } from 'src/app/department/department.service'
 import { IjobTitle } from '../job-title.model'
-import { JobTitleService } from '../job-title.service'
+
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog'
+
+export interface jobTitleData {
+  id: string
+  nombre: string
+  department_id: string
+}
 
 @Component({
   selector: 'app-job-title-edit',
@@ -13,7 +22,6 @@ import { JobTitleService } from '../job-title.service'
   styleUrls: ['./job-title-edit.component.css'],
 })
 export class JobTitleEditComponent implements OnInit {
-  name = ''
   selected = 'none'
   jobTitle_id: string
   jobTitle: IjobTitle
@@ -21,17 +29,13 @@ export class JobTitleEditComponent implements OnInit {
   departments: IDepartment[]
   subDepartments: Subscription
   constructor(
-    public jobTitleService: JobTitleService,
-    public route: ActivatedRoute,
     public departmentService: DepartmentService,
+    public dialog: MatDialog,
+    public dialogRef: MatDialogRef<JobTitleEditComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: jobTitleData,
   ) {}
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe((url: ParamMap) => {
-      this.jobTitle_id = url.get('id')
-      this.jobTitle = this.jobTitleService.getOneJobTitle(this.jobTitle_id)
-      this.selected = this.jobTitle.department_id
-    })
     this.departmentService.getDepartments()
     this.subDepartments = this.departmentService
       .getSubjectDepartments()
@@ -40,27 +44,7 @@ export class JobTitleEditComponent implements OnInit {
       })
   }
 
-  editJobTitle(form: NgForm) {
-    if (form.invalid) {
-      return
-    }
-    let jobTitle: IjobTitle
-    if (form.value.selected == 'none') {
-      jobTitle = {
-        id: null,
-        name: form.value.nameJobTitle,
-        department_id: null,
-        department_name: null,
-      }
-    } else {
-      jobTitle = {
-        id: null,
-        name: form.value.nameJobTitle,
-        department_id: form.value.selected,
-        department_name: null,
-      }
-      form.reset()
-    }
-    this.jobTitleService.addJobTitle(jobTitle)
+  onNoClick() {
+    this.dialogRef.close()
   }
 }

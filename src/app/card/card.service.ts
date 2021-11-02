@@ -44,4 +44,13 @@ export class CardService {
         console.log(result.message)
       })
   }
+
+  getCardsNotAsigned() {
+    this.http
+      .get(this.url + '/getCardsNotAsigned')
+      .subscribe((data: ICard[]) => {
+        this.cards = data
+        this.subjectCard.next([...this.cards])
+      })
+  }
 }

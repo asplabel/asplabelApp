@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core'
 import { Subject } from 'rxjs'
 import { IjobTitle } from './job-title.model'
 import { HttpClient } from '@angular/common/http'
-import { map } from 'rxjs/operators'
 
 @Injectable({
   providedIn: 'root',
@@ -21,18 +20,12 @@ export class JobTitleService {
       )
       .subscribe((response: { message: string; jobTitles: IjobTitle[] }) => {
         this.jobTitles = response.jobTitles
-        console.log(response.message)
         this.subjectJobTitle.next([...this.jobTitles])
       })
-    //return [...this.jobTitles]
   }
 
   getSubjectJobTitles() {
     return this.subjectJobTitle.asObservable()
-  }
-
-  getOneJobTitle(id: String) {
-    return { ...this.jobTitles.find((jobtitle) => jobtitle.id === id) }
   }
 
   addJobTitle(newJobTitle: IjobTitle) {
@@ -42,7 +35,6 @@ export class JobTitleService {
         newJobTitle,
       )
       .subscribe((responseData) => {
-        console.log(responseData.message)
         newJobTitle.id = responseData.jobTitle_id
         this.jobTitles.push(newJobTitle)
         this.subjectJobTitle.next([...this.jobTitles])
@@ -58,9 +50,20 @@ export class JobTitleService {
         )
         this.jobTitles = updatedJobTitles
         this.subjectJobTitle.next([...this.jobTitles])
-        console.log(result.message)
       })
   }
 
-  editJobTitle() {}
+  updateJobTitle(id: string, nombre: string, d_id: string) {
+    //console.log(id+" "+nombre+" "+d_id)
+    this.http
+      .put(this.url + '/updateJobTitle', {
+        id: id,
+        name: nombre,
+        department_id: d_id,
+      })
+      .subscribe((response: { message: string }) => {
+        console.log(response)
+        this.getJobTitles()
+      })
+  }
 }

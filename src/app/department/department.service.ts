@@ -70,4 +70,16 @@ export class DepartmentService {
         console.log(result.message)
       })
   }
+
+  updateDepartment(id: string, name: string) {
+    this.http
+      .put(this.url + '/updateDepartment', {
+        id: id,
+        name: name,
+      })
+      .subscribe((response: { message: string }) => {
+        console.log(response)
+        this.getDepartments()
+      })
+  }
 }

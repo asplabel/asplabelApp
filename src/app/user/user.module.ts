@@ -21,6 +21,7 @@ import { MatNativeDateModule } from '@angular/material/core'
 import { MatMomentDateModule } from '@angular/material-moment-adapter'
 import { MatPaginatorModule } from '@angular/material/paginator'
 import { BrandModule } from '../brand/brand.module'
+import { UserCardComponent } from './user-card/user-card.component'
 
 @NgModule({
   declarations: [
@@ -28,12 +29,14 @@ import { BrandModule } from '../brand/brand.module'
     UserEditComponent,
     UserCreateComponent,
     UserDeleteComponent,
+    UserCardComponent,
   ],
   exports: [
     UserListComponent,
     UserEditComponent,
     UserCreateComponent,
     UserDeleteComponent,
+    UserCardComponent,
   ],
   imports: [
     CommonModule,

@@ -5,10 +5,12 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core'
+import { MatDialog } from '@angular/material/dialog'
 import { MatPaginator } from '@angular/material/paginator'
 import { MatSort } from '@angular/material/sort'
 import { MatTableDataSource } from '@angular/material/table'
 import { Subscription } from 'rxjs'
+import { DepartmentEditComponent } from '../department-edit/department-edit.component'
 import { IDepartment } from '../department.model'
 import { DepartmentService } from '../department.service'
 
@@ -24,7 +26,10 @@ export class DepartmentListComponent
   subDepartment: Subscription
   dataSource: MatTableDataSource<IDepartment>
 
-  constructor(public departmentService: DepartmentService) {}
+  constructor(
+    public departmentService: DepartmentService,
+    public dialog: MatDialog,
+  ) {}
 
   @ViewChild(MatSort) sort: MatSort
   @ViewChild(MatPaginator) paginator: MatPaginator
@@ -51,7 +56,14 @@ export class DepartmentListComponent
     this.departmentService.deleteDepartment(id)
   }
 
-  editDepartment(id: string) {
-    console.log(id)
+  openDialog(id: string, name: string): void {
+    const dialogRef = this.dialog.open(DepartmentEditComponent, {
+      width: '450px',
+      data: { id: id, name: name },
+    })
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.departmentService.updateDepartment(id, result)
+    })
   }
 }

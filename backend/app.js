@@ -105,7 +105,16 @@ app.delete('/deleteDepartment/:id', (req, res, next) => {
 })
 
 /*  UPDATE */
-
+app.put('/updateDepartment', (req, res, next) => {
+  let id = req.body.id
+  let name = req.body.name
+  DepartmentModel.updateOne({ _id: id }, { name: name }).then((result) => {
+    //console.log(result)
+    res.status(201).json({
+      message: 'Departamento actualizado',
+    })
+  })
+})
 /*
  ***************************************************************
  ***********   JOB TITLES CRUD *********************************
@@ -160,6 +169,21 @@ app.get('/getJobTitles', async (req, res, next) => {
 })
 
 /* UPDATE */
+app.put('/updateJobTitle', (req, res, next) => {
+  let id = req.body.id
+  let name = req.body.name
+  let department_id = req.body.department_id
+  console.log(id + ' ' + name + ' ' + department_id)
+  JobTitleModel.updateOne(
+    { _id: id },
+    { name: name, department_id: department_id },
+  ).then((result) => {
+    console.log(result)
+    res.status(201).json({
+      message: 'Cargo editado con éxito',
+    })
+  })
+})
 
 /* DELETE */
 app.delete('/deleteJobTitle/:id', (req, res, next) => {
@@ -183,6 +207,7 @@ app.post('/addCard', (req, res, next) => {
     type: req.body.type,
     is_active: false,
     state: 'Salida',
+    is_user: false,
   })
   card.save().then((card) => {
     res.status(201).json({
@@ -203,6 +228,7 @@ app.get('/getCards', async (req, res, next) => {
         UID: card.UID,
         type: card.type,
         is_active: card.is_active,
+        is_user: card.is_user,
         state: card.state,
         user_id: user._id,
         firstname: user.firstname,
@@ -214,11 +240,33 @@ app.get('/getCards', async (req, res, next) => {
         UID: card.UID,
         type: card.type,
         is_active: card.is_active,
+        is_user: card.is_user,
         state: card.state,
         user_id: null,
         firstname: null,
         lastname: null,
       }
+    }
+    cards[i] = card
+  }
+  res.status(201).json(cards)
+})
+
+/* READ CARDS NOT ASIGNED*/
+app.get('/getCardsNotAsigned', async (req, res, next) => {
+  var cards = await CardModel.find({ is_user: false })
+  for (let i = 0; i < cards.length; i++) {
+    let card = cards[i]
+    card = {
+      id: card._id,
+      UID: card.UID,
+      type: card.type,
+      is_active: card.is_active,
+      is_user: card.is_user,
+      state: card.state,
+      user_id: null,
+      firstname: null,
+      lastname: null,
     }
     cards[i] = card
   }
@@ -240,6 +288,12 @@ app.delete('/deleteCard/:id', (req, res, next) => {
  ***********   USER CRUD *********************************
  ***************************************************************
  */
+/* READ ONE USER*/
+app.get('/getUser/:id', async (req, res, next) => {
+  var user = await UserModel.findOne({ _id: req.params.id })
+  res.status(201).json(user)
+})
+/*READ*/
 app.get('/getUsers', async (req, res, next) => {
   var users = await UserModel.find()
   for (let i = 0; i < users.length; i++) {
@@ -279,6 +333,7 @@ app.get('/getUsers', async (req, res, next) => {
         department_name: department.name,
         type: user.type,
         is_active: user.is_active,
+        card_id: user.card_id,
         card_UID: card.UID,
       }
       users[i] = newUser
@@ -293,6 +348,7 @@ app.get('/getUsers', async (req, res, next) => {
             department_name: department.name,
             type: user.type,
             is_active: user.is_active,
+            card_id: null,
             card_UID: null,
           }
           users[i] = newUser
@@ -305,6 +361,7 @@ app.get('/getUsers', async (req, res, next) => {
             department_name: null,
             type: user.type,
             is_active: user.is_active,
+            card_id: null,
             card_UID: null,
           }
           users[i] = newUser
@@ -319,6 +376,7 @@ app.get('/getUsers', async (req, res, next) => {
           department_name: null,
           type: user.type,
           is_active: user.is_active,
+          card_id: user.card_id,
           card_UID: card.UID,
         }
         users[i] = newUser
@@ -331,6 +389,7 @@ app.get('/getUsers', async (req, res, next) => {
             department_name: null,
             type: user.type,
             is_active: user.is_active,
+            card_id: null,
             card_UID: null,
           }
           users[i] = newUser
@@ -340,7 +399,7 @@ app.get('/getUsers', async (req, res, next) => {
   }
   res.status(201).json(users)
 })
-
+/* CREATE*/
 app.post('/addUser', (req, res, next) => {
   const user = new UserModel({
     firstname: req.body.firstname,
@@ -373,6 +432,72 @@ app.delete('/deleteUser/:id', (req, res, next) => {
   })
 })
 
+/*ASIGNAR TARJETA*/
+app.post('/asignarTarjeta', (req, res, next) => {
+  let card_id = req.body.card_id
+  let user_id = req.body.user_id
+  CardModel.findByIdAndUpdate(card_id, { is_user: true }, { new: true }).then(
+    (card) => {
+      console.log(card)
+    },
+  )
+  UserModel.findOne({ _id: user_id }).then((user) => {
+    if (user.card_id == null) {
+      UserModel.findByIdAndUpdate(
+        user_id,
+        { card_id: card_id },
+        { new: true },
+      ).then((user) => {
+        console.log(user)
+      })
+    } else {
+      CardModel.findByIdAndUpdate(
+        user.card_id,
+        {
+          is_user: false,
+        },
+        { new: true },
+      ).then((card) => {
+        //console.log(card)
+      })
+      UserModel.findByIdAndUpdate(
+        user_id,
+        { card_id: card_id },
+        { new: true },
+      ).then((user) => {
+        console.log(user)
+      })
+    }
+  })
+
+  res.status(201).json('Tarjeta asignada')
+})
+
+/*
+QUITAR TARJETA
+*/
+app.get('/quitarTarjeta/:id', (req, res, next) => {
+  //console.log(req.params.id)
+  UserModel.findById(req.params.id).then((user) => {
+    CardModel.findByIdAndUpdate(
+      user.card_id,
+      {
+        is_user: false,
+      },
+      { new: true },
+    ).then((card) => {
+      //console.log(card)
+    })
+  })
+  UserModel.findByIdAndUpdate(
+    req.params.id,
+    { card_id: null },
+    { new: true },
+  ).then((user) => {
+    //console.log(user)
+  })
+  res.status(201).json('Tarjeta quitada')
+})
 /*
  ***************************************************************
  ***********   ESP8266 ACCESO *********************************

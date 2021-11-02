@@ -54,6 +54,15 @@
   <ng-container matColumnDef="actions">
     <th mat-header-cell *matHeaderCellDef>Opciones</th>
     <td mat-cell *matCellDef="let element" class="action-link">
+      <a
+        mat-button
+        style="color: darkgreen;"
+        [routerLink]="['/user/card/', element.id]"
+      >
+        <mat-icon aria-hidden="false" aria-label="Delete button">
+          credit_card
+        </mat-icon>
+      </a>
       <mat-action-row>
         <a
           mat-button
@@ -78,7 +87,7 @@
 </table>
 <br />
 <mat-paginator
-  [pageSizeOptions]="[20, 50, 70]"
+  [pageSizeOptions]="[10, 40, 70]"
   showFirstLastButtons
   aria-label="Pagina seleccionada de registros"
 ></mat-paginator>

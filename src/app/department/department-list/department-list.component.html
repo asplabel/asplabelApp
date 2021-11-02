@@ -26,8 +26,7 @@
         <a
           mat-button
           color="primary"
-          (click)="editDepartment(element.id)"
-          [routerLink]="['/department/edit', element.id]"
+          (click)="openDialog(element.id, element.name)"
         >
           <mat-icon aria-hidden="false" aria-label="Example edit icon">
             edit
@@ -47,7 +46,7 @@
 </table>
 <br />
 <mat-paginator
-  [pageSizeOptions]="[20, 50, 70]"
+  [pageSizeOptions]="[10, 40, 70]"
   showFirstLastButtons
   aria-label="Pagina seleccionada de departamentos"
 ></mat-paginator>

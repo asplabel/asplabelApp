@@ -17,6 +17,7 @@ import { MatIconModule } from '@angular/material/icon'
 import { MatSelectModule } from '@angular/material/select'
 import { MatPaginatorModule } from '@angular/material/paginator'
 import { BrandModule } from '../brand/brand.module'
+import { MatDialogModule } from '@angular/material/dialog'
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { BrandModule } from '../brand/brand.module'
     MatIconModule,
     MatSelectModule,
     MatPaginatorModule,
+    MatDialogModule,
     BrandModule,
   ],
 })

@@ -1,1 +1,16 @@
-<p>department-edit works!</p>
+<app-brand title="Editar departamento"></app-brand>
+<br />
+<div mat-dialog-content>
+  <p>Modifica los datos del departamento:</p>
+
+  <mat-form-field class="example-form-field" appearance="fill">
+    <mat-label>Nombre:</mat-label>
+    <input required matInput [(ngModel)]="data.nombre" />
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancelar</button>
+  <button mat-button [mat-dialog-close]="data.nombre" cdkFocusInitial>
+    Guardar cambios
+  </button>
+</div>

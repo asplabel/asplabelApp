@@ -6,6 +6,7 @@ const cardSchema = mongoose.Schema({
   type: { type: String, required: true, enum: ['Permanente', 'Temporal'] },
   is_active: { type: Boolean, required: true },
   state: { type: String, required: true, enum: ['Ingreso', 'Salida'] },
+  is_user: { type: Boolean, required: true, default: false},
 })
 
 module.exports = mongoose.model('Card', cardSchema)

@@ -135,6 +135,7 @@ export class UserCreateComponent implements OnInit {
       type: form.value.userType,
       job_title_name: null,
       department_name: null,
+      card_id: null,
       card_UID: null,
     }
     //console.dir(user)

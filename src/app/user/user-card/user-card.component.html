@@ -1,0 +1,66 @@
+<br />
+<br />
+<app-brand title="Asignar tarjeta"></app-brand>
+<mat-card>
+  <form action="" (submit)="asignCard(UserForm)" #UserForm="ngForm">
+    <section>
+      <button
+        mat-button
+        color="primary"
+        style="font-weight: bolder;"
+        routerLink="/user/list"
+      >
+        Regresar
+      </button>
+    </section>
+    <br />
+    <section>
+      <mat-card-content>
+        Para asignarle una tarjeta a este colaborador, por favor seleccione el
+        código de una de las tarjetas disponibles:
+      </mat-card-content>
+      <section *ngIf="cards.length == 0">
+        <span>No hay tarjetas disponibles, agregue unas nuevas</span>
+        <button
+          mat-button
+          color="primary"
+          style="font-weight: bolder;"
+          routerLink="/card/create"
+        >
+          Agregar tarjeta
+        </button>
+      </section>
+      <mat-form-field style="display: block;" *ngIf="cards.length > 0">
+        <mat-label>
+          Selecciona el codigo de la tarjeta
+        </mat-label>
+        <mat-select ngModel name="selected" #selected required>
+          <mat-option *ngFor="let card of cards" value="{{ card.id }}">
+            {{ card.UID }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </section>
+    <br />
+    <section>
+      <button
+        mat-button
+        style="font-weight: bolder; margin-right: 5%;"
+        class="button"
+        type="submit"
+      >
+        Guardar Cambios
+      </button>
+
+      <button
+        *ngIf="user.card_id"
+        mat-button
+        color="warn"
+        style="font-weight: bolder;"
+        (click)="quitarTarjeta()"
+      >
+        Quitar tarjeta
+      </button>
+    </section>
+  </form>
+</mat-card>

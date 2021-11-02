@@ -12,5 +12,6 @@ export interface IUser {
   type: string | null
   job_title_name: string | null
   department_name: string | null
+  card_id: string | null
   card_UID: string | null
 }

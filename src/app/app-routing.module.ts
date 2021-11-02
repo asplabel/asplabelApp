@@ -19,6 +19,7 @@ import { JobTitleListComponent } from './job-title/job-title-list/job-title-list
 import { LogInComponent } from './log-in/log-in.component'
 import { LogOutComponent } from './log-out/log-out.component'
 import { MonitorComponent } from './monitor/monitor.component'
+import { UserCardComponent } from './user/user-card/user-card.component'
 
 import { UserCreateComponent } from './user/user-create/user-create.component'
 import { UserDeleteComponent } from './user/user-delete/user-delete.component'
@@ -31,22 +32,19 @@ const routes: Routes = [
 
   { path: 'user/list', component: UserListComponent },
   { path: 'user/create', component: UserCreateComponent },
-  { path: 'user/edit/:id', component: UserEditComponent },
   { path: 'user/delete', component: UserDeleteComponent },
+  { path: 'user/card/:id', component: UserCardComponent },
 
   { path: 'card/list', component: CardListComponent },
   { path: 'card/create', component: CardCreateComponent },
-  { path: 'card/edit/:id', component: CardEditComponent },
   { path: 'card/delete', component: CardDeleteComponent },
 
   { path: 'jobTitle/list', component: JobTitleListComponent },
   { path: 'jobTitle/create', component: JobTitleCreateComponent },
-  { path: 'jobTitle/edit/:id', component: JobTitleEditComponent },
   { path: 'jobTitle/delete', component: JobTitleDeleteComponent },
 
   { path: 'department/list', component: DepartmentListComponent },
   { path: 'department/create', component: DepartmentCreateComponent },
-  { path: 'department/edit/:id', component: DepartmentEditComponent },
   { path: 'department/delete', component: DepartmentDeleteComponent },
 
   { path: 'logout', component: LogOutComponent },

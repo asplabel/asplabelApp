@@ -12,7 +12,7 @@ const userSchema = mongoose.Schema({
   is_active: { type: Boolean, required: true },
   job_title_id: { type: String, required: false },
   role_id: { type: String, required: false },
-  card_id: { type: String, required: false },
+  card_id: { type: String, required: false, default: null },
   type: {
     type: String,
     required: true,

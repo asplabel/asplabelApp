@@ -22,6 +22,7 @@ export class CardCreateComponent implements OnInit {
       UID: form.value.cardName,
       type: form.value.type,
       is_active: false,
+      is_user: false,
       state: 'Salida',
       user_id: null,
       firstname: null,
