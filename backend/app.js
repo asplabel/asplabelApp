@@ -177,6 +177,7 @@ app.put('/updateJobTitle', (req, res, next) => {
   JobTitleModel.updateOne(
     { _id: id },
     { name: name, department_id: department_id },
+    { new: true },
   ).then((result) => {
     console.log(result)
     res.status(201).json({
