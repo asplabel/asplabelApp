@@ -108,6 +108,8 @@ export class UserCreateComponent implements OnInit {
     } else {
       if (this.userBirth._i.date < 10) {
         date = '0' + this.userBirth._i.date + '/'
+      } else {
+        date = this.userBirth._i.date + '/'
       }
       if (this.userBirth._i.month + 1 < 10) {
         date =

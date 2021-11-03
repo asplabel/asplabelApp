@@ -28,15 +28,13 @@ export class UserService {
   }
 
   addUser(newUser: IUser) {
-    console.log('add User')
+    //console.log('add User')
     this.http
       .post<{ message: string; user_id: string }>(
         this.url + '/addUser',
         newUser,
       )
       .subscribe((responseData) => {
-        console.log(responseData.message)
-        newUser.id = responseData.user_id
         this.getUsers()
       })
   }
@@ -57,14 +55,16 @@ export class UserService {
         card_id: card_id,
       })
       .subscribe((response) => {
-        console.log(response)
+        //console.log(response)
+        this.getUsers()
       })
   }
   quitarTarjeta(user_id: string) {
     this.http
       .get(this.url + '/quitarTarjeta/' + user_id)
       .subscribe((response) => {
-        console.log(response)
+        //console.log(response)
+        this.getUsers()
       })
   }
 }

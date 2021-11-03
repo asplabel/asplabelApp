@@ -172,25 +172,25 @@ app.put('/updateJobTitle', (req, res, next) => {
   let name = req.body.name
   let department_id = req.body.department_id
   if ((department_id != null) & (department_id != '')) {
-    console.log(id + ' ' + name + ' ' + department_id)
+    //console.log(id + ' ' + name + ' ' + department_id)
     JobTitleModel.updateOne(
       { _id: id },
       { name: name, department_id: department_id },
       { new: true },
     ).then((result) => {
-      console.log(result)
+      //console.log(result)
       res.status(201).json({
         message: 'Cargo editado con éxito',
       })
     })
   } else {
-    console.log(id + ' ' + name + ' ' + department_id)
+    // console.log(id + ' ' + name + ' ' + department_id)
     JobTitleModel.updateOne(
       { _id: id },
       { name: name, department_id: null },
       { new: true },
     ).then((result) => {
-      console.log(result)
+      //console.log(result)
       res.status(201).json({
         message: 'Cargo editado con éxito',
       })
@@ -414,20 +414,38 @@ app.get('/getUsers', async (req, res, next) => {
 })
 /* CREATE*/
 app.post('/addUser', (req, res, next) => {
-  const user = new UserModel({
-    firstname: req.body.firstname,
-    lastname: req.body.lastname,
-    email: req.body.email,
-    phone: req.body.phone,
-    document: req.body.document,
-    address: req.body.address,
-    date_of_birth: req.body.date_of_birth,
-    is_active: req.body.is_active,
-    job_title_id: req.body.job_title_id,
-    role_id: null,
-    card_id: null,
-    type: req.body.type,
-  })
+  let user
+  if ((req.body.email != null) & (req.body.email != '')) {
+    user = new UserModel({
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
+      email: req.body.email,
+      phone: req.body.phone,
+      document: req.body.document,
+      address: req.body.address,
+      date_of_birth: req.body.date_of_birth,
+      is_active: req.body.is_active,
+      job_title_id: req.body.job_title_id,
+      role_id: null,
+      card_id: null,
+      type: req.body.type,
+    })
+  } else {
+    user = new UserModel({
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
+      email: null,
+      phone: req.body.phone,
+      document: req.body.document,
+      address: req.body.address,
+      date_of_birth: req.body.date_of_birth,
+      is_active: req.body.is_active,
+      job_title_id: req.body.job_title_id,
+      role_id: null,
+      card_id: null,
+      type: req.body.type,
+    })
+  }
   user.save().then((user) => {
     res.status(201).json({
       message: 'Usuario agregado con éxito',
@@ -449,11 +467,13 @@ app.delete('/deleteUser/:id', (req, res, next) => {
 app.post('/asignarTarjeta', (req, res, next) => {
   let card_id = req.body.card_id
   let user_id = req.body.user_id
-  CardModel.findByIdAndUpdate(card_id, { is_user: true }, { new: true }).then(
-    (card) => {
-      console.log(card)
-    },
-  )
+  CardModel.findByIdAndUpdate(
+    card_id,
+    { is_user: true, is_active: true },
+    { new: true },
+  ).then((card) => {
+    // console.log(card)
+  })
   UserModel.findOne({ _id: user_id }).then((user) => {
     if (user.card_id == null) {
       UserModel.findByIdAndUpdate(
@@ -461,13 +481,14 @@ app.post('/asignarTarjeta', (req, res, next) => {
         { card_id: card_id },
         { new: true },
       ).then((user) => {
-        console.log(user)
+        // console.log(user)
       })
     } else {
       CardModel.findByIdAndUpdate(
         user.card_id,
         {
           is_user: false,
+          is_active: false,
         },
         { new: true },
       ).then((card) => {
@@ -478,7 +499,7 @@ app.post('/asignarTarjeta', (req, res, next) => {
         { card_id: card_id },
         { new: true },
       ).then((user) => {
-        console.log(user)
+        //console.log(user)
       })
     }
   })
@@ -496,6 +517,7 @@ app.get('/quitarTarjeta/:id', (req, res, next) => {
       user.card_id,
       {
         is_user: false,
+        is_active: false,
       },
       { new: true },
     ).then((card) => {
