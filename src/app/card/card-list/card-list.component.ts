@@ -32,12 +32,32 @@ export class CardListComponent implements OnInit, AfterViewInit, OnDestroy {
   subCard: Subscription
   cards: ICard[] = []
   dataSource: MatTableDataSource<ICard>
+  isLoading: boolean
+  isData: boolean
 
   @ViewChild(MatSort) sort: MatSort
   @ViewChild(MatPaginator) paginator: MatPaginator
   constructor(private cardService: CardService, public dialog: MatDialog) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.isLoading = true
+    this.isData = true
+    this.cardService.getCards()
+    this.subCard = this.cardService
+      .getSubjectCards()
+      .subscribe((data: ICard[]) => {
+        this.cards = data
+        this.dataSource = new MatTableDataSource<ICard>(this.cards)
+        this.dataSource.sort = this.sort
+        this.dataSource.paginator = this.paginator
+        if (this.cards.length > 0) {
+          this.isData = true
+        } else {
+          this.isData = false
+        }
+        this.isLoading = false
+      })
+  }
 
   ngAfterViewInit() {
     this.cardService.getCards()
@@ -48,6 +68,11 @@ export class CardListComponent implements OnInit, AfterViewInit, OnDestroy {
         this.dataSource = new MatTableDataSource<ICard>(this.cards)
         this.dataSource.sort = this.sort
         this.dataSource.paginator = this.paginator
+        if (this.cards.length > 0) {
+          this.isData = true
+        } else {
+          this.isData = false
+        }
       })
   }
 

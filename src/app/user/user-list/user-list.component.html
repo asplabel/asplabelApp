@@ -1,94 +1,96 @@
-<app-brand title="Administras colaboradores"></app-brand>
-<mat-card>
-  <a mat-button mat-flat-button class="button" routerLink="/user/create">
-    Agregar un colaborador nuevo
-  </a>
-</mat-card>
+<mat-spinner *ngIf="isLoading" class="spinner" color="warn"></mat-spinner>
+<div *ngIf="!isLoading">
+  <app-brand title="Administras colaboradores"></app-brand>
+  <mat-card>
+    <a mat-button mat-flat-button class="button" routerLink="/user/create">
+      Agregar un colaborador nuevo
+    </a>
+  </mat-card>
 
-<table
-  class="mat-elevation-z8"
-  mat-table
-  [dataSource]="dataSource"
-  matSort
-  #UserTable
->
-  <!-- Name Column -->
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
-    <td mat-cell *matCellDef="let element">{{ element.firstname }}</td>
-  </ng-container>
-  <!-- Lastname Column -->
-  <ng-container matColumnDef="lastname">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Apellido</th>
-    <td mat-cell *matCellDef="let element">{{ element.lastname }}</td>
-  </ng-container>
-  <!--JobTitle Column-->
-  <ng-container matColumnDef="jobTilte">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Cargo</th>
-    <td mat-cell *matCellDef="let element">{{ element.job_title_name }}</td>
-  </ng-container>
-  <!--department Column-->
-  <ng-container matColumnDef="department">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Departamento</th>
-    <td mat-cell *matCellDef="let element">{{ element.department_name }}</td>
-  </ng-container>
-  <!--UID Column-->
-  <ng-container matColumnDef="UID">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>UID tarjeta</th>
-    <td mat-cell *matCellDef="let element">{{ element.card_UID }}</td>
-  </ng-container>
-  <!-- Type Column -->
-  <ng-container matColumnDef="type">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipo</th>
-    <td mat-cell *matCellDef="let element">{{ element.type }}</td>
-  </ng-container>
-  <!-- Active Column -->
-  <ng-container matColumnDef="active">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Activ@</th>
-    <td mat-cell *matCellDef="let element">
-      <span *ngIf="element.is_active == true">Sí</span>
-      <span *ngIf="element.is_active == false">No</span>
-    </td>
-  </ng-container>
-  <!--Options Column-->
-  <ng-container matColumnDef="actions">
-    <th mat-header-cell *matHeaderCellDef>Opciones</th>
-    <td mat-cell *matCellDef="let element" class="action-link">
-      <a
-        mat-button
-        style="color: darkgreen;"
-        [routerLink]="['/user/card/', element.id]"
-      >
-        <mat-icon aria-hidden="false" aria-label="Delete button">
-          credit_card
-        </mat-icon>
-      </a>
-      <mat-action-row>
+  <table
+    class="mat-elevation-z8"
+    mat-table
+    [dataSource]="dataSource"
+    matSort
+    #UserTable
+  >
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+      <td mat-cell *matCellDef="let element">{{ element.firstname }}</td>
+    </ng-container>
+    <!-- Lastname Column -->
+    <ng-container matColumnDef="lastname">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Apellido</th>
+      <td mat-cell *matCellDef="let element">{{ element.lastname }}</td>
+    </ng-container>
+    <!--JobTitle Column-->
+    <ng-container matColumnDef="jobTilte">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Cargo</th>
+      <td mat-cell *matCellDef="let element">{{ element.job_title_name }}</td>
+    </ng-container>
+    <!--department Column-->
+    <ng-container matColumnDef="department">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Departamento</th>
+      <td mat-cell *matCellDef="let element">{{ element.department_name }}</td>
+    </ng-container>
+    <!--UID Column-->
+    <ng-container matColumnDef="UID">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>UID tarjeta</th>
+      <td mat-cell *matCellDef="let element">{{ element.card_UID }}</td>
+    </ng-container>
+    <!-- Type Column -->
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipo</th>
+      <td mat-cell *matCellDef="let element">{{ element.type }}</td>
+    </ng-container>
+    <!-- Active Column -->
+    <ng-container matColumnDef="active">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Activ@</th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngIf="element.is_active == true">Sí</span>
+        <span *ngIf="element.is_active == false">No</span>
+      </td>
+    </ng-container>
+    <!--Options Column-->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Opciones</th>
+      <td mat-cell *matCellDef="let element" class="action-link">
         <a
           mat-button
-          color="primary"
-          (click)="editUser(element.id)"
-          [routerLink]="['/user/edit', element.id]"
+          style="color: darkgreen;"
+          [routerLink]="['/user/card/', element.id]"
         >
-          <mat-icon aria-hidden="false" aria-label="Edit button">
-            edit
-          </mat-icon>
-        </a>
-        <a mat-button color="warn" (click)="deleteUser(element.id)">
           <mat-icon aria-hidden="false" aria-label="Delete button">
-            delete
+            credit_card
           </mat-icon>
         </a>
-      </mat-action-row>
-    </td>
-  </ng-container>
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-</table>
-<br />
-<mat-paginator
-  [pageSizeOptions]="[10, 40, 70]"
-  showFirstLastButtons
-  aria-label="Pagina seleccionada de registros"
-></mat-paginator>
-<br />
+        <mat-action-row>
+          <a
+            mat-button
+            color="primary"
+            (click)="editUser(element.id)"
+            [routerLink]="['/user/edit', element.id]"
+          >
+            <mat-icon aria-hidden="false" aria-label="Edit button">
+              edit
+            </mat-icon>
+          </a>
+          <a mat-button color="warn" (click)="deleteUser(element.id)">
+            <mat-icon aria-hidden="false" aria-label="Delete button">
+              delete
+            </mat-icon>
+          </a>
+        </mat-action-row>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+  <br />
+  <mat-paginator
+    [pageSizeOptions]="[10, 40, 70]"
+    showFirstLastButtons
+    aria-label="Pagina seleccionada de registros"
+  ></mat-paginator>
+</div>

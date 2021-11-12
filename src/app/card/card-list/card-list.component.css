@@ -30,3 +30,9 @@ th.mat-sort-header-sorted {
 .button:hover {
   color: green;
 }
+.spinner {
+  width: 5px;
+  height: 5px;
+  margin-left: 40%;
+  margin-top: 2%;
+}

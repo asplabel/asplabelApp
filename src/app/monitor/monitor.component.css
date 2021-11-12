@@ -20,3 +20,11 @@ th.mat-sort-header-sorted {
 .mat-row:hover .mat-cell {
   border-color: currentColor;
 }
+
+.spinner {
+  width: 5px;
+  height: 5px;
+  margin-left: 40%;
+  margin-top: 2%;
+  
+}

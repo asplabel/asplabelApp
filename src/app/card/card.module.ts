@@ -16,6 +16,7 @@ import { MatInputModule } from '@angular/material/input'
 import { MatSelectModule } from '@angular/material/select'
 import { BrandModule } from '../brand/brand.module'
 import { MatDialogModule } from '@angular/material/dialog'
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { MatDialogModule } from '@angular/material/dialog'
     MatInputModule,
     MatSelectModule,
     MatPaginatorModule,
+    MatProgressSpinnerModule,
     BrandModule,
     MatDialogModule,
   ],

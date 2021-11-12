@@ -24,6 +24,8 @@ export class JobTitleListComponent implements AfterViewInit, OnInit, OnDestroy {
   jobTitles: IjobTitle[] = []
   subJobTitle: Subscription
   dataSource: MatTableDataSource<IjobTitle>
+  isLoading: boolean = true
+  isData: boolean = true
 
   constructor(
     public jobTitleService: JobTitleService,
@@ -32,7 +34,26 @@ export class JobTitleListComponent implements AfterViewInit, OnInit, OnDestroy {
 
   @ViewChild(MatSort) sort: MatSort
   @ViewChild(MatPaginator) paginator: MatPaginator
-  ngOnInit() {}
+  ngOnInit() {
+    this.isLoading = true
+    this.isData = true
+    this.jobTitleService.getJobTitles()
+    this.subJobTitle = this.jobTitleService
+      .getSubjectJobTitles()
+      .subscribe((data: IjobTitle[]) => {
+        this.jobTitles = data
+        this.dataSource = new MatTableDataSource<IjobTitle>(this.jobTitles)
+        this.dataSource.sort = this.sort
+        this.dataSource.paginator = this.paginator
+        if (this.jobTitles.length > 0) {
+          this.isData = true
+        } else {
+          this.isData = false
+        }
+        this.isLoading = false
+      })
+
+  }
 
   ngAfterViewInit() {
     this.jobTitleService.getJobTitles()
@@ -43,6 +64,11 @@ export class JobTitleListComponent implements AfterViewInit, OnInit, OnDestroy {
         this.dataSource = new MatTableDataSource<IjobTitle>(this.jobTitles)
         this.dataSource.sort = this.sort
         this.dataSource.paginator = this.paginator
+        if (this.jobTitles.length > 0) {
+          this.isData = true
+        } else {
+          this.isData = false
+        }
       })
   }
 

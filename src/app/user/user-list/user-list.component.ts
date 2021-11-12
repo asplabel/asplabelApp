@@ -11,6 +11,7 @@ import { IUser } from '../user.model'
 import { UserService } from '../user.service'
 import { MatSort } from '@angular/material/sort'
 import { MatPaginator } from '@angular/material/paginator'
+import { delay } from 'rxjs/operators'
 @Component({
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
@@ -30,13 +31,31 @@ export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
   users: IUser[]
   dataSource: MatTableDataSource<IUser>
   subUsers: Subscription
+  isLoading: boolean
+  isData: boolean
 
   constructor(private userService: UserService) {}
 
   @ViewChild(MatSort) sort: MatSort
   @ViewChild(MatPaginator) paginator: MatPaginator
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.isLoading = true
+    this.isData = true
+    this.userService.getUsers()
+    this.subUsers = this.userService.getSubjectUser().subscribe((data) => {
+      this.users = data
+      this.dataSource = new MatTableDataSource<IUser>(this.users)
+      this.dataSource.sort = this.sort
+      this.dataSource.paginator = this.paginator
+      if (this.users.length > 0) {
+        this.isData = true
+      } else {
+        this.isData = false
+      }
+      this.isLoading = false
+    })
+  }
 
   ngAfterViewInit() {
     this.userService.getUsers()
@@ -45,8 +64,14 @@ export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
       this.dataSource = new MatTableDataSource<IUser>(this.users)
       this.dataSource.sort = this.sort
       this.dataSource.paginator = this.paginator
+      if (this.users.length > 0) {
+        this.isData = true
+      } else {
+        this.isData = false
+      }
     })
   }
+
   ngOnDestroy() {
     this.subUsers.unsubscribe()
   }

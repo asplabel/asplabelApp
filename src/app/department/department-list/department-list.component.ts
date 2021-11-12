@@ -25,6 +25,8 @@ export class DepartmentListComponent
   departments: IDepartment[] = []
   subDepartment: Subscription
   dataSource: MatTableDataSource<IDepartment>
+  isLoading: boolean
+  isData: boolean
 
   constructor(
     public departmentService: DepartmentService,
@@ -34,7 +36,25 @@ export class DepartmentListComponent
   @ViewChild(MatSort) sort: MatSort
   @ViewChild(MatPaginator) paginator: MatPaginator
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.isLoading = true
+    this.isData = true
+    this.departmentService.getDepartments()
+    this.subDepartment = this.departmentService
+      .getSubjectDepartments()
+      .subscribe((data: IDepartment[]) => {
+        this.departments = data
+        this.dataSource = new MatTableDataSource<IDepartment>(this.departments)
+        this.dataSource.sort = this.sort
+        this.dataSource.paginator = this.paginator
+        if (this.departments.length > 0) {
+          this.isData = true
+        } else {
+          this.isData = false
+        }
+        this.isLoading = false
+      })
+  }
 
   ngAfterViewInit() {
     this.departmentService.getDepartments()
@@ -45,6 +65,11 @@ export class DepartmentListComponent
         this.dataSource = new MatTableDataSource<IDepartment>(this.departments)
         this.dataSource.sort = this.sort
         this.dataSource.paginator = this.paginator
+        if (this.departments.length > 0) {
+          this.isData = true
+        } else {
+          this.isData = false
+        }
       })
   }
 

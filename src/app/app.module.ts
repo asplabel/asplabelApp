@@ -29,6 +29,7 @@ import { MatSortModule } from '@angular/material/sort'
 import { MatDatepickerModule } from '@angular/material/datepicker'
 import { MatNativeDateModule } from '@angular/material/core'
 import { MatMomentDateModule } from '@angular/material-moment-adapter'
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 import { CardModule } from './card/card.module'
 import { UserModule } from './user/user.module'
 import { BrandModule } from './brand/brand.module'
@@ -68,6 +69,7 @@ import { BrandModule } from './brand/brand.module'
     MatDatepickerModule,
     MatNativeDateModule,
     MatMomentDateModule,
+    MatProgressSpinnerModule,
     BrandModule,
   ],
   providers: [],

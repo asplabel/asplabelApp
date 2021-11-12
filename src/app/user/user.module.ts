@@ -22,6 +22,7 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter'
 import { MatPaginatorModule } from '@angular/material/paginator'
 import { BrandModule } from '../brand/brand.module'
 import { UserCardComponent } from './user-card/user-card.component'
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { UserCardComponent } from './user-card/user-card.component'
     MatDatepickerModule,
     MatNativeDateModule,
     MatPaginatorModule,
+    MatProgressSpinnerModule,
     BrandModule,
   ],
 })
