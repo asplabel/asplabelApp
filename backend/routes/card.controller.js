@@ -1,4 +1,5 @@
 const express = require('express')
+const card = require('../models/card')
 
 const CardModel = require('../models/card')
 const UserModel = require('../models/user')
@@ -24,6 +25,15 @@ cardRouter.post('/addCard', (req, res, next) => {
       message: 'Tarjeta agregada con éxito',
       card: card._id,
     })
+  })
+})
+
+/* READ ONE */
+cardRouter.get('/getCard/:id', (req, res, next) => {
+  let id = req.params.id
+  CardModel.findOne({ _id: id }).then((card) => {
+    res.status(201).json(card)
+    //console.log(card)
   })
 })
 /* READ */
@@ -105,7 +115,7 @@ cardRouter.put('/updateCard', (req, res, next) => {
     { UID: UID, type: type, is_active: is_active, state: state },
     { new: true },
   ).then((result) => {
-    console.log(result)
+    //console.log(result)
     res.status(201).json({
       message: 'Tarjeta editada con éxito',
     })

@@ -1,1 +1,73 @@
-<p>card-edit works!</p>
+<app-brand title="Editar tarjeta"></app-brand>
+<br />
+<div mat-dialog-content>
+  <p>Modifica los datos de la tarjeta:</p>
+  <mat-form-field class="example-form-field" appearance="fill">
+    <mat-label>Código UID:</mat-label>
+    <input
+      type="text"
+      matInput
+      [(ngModel)]="data.UID"
+      placeholder="Ingrese el cógido UID de la tarjeta"
+      maxlength="8"
+      minlength="8"
+      required
+      #cardName
+    />
+    <mat-error *ngIf="cardName.invalid">
+      Por favor ingrese un código UID de 8 caracteres
+    </mat-error>
+    <button
+      *ngIf="cardName.value"
+      matSuffix
+      mat-icon-button
+      aria-label="Clear"
+      (click)="cardName.reset()"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <mat-form-field class="example-form-field" appearance="fill">
+    <mat-label>
+      Selecciona de que tipo es la tarjeta
+    </mat-label>
+    <mat-select [(ngModel)]="data.type" placeholder="Seleccionar el tipo">
+      <mat-option value="Permanente">
+        Permanente
+      </mat-option>
+      <mat-option value="Temporal">Temporal</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <mat-form-field class="example-form-field" appearance="fill">
+    <mat-label>
+      Activación
+    </mat-label>
+    <mat-select [(ngModel)]="data.is_active" placeholder="Seleccionar el tipo">
+      <mat-option value="true">
+        Activada
+      </mat-option>
+      <mat-option value="false">Desactivada</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <mat-form-field class="example-form-field" appearance="fill">
+    <mat-label>
+      Estado
+    </mat-label>
+    <mat-select [(ngModel)]="data.state" placeholder="Seleccionar el tipo">
+      <mat-option value="Ingreso">Ingreso</mat-option>
+      <mat-option value="Salida">Salida</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancelar</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>
+    Guardar cambios
+  </button>
+</div>

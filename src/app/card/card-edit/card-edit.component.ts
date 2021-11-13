@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, Inject, OnInit } from '@angular/core'
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog'
 
 export interface cardData {
   id: string
@@ -14,7 +19,14 @@ export interface cardData {
   styleUrls: ['./card-edit.component.css'],
 })
 export class CardEditComponent implements OnInit {
-  constructor() {}
+  constructor(
+    public dialog: MatDialog,
+    public dialogRef: MatDialogRef<CardEditComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: cardData,
+  ) {}
 
   ngOnInit(): void {}
+  onNoClick() {
+    this.dialogRef.close()
+  }
 }

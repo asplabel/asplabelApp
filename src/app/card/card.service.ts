@@ -13,6 +13,9 @@ export class CardService {
 
   constructor(private http: HttpClient) {}
 
+  getCard(id: string) {
+    return this.http.get(this.url + '/getCard/' + id)
+  }
   getCards() {
     this.http.get(this.url + '/getCards').subscribe((data: ICard[]) => {
       this.cards = data
@@ -54,5 +57,24 @@ export class CardService {
       })
   }
 
-  updateCard(id, result) {}
+  updateCard(
+    id: string,
+    uid: string,
+    type: string,
+    is_active: boolean,
+    state: string,
+  ) {
+    this.http
+      .put(this.url + '/updateCard', {
+        id: id,
+        UID: uid,
+        type: type,
+        is_active: is_active,
+        state: state,
+      })
+      .subscribe((response: { message: string }) => {
+        console.log(response)
+        this.getCards()
+      })
+  }
 }

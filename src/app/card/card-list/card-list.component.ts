@@ -14,6 +14,13 @@ import { CardEditComponent } from '../card-edit/card-edit.component'
 import { ICard } from '../card.model'
 import { CardService } from '../card.service'
 
+export interface cardData {
+  id: string
+  UID: string
+  type: string
+  is_active: boolean
+  state: string
+}
 @Component({
   selector: 'app-card-list',
   templateUrl: './card-list.component.html',
@@ -84,14 +91,29 @@ export class CardListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.cardService.deleteCard(id)
   }
 
-  openDialog(id: string, name: string): void {
-    const dialogRef = this.dialog.open(CardEditComponent, {
-      width: '450px',
-      data: { id: id, name: name },
-    })
-
-    dialogRef.afterClosed().subscribe((result) => {
-      this.cardService.updateCard(id, result)
+  openDialog(id: string): void {
+    this.cardService.getCard(id).subscribe((data: cardData) => {
+      const dialogRef = this.dialog.open(CardEditComponent, {
+        width: '650px',
+        data: {
+          id: id,
+          UID: data.UID,
+          type: data.type,
+          is_active: data.is_active,
+          state: data.state,
+        },
+      })
+      dialogRef.afterClosed().subscribe((result: cardData) => {
+        if (result != undefined) {
+          this.cardService.updateCard(
+            id,
+            result.UID,
+            result.type,
+            result.is_active,
+            result.state,
+          )
+        }
+      })
     })
   }
 }
