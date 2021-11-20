@@ -7,7 +7,7 @@ import {
 
 export interface departmentData {
   id: string
-  nombre: string
+  name: string
 }
 
 @Component({
@@ -16,7 +16,6 @@ export interface departmentData {
   styleUrls: ['./department-edit.component.css'],
 })
 export class DepartmentEditComponent implements OnInit {
-
   constructor(
     public dialog: MatDialog,
     public dialogRef: MatDialogRef<DepartmentEditComponent>,

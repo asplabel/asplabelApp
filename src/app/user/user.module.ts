@@ -23,6 +23,7 @@ import { MatPaginatorModule } from '@angular/material/paginator'
 import { BrandModule } from '../brand/brand.module'
 import { UserCardComponent } from './user-card/user-card.component'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
+import { JobTitleModule } from '../job-title/job-title.module'
 
 @NgModule({
   declarations: [

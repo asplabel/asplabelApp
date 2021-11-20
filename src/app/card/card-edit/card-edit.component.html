@@ -47,10 +47,10 @@
       Activación
     </mat-label>
     <mat-select [(ngModel)]="data.is_active" placeholder="Seleccionar el tipo">
-      <mat-option value="true">
+      <mat-option [value]="true">
         Activada
       </mat-option>
-      <mat-option value="false">Desactivada</mat-option>
+      <mat-option [value]="false">Desactivada</mat-option>
     </mat-select>
   </mat-form-field>
 </div>

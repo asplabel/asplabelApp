@@ -2,6 +2,8 @@ const express = require('express')
 
 const RecordModel = require('../models/record')
 const CardModel = require('../models/card')
+const UserModel = require('../models/user')
+const moment = require('moment')
 
 const recordRouter = express.Router()
 /*

@@ -1,4 +1,4 @@
-import { Location } from '@angular/common'
+
 import { Component, OnInit } from '@angular/core'
 import { NgForm } from '@angular/forms'
 import { ActivatedRoute, ParamMap, Router } from '@angular/router'
@@ -23,7 +23,6 @@ export class UserCardComponent implements OnInit {
     public cardService: CardService,
     public userService: UserService,
     public route: ActivatedRoute,
-    private _location: Location,
     private _route: Router,
   ) {}
 

@@ -12,7 +12,7 @@ import {
 
 export interface jobTitleData {
   id: string
-  nombre: string
+  name: string
   department_id: string
 }
 

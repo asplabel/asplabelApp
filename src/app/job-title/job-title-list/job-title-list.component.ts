@@ -52,7 +52,6 @@ export class JobTitleListComponent implements AfterViewInit, OnInit, OnDestroy {
         }
         this.isLoading = false
       })
-
   }
 
   ngAfterViewInit() {

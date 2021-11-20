@@ -33,6 +33,7 @@ const routes: Routes = [
   { path: 'user/list', component: UserListComponent },
   { path: 'user/create', component: UserCreateComponent },
   { path: 'user/delete', component: UserDeleteComponent },
+  { path: 'user/edit/:id', component: UserEditComponent },
   { path: 'user/card/:id', component: UserCardComponent },
 
   { path: 'card/list', component: CardListComponent },
