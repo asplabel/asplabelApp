@@ -1,4 +1,5 @@
 const express = require('express')
+const JobTitleModel = require('../models/jobTitle')
 const DepartmentModel = require('../models/department')
 const departmentRouter = express.Router()
 
@@ -35,6 +36,17 @@ departmentRouter.get('/getDepartments', (req, res, next) => {
 
 /* DELETE */
 departmentRouter.delete('/deleteDepartment/:id', (req, res, next) => {
+  JobTitleModel.find({ department_id: req.params.id }).then((result) => {
+    result.forEach((job) => {
+      JobTitleModel.updateOne(
+        { _id: job._id },
+        { department_id: '' },
+        { new: true },
+      ).then((result) => {
+        //console.log(result)
+      })
+    })
+  })
   DepartmentModel.deleteOne({ _id: req.params.id }).then((result) => {
     //console.log(result)
     res.status(201).json({

@@ -38,7 +38,38 @@ export class UserService {
         this.getUsers()
       })
   }
-
+  updateUser(
+    id: string,
+    firstname: string,
+    lastname: string,
+    email: string,
+    phone: string,
+    document: string,
+    address: string,
+    date_of_birth: string,
+    is_active: string,
+    job_title_id: string,
+    type: string,
+  ) {
+    this.http
+      .put(this.url + '/updateUser', {
+        id: id,
+        firstname: firstname,
+        lastname: lastname,
+        email: email,
+        phone: phone,
+        document: document,
+        address: address,
+        date_of_birth: date_of_birth,
+        is_active: is_active,
+        job_title_id: job_title_id,
+        type: type,
+      })
+      .subscribe((response: { message: string }) => {
+        //console.log(response)
+        this.getUsers()
+      })
+  }
   deleteUser(id: string) {
     this.http
       .delete(this.url + '/deleteUser/' + id)

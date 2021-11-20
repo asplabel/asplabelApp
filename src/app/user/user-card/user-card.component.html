@@ -2,7 +2,7 @@
 <br />
 <app-brand title="Asignar tarjeta"></app-brand>
 <mat-card>
-  <form action="" (submit)="asignCard(UserForm)" #UserForm="ngForm">
+  <form (submit)="asignCard(UserForm)" #UserForm="ngForm">
     <section>
       <button
         mat-button
@@ -19,7 +19,7 @@
         Para asignarle una tarjeta a este colaborador, por favor seleccione el
         código de una de las tarjetas disponibles:
       </mat-card-content>
-      <section *ngIf="cards.length == 0">
+      <section *ngIf="cards?.length == 0">
         <span>No hay tarjetas disponibles, agregue unas nuevas</span>
         <button
           mat-button
@@ -30,7 +30,7 @@
           Agregar tarjeta
         </button>
       </section>
-      <mat-form-field style="display: block;" *ngIf="cards.length > 0">
+      <mat-form-field style="display: block;" *ngIf="cards?.length > 0">
         <mat-label>
           Selecciona el codigo de la tarjeta
         </mat-label>
@@ -53,7 +53,7 @@
       </button>
 
       <button
-        *ngIf="user.card_id"
+        *ngIf="user?.card_id"
         mat-button
         color="warn"
         style="font-weight: bolder;"

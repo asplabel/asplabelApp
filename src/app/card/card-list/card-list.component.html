@@ -1,18 +1,18 @@
-<mat-spinner *ngIf="isLoading" class="spinner" color="warn"></mat-spinner>
-<div *ngIf="!isLoading">
+<div>
   <app-brand title="Administración de tarjetas"></app-brand>
   <mat-card>
     <a mat-button mat-flat-button class="button" routerLink="/card/create">
       Agregar una tarjeta nueva
     </a>
   </mat-card>
-
+  <mat-spinner *ngIf="isLoading" class="spinner" color="warn"></mat-spinner>
   <table
     class="mat-elevation-z8"
     mat-table
     [dataSource]="dataSource"
     matSort
     #CardTable
+    *ngIf="!isLoading"
   >
     <!--UID Column-->
     <ng-container matColumnDef="UID">

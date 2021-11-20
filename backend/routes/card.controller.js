@@ -95,6 +95,19 @@ cardRouter.get('/getCardsNotAsigned', async (req, res, next) => {
 
 /* DELETE */
 cardRouter.delete('/deleteCard/:id', (req, res, next) => {
+  UserModel.find({ card_id: req.params.id }).then((result) => {
+    if (result) {
+      result.forEach((user) => {
+        UserModel.updateOne(
+          { _id: user._id },
+          { card_id: '' },
+          { new: true },
+        ).then((res) => {
+          console.log(res)
+        })
+      })
+    }
+  })
   CardModel.deleteOne({ _id: req.params.id }).then((result) => {
     //console.log(result)
     res.status(201).json({

@@ -13,7 +13,7 @@
           type="text"
           placeholder="Ingrese el nombre completo del colaborador"
           formControlName="firstname"
-          [value]="form.get('firstname').value"
+          [value]="form?.get('firstname').value"
         />
         <mat-error *ngIf="form.get('firstname').invalid">
           Por favor ingrese el nombre del colaborador. Maximo 80 caractéres.
@@ -221,7 +221,7 @@
       </mat-form-field>
     </section>
 
-    <div>
+    <section style="text-align: left; margin-left: 2%;">
       <button mat-stroked-button type="button" (click)="filePicker.click()">
         Agregar Foto
       </button>
@@ -231,17 +231,25 @@
         #filePicker
         (change)="onImagePicked($event)"
       />
-    </div>
-    <div
-      class="image-preview"
-      *ngIf="imagePreview != '' && imagePreview && form.get('photo').valid"
-    >
-      <img [src]="imagePreview" [alt]="form.value.name" />
-    </div>
 
+      <div
+        class="image-preview"
+        *ngIf="imagePreview != '' && imagePreview && form.get('photo').valid"
+      >
+        <img [src]="imagePreview" [alt]="form.value.firstname" />
+      </div>
+    </section>
     <!-- Button to save new User -->
-    <section>
-      <button mat-raised-button class="button" type="submit">
+    <section style="text-align: center;">
+      <button
+        mat-stroked-button
+        color="primary"
+        style="font-weight: bolder;"
+        routerLink="/user/list"
+      >
+        Regresar
+      </button>
+      <button mat-button class="button" type="submit" style="margin-left: 2%;">
         Guardar cambios
       </button>
     </section>

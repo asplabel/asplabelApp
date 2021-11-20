@@ -1,6 +1,7 @@
 const express = require('express')
 const JobTitleModel = require('../models/jobTitle')
 const DepartmentModel = require('../models/department')
+const UserModel = require('../models/user')
 
 const jobTitleRouter = express.Router()
 
@@ -33,11 +34,20 @@ jobTitleRouter.get('/getJobTitles', async (req, res, next) => {
       var department = await DepartmentModel.findOne({
         _id: jobTitle.department_id,
       })
-      jobTitle = {
-        id: jobTitle._id,
-        name: jobTitle.name,
-        department_id: jobTitle.department_id,
-        department_name: department.name,
+      if (department) {
+        jobTitle = {
+          id: jobTitle._id,
+          name: jobTitle.name,
+          department_id: jobTitle.department_id,
+          department_name: department.name,
+        }
+      } else {
+        jobTitle = {
+          id: jobTitle._id,
+          name: jobTitle.name,
+          department_id: null,
+          department_name: null,
+        }
       }
     } else {
       jobTitle = {
@@ -89,6 +99,17 @@ jobTitleRouter.put('/updateJobTitle', (req, res, next) => {
 
 /* DELETE */
 jobTitleRouter.delete('/deleteJobTitle/:id', (req, res, next) => {
+  UserModel.find({ job_title_id: req.params.id }).then((result) => {
+    result.forEach((user) => {
+      UserModel.updateOne(
+        { _id: user._id },
+        { job_title_id: '' },
+        { new: true },
+      ).then((res) => {
+        console.log(res)
+      })
+    })
+  })
   JobTitleModel.deleteOne({ _id: req.params.id }).then((result) => {
     //console.log(result)
     res.status(201).json({

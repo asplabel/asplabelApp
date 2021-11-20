@@ -19,13 +19,13 @@ import { delay } from 'rxjs/operators'
 })
 export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
   displayedColumns: string[] = [
-    'name',
+    'firstname',
     'lastname',
-    'jobTilte',
-    'department',
-    'UID',
+    'job_title_name',
+    'department_name',
+    'card_UID',
     'type',
-    'active',
+    'is_active',
     'actions',
   ]
   users: IUser[]
@@ -78,7 +78,5 @@ export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
   deleteUser(id: string) {
     this.userService.deleteUser(id)
   }
-  editUser(id: string) {
-    console.log(id)
-  }
+
 }

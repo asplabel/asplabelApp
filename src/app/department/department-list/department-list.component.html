@@ -1,5 +1,4 @@
-<mat-spinner *ngIf="isLoading" class="spinner" color="warn"></mat-spinner>
-<div *ngIf="!isLoading">
+<div>
   <app-brand title="Administración de departamentos"></app-brand>
   <mat-card>
     <a
@@ -11,13 +10,14 @@
       Agregar un departamento nuevo
     </a>
   </mat-card>
-
+  <mat-spinner *ngIf="isLoading" class="spinner" color="warn"></mat-spinner>
   <table
     class="mat-elevation-z8"
     mat-table
     [dataSource]="dataSource"
     matSort
     #DepartmentTable
+    *ngIf="!isLoading"
   >
     <!--Name Column-->
     <ng-container matColumnDef="name">

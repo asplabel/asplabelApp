@@ -19,15 +19,12 @@
 section {
   margin: 10px 0px;
 }
-button {
-  margin-left: 40%;
-}
+
 .button {
   color: white;
   background-color: #ef7f01;
   font-weight: bold;
   font-family: Dubai;
-  font-stretch: ultra-expanded !important;
   font-size: 16px;
 }
 .button:hover {

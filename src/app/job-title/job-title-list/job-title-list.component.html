@@ -1,17 +1,18 @@
-<mat-spinner *ngIf="isLoading" class="spinner" color="warn"></mat-spinner>
-<div *ngIf="!isLoading">
+<div>
   <app-brand title="Administración de cargos "></app-brand>
   <mat-card>
     <a mat-button mat-flat-button class="button" routerLink="/jobTitle/create">
       Agregar un cargo nuevo
     </a>
   </mat-card>
+  <mat-spinner *ngIf="isLoading" class="spinner" color="warn"></mat-spinner>
   <table
     class="mat-elevation-z8"
     mat-table
     [dataSource]="dataSource"
     matSort
     #JobTitleTable
+    *ngIf="!isLoading"
   >
     <!--Name Column-->
     <ng-container matColumnDef="name">

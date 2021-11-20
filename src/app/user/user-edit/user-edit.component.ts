@@ -83,7 +83,7 @@ export class UserEditComponent implements OnInit {
         this.userService.getUser(this.userid).subscribe((user: IUser) => {
           this.user = user
           if (this.user) {
-            console.dir(this.user)
+            //console.dir(this.user)
             this.form = new FormGroup({
               /* Primer argumento: valor inicial*/
               firstname: new FormControl(user.firstname, {
@@ -109,10 +109,8 @@ export class UserEditComponent implements OnInit {
                 validators: Validators.required,
               }),
               job_title_id: new FormControl(user.job_title_id),
-              job_title_name: new FormControl(user.job_title_name),
               type: new FormControl(user.type),
               photo: new FormControl(null, {
-                validators: [Validators.required],
                 asyncValidators: [mimeType],
               }),
             })
@@ -126,6 +124,31 @@ export class UserEditComponent implements OnInit {
     if (this.form.invalid) {
       return
     }
+    let id = this.userid
+    let firstname = this.form.get('firstname').value
+    let lastname = this.form.get('lastname').value
+    let email = this.form.get('email').value
+    let phone = this.form.get('phone').value
+    let document = this.form.get('document').value
+    let address = this.form.get('address').value
+    let date_of_birth = this.form.get('date_of_birth').value
+    let is_active = this.form.get('is_active').value
+    let job_title_id = this.form.get('job_title_id').value
+    let type = this.form.get('type').value
+    this.userService.updateUser(
+      id,
+      firstname,
+      lastname,
+      email,
+      phone,
+      document,
+      address,
+      date_of_birth,
+      is_active,
+      job_title_id,
+      type,
+    )
+    this._route.navigateByUrl('/user/list')
   }
   onImagePicked(event: Event) {
     const file = (event.target as HTMLInputElement).files[0]

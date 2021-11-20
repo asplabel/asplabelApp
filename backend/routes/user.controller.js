@@ -4,6 +4,7 @@ const CardModel = require('../models/card')
 const UserModel = require('../models/user')
 const JobTitleModel = require('../models/jobTitle')
 const DepartmentModel = require('../models/department')
+const user = require('../models/user')
 
 const userRouter = express.Router()
 /*
@@ -27,22 +28,30 @@ userRouter.get('/getUsers', async (req, res, next) => {
     var card
     var jobTitle
     var department
-    if (user.job_title_id != null) {
+    if (user.job_title_id != null && user.job_title_id != '') {
       jobTitle = await JobTitleModel.findOne({ _id: user.job_title_id })
       // console.log(jobTitle)
-      department = await DepartmentModel.findOne({
-        _id: jobTitle.department_id,
-      })
-      if (department != null) {
-        isDepartment = true
+      if (jobTitle) {
+        department = await DepartmentModel.findOne({
+          _id: jobTitle.department_id,
+        })
+        if (department != null) {
+          isDepartment = true
+        }
+        isJobTitle = true
+      } else {
+        isJobTitle = false
       }
-      isJobTitle = true
+    } else {
+      isJobTitle = false
     }
-    if (user.card_id != null) {
+    if (user.card_id != null && user.card_id != '') {
       card = await CardModel.findOne({ _id: user.card_id })
       if (card) {
         isCard = true
       }
+    } else {
+      isCard = false
     }
     if (isCard & isJobTitle & isDepartment) {
       var newUser = {
@@ -105,20 +114,20 @@ userRouter.get('/getUsers', async (req, res, next) => {
           card_UID: card.UID,
         }
         users[i] = newUser
-        if (!isJobTitle & !isCard) {
-          var newUser = {
-            id: user._id,
-            firstname: user.firstname,
-            lastname: user.lastname,
-            job_title_name: null,
-            department_name: null,
-            type: user.type,
-            is_active: user.is_active,
-            card_id: null,
-            card_UID: null,
-          }
-          users[i] = newUser
+      }
+      if (!isCard && !isJobTitle) {
+        var newUser = {
+          id: user._id,
+          firstname: user.firstname,
+          lastname: user.lastname,
+          job_title_name: null,
+          department_name: null,
+          type: user.type,
+          is_active: user.is_active,
+          card_id: null,
+          card_UID: null,
         }
+        users[i] = newUser
       }
     }
   }
@@ -162,6 +171,43 @@ userRouter.post('/addUser', (req, res, next) => {
     res.status(201).json({
       message: 'Usuario agregado con éxito',
       user_id: user._id,
+    })
+  })
+})
+/*UPDATE*/
+userRouter.put('/updateUser', (req, res, next) => {
+  const userUpdate = {
+    id: req.body.id,
+    firstname: req.body.firstname,
+    lastname: req.body.lastname,
+    email: req.body.email,
+    phone: req.body.phone,
+    document: req.body.document,
+    address: req.body.address,
+    date_of_birth: req.body.date_of_birth,
+    is_active: req.body.is_active,
+    job_title_id: req.body.job_title_id,
+    type: req.body.type,
+  }
+  UserModel.updateOne(
+    { _id: userUpdate.id },
+    {
+      firstname: userUpdate.firstname,
+      lastname: userUpdate.lastname,
+      email: userUpdate.email,
+      phone: userUpdate.phone,
+      document: userUpdate.document,
+      address: userUpdate.address,
+      date_of_birth: userUpdate.date_of_birth,
+      is_active: userUpdate.is_active,
+      job_title_id: userUpdate.job_title_id,
+      type: userUpdate.type,
+    },
+    { new: true },
+  ).then((result) => {
+    console.log(result)
+    res.status(201).json({
+      message: 'Usuario editado con éxito ',
     })
   })
 })
