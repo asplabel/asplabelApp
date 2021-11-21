@@ -30,6 +30,7 @@ cardRouter.post('/addCard', (req, res, next) => {
 /* READ ONE */
 cardRouter.get('/getCard/:id', (req, res, next) => {
   let id = req.params.id
+  console.log(id)
   CardModel.findOne({ _id: id }).then((card) => {
     res.status(201).json(card)
     //console.log(card)
@@ -41,11 +42,8 @@ cardRouter.get('/getCards', async (req, res, next) => {
   var cards = await CardModel.find()
   for (let i = 0; i < cards.length; i++) {
     let card = cards[i]
-
-    var user = await UserModel.findOne({
-      card_id: String(card._id),
-    })
-    if (user) {
+    var user = await UserModel.findOne({ card_id: card._id })
+    if (user != null) {
       card = {
         id: card._id,
         UID: card.UID,
@@ -78,6 +76,7 @@ cardRouter.get('/getCards', async (req, res, next) => {
 /* READ CARDS NOT ASIGNED*/
 cardRouter.get('/getCardsNotAsigned', (req, res, next) => {
   CardModel.find({ is_user: false }).then((cards) => {
+    console.log(cards)
     for (let i = 0; i < cards.length; i++) {
       let card = cards[i]
       card = {
@@ -104,7 +103,7 @@ cardRouter.delete('/deleteCard/:id', (req, res, next) => {
       result.forEach((user) => {
         UserModel.updateOne(
           { _id: user._id },
-          { card_id: null },
+          { card_id: '' },
           { new: true },
         ).then((res) => {
           console.log(res)

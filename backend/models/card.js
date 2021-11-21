@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const cardSchema = mongoose.Schema({
-  _id: { type: String },
+  id: { type: String },
   UID: { type: String, required: true, unique: true, maxLength: 10 },
   type: {
     type: String,
