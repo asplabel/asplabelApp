@@ -1,5 +1,4 @@
 const express = require('express')
-const card = require('../models/card')
 
 const CardModel = require('../models/card')
 const UserModel = require('../models/user')

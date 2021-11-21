@@ -19,26 +19,10 @@ th.mat-sort-header-sorted {
 .mat-row:hover .mat-cell {
   border-color: currentColor;
 }
-table {
-  width: 100%;
-}
-
-th.mat-sort-header-sorted {
-  color: black;
-}
 
 :host {
   display: block;
   margin: 1rem;
-}
-.mat-row .mat-cell {
-  border-bottom: 1px solid transparent;
-  border-top: 1px solid transparent;
-  cursor: pointer;
-}
-
-.mat-row:hover .mat-cell {
-  border-color: currentColor;
 }
 
 .button {
@@ -57,4 +41,25 @@ th.mat-sort-header-sorted {
   height: 5px;
   margin-left: 40%;
   margin-top: 2%;
+}
+
+tr.example-detail-row {
+  height: 0;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #efefef;
+}
+
+.example-element-row td {
+  border-bottom-width: 0;
+}
+
+.example-element-detail {
+  overflow: hidden;
+  display: flex;
 }

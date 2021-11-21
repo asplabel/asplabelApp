@@ -1,5 +1,5 @@
 <div>
-  <app-brand title="Administras colaboradores"></app-brand>
+  <app-brand title="Administración de colaboradores"></app-brand>
   <mat-card>
     <a mat-button mat-flat-button class="button" routerLink="/user/create">
       Agregar un colaborador nuevo
@@ -7,11 +7,11 @@
   </mat-card>
   <mat-spinner *ngIf="isLoading" class="spinner" color="warn"></mat-spinner>
   <table
-    class="mat-elevation-z8"
     mat-table
     [dataSource]="dataSource"
     matSort
-    #UserTable
+    multiTemplateDataRows
+    class="mat-elevation-z8"
     *ngIf="!isLoading"
   >
     <!-- Name Column -->
@@ -83,8 +83,62 @@
         </mat-action-row>
       </td>
     </ng-container>
+    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+    <ng-container matColumnDef="expandedDetail">
+      <td
+        mat-cell
+        *matCellDef="let element"
+        [attr.colspan]="displayedColumns.length"
+      >
+        <div
+          class="example-element-detail"
+          [@detailExpand]="
+            element == expandedElement ? 'expanded' : 'collapsed'
+          "
+        >
+          <div style="width: 50%; display: inline-block;">
+            <span>
+              <b>Correo:</b>
+              {{ element.email }}
+            </span>
+            <br />
+            <span>
+              <b>Cédula:</b>
+              {{ element.document }}
+            </span>
+            <br />
+            <span>
+              <b>Fecha de nacimiento (M / D / A):</b>
+              {{ element.date_of_birth }}
+            </span>
+          </div>
+          <div style="display: inline-block;">
+            <span>
+              <b>Teléfono:</b>
+              {{ element.phone }}
+            </span>
+            <br />
+            <span>
+              <b>Dirección:</b>
+              {{ element.address }}
+            </span>
+          </div>
+        </div>
+      </td>
+    </ng-container>
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    <tr
+      mat-row
+      *matRowDef="let element; columns: displayedColumns"
+      class="example-element-row"
+      [class.example-expanded-row]="expandedElement == element"
+      (click)="expandedElement = expandedElement == element ? null : element"
+    ></tr>
+    <tr
+      mat-row
+      *matRowDef="let row; columns: ['expandedDetail']"
+      class="example-detail-row"
+    ></tr>
   </table>
   <br />
   <mat-paginator

@@ -18,12 +18,11 @@ import { MatInputModule } from '@angular/material/input'
 import { MatSelectModule } from '@angular/material/select'
 import { MatDatepickerModule } from '@angular/material/datepicker'
 import { MatNativeDateModule } from '@angular/material/core'
-import { MatMomentDateModule } from '@angular/material-moment-adapter'
 import { MatPaginatorModule } from '@angular/material/paginator'
 import { BrandModule } from '../brand/brand.module'
 import { UserCardComponent } from './user-card/user-card.component'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
-import { JobTitleModule } from '../job-title/job-title.module'
+import { MatExpansionModule } from '@angular/material/expansion'
 
 @NgModule({
   declarations: [
@@ -58,6 +57,7 @@ import { JobTitleModule } from '../job-title/job-title.module'
     MatPaginatorModule,
     MatProgressSpinnerModule,
     BrandModule,
+    MatExpansionModule,
   ],
 })
 export class UserModule {}

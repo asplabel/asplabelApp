@@ -16,6 +16,7 @@ import { MatTableModule } from '@angular/material/table'
 import { MatIconModule } from '@angular/material/icon'
 import { MatMenuModule } from '@angular/material/menu'
 import { MatSelectModule } from '@angular/material/select'
+import { MatExpansionModule } from '@angular/material/expansion'
 
 import { ToolbarComponent } from './toolbar/toolbar.component'
 import { JobTitleModule } from './job-title/job-title.module'
@@ -70,6 +71,7 @@ import { BrandModule } from './brand/brand.module'
     MatNativeDateModule,
     MatMomentDateModule,
     MatProgressSpinnerModule,
+    MatExpansionModule,
     BrandModule,
   ],
   providers: [],
