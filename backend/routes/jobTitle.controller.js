@@ -1,6 +1,5 @@
 const express = require('express')
 const JobTitleModel = require('../models/jobTitle')
-const DepartmentModel = require('../models/department')
 const UserModel = require('../models/user')
 
 const jobTitleRouter = express.Router()
@@ -95,7 +94,7 @@ jobTitleRouter.delete('/deleteJobTitle/:id', (req, res, next) => {
     result.forEach((user) => {
       UserModel.updateOne(
         { _id: user._id },
-        { job_title_id: '' },
+        { job_title_id: null },
         { new: true },
       ).then((res) => {
         console.log(res)

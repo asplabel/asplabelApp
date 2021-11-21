@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const CardModel = require('../models/card')
 
 const userSchema = mongoose.Schema({
   id: { type: String },
@@ -17,9 +18,14 @@ const userSchema = mongoose.Schema({
   is_active: { type: Boolean, required: true },
   job_title_id: { type: String, required: false },
   role_id: { type: String, required: false },
-  card_id: { type: String, required: false, default: null },
+  card_id: {
+    type: String,
+    required: false,
+    default: null,
+    ref: CardModel,
+  },
   type: {
-    type: String, 
+    type: String,
     required: true,
     enum: ['Permanente', 'Temporal', 'Tiempo parcial'],
   },

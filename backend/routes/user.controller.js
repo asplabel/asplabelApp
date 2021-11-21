@@ -1,10 +1,9 @@
 const express = require('express')
-
+const mongoose = require('mongoose')
 const CardModel = require('../models/card')
 const UserModel = require('../models/user')
 const JobTitleModel = require('../models/jobTitle')
 const DepartmentModel = require('../models/department')
-const user = require('../models/user')
 
 const userRouter = express.Router()
 /*
@@ -245,13 +244,6 @@ userRouter.delete('/deleteUser/:id', (req, res, next) => {
 userRouter.post('/asignarTarjeta', (req, res, next) => {
   let card_id = req.body.card_id
   let user_id = req.body.user_id
-  CardModel.findByIdAndUpdate(
-    card_id,
-    { is_user: true, is_active: true },
-    { new: true },
-  ).then((card) => {
-    // console.log(card)
-  })
   UserModel.findOne({ _id: user_id }).then((user) => {
     if (user.card_id == null) {
       UserModel.findByIdAndUpdate(
@@ -281,7 +273,13 @@ userRouter.post('/asignarTarjeta', (req, res, next) => {
       })
     }
   })
-
+  CardModel.findByIdAndUpdate(
+    card_id,
+    { is_user: true, is_active: true },
+    { new: true },
+  ).then((card) => {
+    // console.log(card)
+  })
   res.status(201).json('Tarjeta asignada')
 })
 

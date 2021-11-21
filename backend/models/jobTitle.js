@@ -5,7 +5,7 @@ const jobTitleSchema = mongoose.Schema({
   id: { type: String },
   name: { type: String, required: true, maxLength: 150 },
   department_id: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     required: false,
     default: null,
     ref: DepartmentModel,

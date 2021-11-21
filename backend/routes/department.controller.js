@@ -40,7 +40,7 @@ departmentRouter.delete('/deleteDepartment/:id', (req, res, next) => {
     result.forEach((job) => {
       JobTitleModel.updateOne(
         { _id: job._id },
-        { department_id: '' },
+        { department_id: null },
         { new: true },
       ).then((result) => {
         //console.log(result)

@@ -1,5 +1,5 @@
 const express = require('express')
-
+const mongoose = require('mongoose')
 const CardModel = require('../models/card')
 const UserModel = require('../models/user')
 
@@ -35,13 +35,17 @@ cardRouter.get('/getCard/:id', (req, res, next) => {
     //console.log(card)
   })
 })
+
 /* READ */
 cardRouter.get('/getCards', async (req, res, next) => {
   var cards = await CardModel.find()
   for (let i = 0; i < cards.length; i++) {
     let card = cards[i]
-    var user = await UserModel.findOne({ card_id: card._id })
-    if (user != null) {
+
+    var user = await UserModel.findOne({
+      card_id: String(card._id),
+    })
+    if (user) {
       card = {
         id: card._id,
         UID: card.UID,
@@ -72,24 +76,25 @@ cardRouter.get('/getCards', async (req, res, next) => {
 })
 
 /* READ CARDS NOT ASIGNED*/
-cardRouter.get('/getCardsNotAsigned', async (req, res, next) => {
-  var cards = await CardModel.find({ is_user: false })
-  for (let i = 0; i < cards.length; i++) {
-    let card = cards[i]
-    card = {
-      id: card._id,
-      UID: card.UID,
-      type: card.type,
-      is_active: card.is_active,
-      is_user: card.is_user,
-      state: card.state,
-      user_id: null,
-      firstname: null,
-      lastname: null,
+cardRouter.get('/getCardsNotAsigned', (req, res, next) => {
+  CardModel.find({ is_user: false }).then((cards) => {
+    for (let i = 0; i < cards.length; i++) {
+      let card = cards[i]
+      card = {
+        id: card._id,
+        UID: card.UID,
+        type: card.type,
+        is_active: card.is_active,
+        is_user: card.is_user,
+        state: card.state,
+        user_id: null,
+        firstname: null,
+        lastname: null,
+      }
+      cards[i] = card
     }
-    cards[i] = card
-  }
-  res.status(201).json(cards)
+    res.status(201).json(cards)
+  })
 })
 
 /* DELETE */
@@ -99,7 +104,7 @@ cardRouter.delete('/deleteCard/:id', (req, res, next) => {
       result.forEach((user) => {
         UserModel.updateOne(
           { _id: user._id },
-          { card_id: '' },
+          { card_id: null },
           { new: true },
         ).then((res) => {
           console.log(res)
