@@ -26,43 +26,35 @@ jobTitleRouter.post('/addJobTitle', (req, res, next) => {
 })
 
 /* READ */
-jobTitleRouter.get('/getJobTitles', async (req, res, next) => {
-  let jobTitles = await JobTitleModel.find().sort({ name: 1 })
-  for (let i = 0; i < jobTitles.length; i++) {
-    let jobTitle = jobTitles[i]
-    if ((jobTitle.department_id != null) & (jobTitle.department_id != '')) {
-      var department = await DepartmentModel.findOne({
-        _id: jobTitle.department_id,
+jobTitleRouter.get('/getJobTitles', (req, res, next) => {
+  JobTitleModel.find()
+    .sort({ name: 1 })
+    .populate('department_id')
+    .then((job_titles) => {
+      for (let i = 0; i < job_titles.length; i++) {
+        if (job_titles[i].department_id && job_titles[i].department_id != '') {
+          let jobTitle = {
+            id: job_titles[i]._id,
+            name: job_titles[i].name,
+            department_id: job_titles[i].department_id._id,
+            department_name: job_titles[i].department_id.name,
+          }
+          job_titles[i] = jobTitle
+        } else {
+          let jobTitle = {
+            id: job_titles[i]._id,
+            name: job_titles[i].name,
+            department_id: '',
+            department_name: '',
+          }
+          job_titles[i] = jobTitle
+        }
+      }
+      res.status(201).json({
+        message: 'Cargos listados',
+        jobTitles: job_titles,
       })
-      if (department) {
-        jobTitle = {
-          id: jobTitle._id,
-          name: jobTitle.name,
-          department_id: jobTitle.department_id,
-          department_name: department.name,
-        }
-      } else {
-        jobTitle = {
-          id: jobTitle._id,
-          name: jobTitle.name,
-          department_id: null,
-          department_name: null,
-        }
-      }
-    } else {
-      jobTitle = {
-        id: jobTitle._id,
-        name: jobTitle.name,
-        department_id: null,
-        department_name: null,
-      }
-    }
-    jobTitles[i] = jobTitle
-  }
-  res.status(201).json({
-    message: 'Cargos listados',
-    jobTitles: jobTitles,
-  })
+    })
 })
 
 /* UPDATE */
