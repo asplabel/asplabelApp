@@ -23,7 +23,7 @@ export class DepartmentCreateComponent implements OnInit {
       return
     }
     const newDepartment: IDepartment = {
-      id: null,
+      _id: null,
       name: form.value.nameDepartment,
     }
     this.departmentService.addDepartment(newDepartment)

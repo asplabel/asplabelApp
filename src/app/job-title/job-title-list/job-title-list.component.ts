@@ -87,7 +87,9 @@ export class JobTitleListComponent implements AfterViewInit, OnInit, OnDestroy {
     dialogRef
       .afterClosed()
       .subscribe((result: { nombre: string; d_id: string }) => {
-        this.jobTitleService.updateJobTitle(id, result.nombre, result.d_id)
+        if (result) {
+          this.jobTitleService.updateJobTitle(id, result.nombre, result.d_id)
+        }
       })
   }
 }

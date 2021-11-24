@@ -40,14 +40,14 @@ export class JobTitleCreateComponent implements OnInit {
     let jobTitle: IjobTitle
     if (form.value.selected == 'none') {
       jobTitle = {
-        id: null,
+        _id: null,
         name: form.value.nameJobTitle,
         department_id: null,
         department_name: null,
       }
     } else {
       jobTitle = {
-        id: null,
+        _id: null,
         name: form.value.nameJobTitle,
         department_id: form.value.selected,
         department_name: null,

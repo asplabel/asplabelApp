@@ -36,7 +36,7 @@ export class JobTitleService {
         newJobTitle,
       )
       .subscribe((responseData) => {
-        newJobTitle.id = responseData.jobTitle_id
+        newJobTitle._id = responseData.jobTitle_id
         this.jobTitles.push(newJobTitle)
         this.subjectJobTitle.next([...this.jobTitles])
       })
@@ -47,7 +47,7 @@ export class JobTitleService {
       .delete(this.url + '/deleteJobTitle/' + id)
       .subscribe((result: { message: string }) => {
         const updatedJobTitles = this.jobTitles.filter(
-          (jobtitle) => jobtitle.id != id,
+          (jobtitle) => jobtitle._id != id,
         )
         this.jobTitles = updatedJobTitles
         this.subjectJobTitle.next([...this.jobTitles])

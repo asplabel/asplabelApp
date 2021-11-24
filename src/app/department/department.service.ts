@@ -8,7 +8,7 @@ import { IDepartment } from './department.model'
   providedIn: 'root',
 })
 export class DepartmentService {
-  departments: IDepartment[] = []
+  departments: IDepartment[]
   subjectDepartment = new Subject<IDepartment[]>()
 
   url: string = 'http://localhost:3000'
@@ -17,22 +17,15 @@ export class DepartmentService {
 
   getDepartments() {
     this.http
-      .get<{ message: string; departments: any }>(this.url + '/getDepartments')
-      .pipe(
-        map((departmentData) => {
-          return departmentData.departments.map((department) => {
-            return {
-              id: department._id,
-              name: department.name,
-            }
-          })
-        }),
+      .get<{ message: string; departments: IDepartment[] }>(
+        this.url + '/getDepartments',
       )
-      .subscribe((departmentsData) => {
-        this.departments = departmentsData
-        //console.log(jobTitlesData.message)
-        this.subjectDepartment.next([...this.departments])
-      })
+      .subscribe(
+        (departmentsData: { message: string; departments: IDepartment[] }) => {
+          this.departments = departmentsData.departments
+          this.subjectDepartment.next([...this.departments])
+        },
+      )
     //return [...this.jobTitles]
   }
 
@@ -41,7 +34,7 @@ export class DepartmentService {
   }
 
   getOneDepartment(id: String) {
-    return { ...this.departments.find((department) => department.id === id) }
+    return { ...this.departments.find((department) => department._id === id) }
   }
 
   addDepartment(newDepartment: IDepartment) {
@@ -52,7 +45,7 @@ export class DepartmentService {
       )
       .subscribe((responseData) => {
         console.log(responseData.message)
-        newDepartment.id = responseData.department_id
+        newDepartment._id = responseData.department_id
         this.departments.push(newDepartment)
         this.subjectDepartment.next([...this.departments])
       })
@@ -63,7 +56,7 @@ export class DepartmentService {
       .delete(this.url + '/deleteDepartment/' + id)
       .subscribe((result: { message: string }) => {
         const updatedDepartments = this.departments.filter(
-          (department) => department.id != id,
+          (department) => department._id != id,
         )
         this.departments = updatedDepartments
         this.subjectDepartment.next([...this.departments])

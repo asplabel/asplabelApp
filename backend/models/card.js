@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const cardSchema = mongoose.Schema({
-  id: { type: String },
+  id: { type: mongoose.Types.ObjectId },
   UID: { type: String, required: true, unique: true, maxLength: 10 },
   type: {
     type: String,
@@ -19,4 +19,4 @@ const cardSchema = mongoose.Schema({
   is_user: { type: Boolean, required: true, default: false },
 })
 
-module.exports = mongoose.model('Card', cardSchema)
+module.exports = mongoose.model('cards', cardSchema)

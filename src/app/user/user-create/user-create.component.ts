@@ -101,28 +101,31 @@ export class UserCreateComponent implements OnInit {
     if (form.invalid) {
       return
     }
-    console.dir(this.userBirth)
-    let date
-    if (this.userBirth._f) {
-      date = this.userBirth._i
-    } else {
-      if (this.userBirth._i.date < 10) {
-        date = '0' + this.userBirth._i.date + '/'
+    let date = null
+    console.dir(this.date)
+    if (this.userBirth) {
+      if (this.userBirth._f) {
+        date = this.userBirth._i
       } else {
-        date = this.userBirth._i.date + '/'
-      }
-      if (this.userBirth._i.month + 1 < 10) {
-        date =
-          date +
-          '0' +
-          (this.userBirth._i.month + 1) +
-          '/' +
-          this.userBirth._i.year
-      } else {
-        date =
-          date + (this.userBirth._i.month + 1) + '/' + this.userBirth._i.year
+        if (this.userBirth._i.date < 10) {
+          date = '0' + this.userBirth._i.date + '/'
+        } else {
+          date = this.userBirth._i.date + '/'
+        }
+        if (this.userBirth._i.month + 1 < 10) {
+          date =
+            date +
+            '0' +
+            (this.userBirth._i.month + 1) +
+            '/' +
+            this.userBirth._i.year
+        } else {
+          date =
+            date + (this.userBirth._i.month + 1) + '/' + this.userBirth._i.year
+        }
       }
     }
+    console.log(date)
     let user: IUser = {
       id: null,
       firstname: form.value.userFirstname,

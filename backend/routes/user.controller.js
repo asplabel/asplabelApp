@@ -4,6 +4,7 @@ const CardModel = require('../models/card')
 const UserModel = require('../models/user')
 const JobTitleModel = require('../models/jobTitle')
 const DepartmentModel = require('../models/department')
+const user = require('../models/user')
 
 const userRouter = express.Router()
 /*
@@ -17,8 +18,51 @@ userRouter.get('/getUser/:id', async (req, res, next) => {
   res.status(201).json(user)
 })
 /*READ*/
-userRouter.get('/getUsers', async (req, res, next) => {
-  var users = await UserModel.find()
+userRouter.get('/getUsers', (req, res, next) => {
+  UserModel.find()
+    .populate('card_id')
+    .populate('job_title_id')
+    .then((users) => {
+      for (let index = 0; index < users.length; index++) {
+        let user = users[index]
+        let u = {
+          id: user._id,
+          firstname: user.firstname,
+          lastname: user.lastname,
+          email: user.email,
+          phone: user.phone,
+          document: user.document,
+          address: user.address,
+          date_of_birth: user.date_of_birth,
+          job_title_name: null,
+          department_name: null,
+          type: user.type,
+          is_active: user.is_active,
+          card_id: null,
+          card_UID: null,
+        }
+        if (user.card_id && user.card_id != '') {
+          u.card_id = user.card_id._id
+          u.card_UID = user.card_id.UID
+        }
+        if (user.job_title_id && user.job_title_id != '') {
+          u.job_title_name = user.job_title_id.name
+          JobTitleModel.findOne({
+            _id: user.job_title_id._id,
+          })
+            .populate('department_id')
+            .then((job) => {
+              if (job) {
+                u.department_name = job.department_id.name
+                //console.log(u)
+              }
+            })
+        }
+        users[index] = u
+      }
+      res.status(200).json(users)
+    })
+  /*var users = await UserModel.find()
   for (let i = 0; i < users.length; i++) {
     var user = users[i]
     let isJobTitle = false
@@ -150,7 +194,7 @@ userRouter.get('/getUsers', async (req, res, next) => {
       }
     }
   }
-  res.status(201).json(users)
+  res.status(201).json(users)*/
 })
 /* CREATE*/
 userRouter.post('/addUser', (req, res, next) => {
@@ -224,7 +268,7 @@ userRouter.put('/updateUser', (req, res, next) => {
     },
     { new: true },
   ).then((result) => {
-    console.log(result)
+    //console.log(result)
     res.status(201).json({
       message: 'Usuario editado con éxito ',
     })
@@ -233,6 +277,20 @@ userRouter.put('/updateUser', (req, res, next) => {
 
 /* DELETE */
 userRouter.delete('/deleteUser/:id', (req, res, next) => {
+  UserModel.findOne({ _id: req.params.id }).then((user) => {
+    if (user.card_id && user.card_id != '') {
+      CardModel.findByIdAndUpdate(
+        user.card_id,
+        {
+          is_user: false,
+          is_active: false,
+        },
+        { new: true },
+      ).then((card) => {
+        //console.log(card)
+      })
+    }
+  })
   UserModel.deleteOne({ _id: req.params.id }).then((result) => {
     res.status(201).json({
       message: 'Usuario eliminado exitosamente',

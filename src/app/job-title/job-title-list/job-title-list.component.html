@@ -35,14 +35,14 @@
             mat-button
             color="primary"
             (click)="
-              openDialog(element.id, element.name, element.department_id)
+              openDialog(element._id, element.name, element.department_id)
             "
           >
             <mat-icon aria-hidden="false" aria-label="Example edit icon">
               edit
             </mat-icon>
           </a>
-          <a mat-button color="warn" (click)="deleteJobTitle(element.id)">
+          <a mat-button color="warn" (click)="deleteJobTitle(element._id)">
             <mat-icon aria-hidden="false" aria-label="Delete button">
               delete
             </mat-icon>

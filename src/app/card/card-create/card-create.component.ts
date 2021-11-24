@@ -18,7 +18,7 @@ export class CardCreateComponent implements OnInit {
   addCard(form: NgForm) {
     if (form.invalid) return
     let card: ICard = {
-      id: null,
+      _id: null,
       UID: form.value.cardName,
       type: form.value.type,
       is_active: false,

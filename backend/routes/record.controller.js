@@ -38,6 +38,7 @@ recordRouter.delete('/deleteRecord/:id', (req, res, next) => {
 
 /* VALIDATE ACCESS AND ADD A RECORD*/
 recordRouter.get('/validateAccess/:uid', (req, res, next) => {
+  //console.log(req.params.uid)
   CardModel.findOne({ UID: req.params.uid })
     .then((result) => {
       if (result != null) {

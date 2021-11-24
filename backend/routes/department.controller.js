@@ -11,15 +11,21 @@ const departmentRouter = express.Router()
 
 /* CREATE */
 departmentRouter.post('/addDepartment', (req, res, next) => {
-  const department = new DepartmentModel({
-    name: req.body.name,
-  })
-  department.save().then((departmentCreated) => {
-    res.status(201).json({
-      message: 'Departamento agregado con éxito',
-      department_id: departmentCreated._id,
+  if (req.body.name && req.body.name != null) {
+    const department = new DepartmentModel({
+      name: req.body.name,
     })
-  })
+    department.save().then((departmentCreated) => {
+      res.status(201).json({
+        message: 'Departamento agregado con éxito',
+        department_id: departmentCreated._id,
+      })
+    })
+  } else {
+    res.status(201).json({
+      message: 'Error al agregar departamento',
+    })
+  }
 })
 
 /* READ */
@@ -36,17 +42,11 @@ departmentRouter.get('/getDepartments', (req, res, next) => {
 
 /* DELETE */
 departmentRouter.delete('/deleteDepartment/:id', (req, res, next) => {
-  JobTitleModel.find({ department_id: req.params.id }).then((result) => {
-    result.forEach((job) => {
-      JobTitleModel.updateOne(
-        { _id: job._id },
-        { department_id: null },
-        { new: true },
-      ).then((result) => {
-        //console.log(result)
-      })
-    })
-  })
+  JobTitleModel.updateMany(
+    { department_id: req.params.id },
+    { department_id: null },
+    { new: true },
+  ).then((result) => {})
   DepartmentModel.deleteOne({ _id: req.params.id }).then((result) => {
     //console.log(result)
     res.status(201).json({
@@ -57,14 +57,22 @@ departmentRouter.delete('/deleteDepartment/:id', (req, res, next) => {
 
 /*  UPDATE */
 departmentRouter.put('/updateDepartment', (req, res, next) => {
-  let id = req.body.id
-  let name = req.body.name
-  DepartmentModel.updateOne({ _id: id }, { name: name }).then((result) => {
-    //console.log(result)
-    res.status(201).json({
-      message: 'Departamento actualizado',
+  if (
+    req.body.id &&
+    req.body.name &&
+    req.body.id != '' &&
+    req.body.name != ''
+  ) {
+    DepartmentModel.updateOne(
+      { _id: req.body.id },
+      { name: req.body.name },
+    ).then((result) => {
+      //console.log(result)
+      res.status(201).json({
+        message: 'Departamento actualizado',
+      })
     })
-  })
+  }
 })
 
 module.exports = departmentRouter

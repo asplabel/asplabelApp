@@ -31,7 +31,7 @@ export class CardService {
       .post<{ message: string; cardID: string }>(this.url + '/addCard', newCard)
       .subscribe((responseData) => {
         console.log(responseData.message)
-        newCard.id = responseData.cardID
+        newCard._id = responseData.cardID
         this.cards.push(newCard)
         this.subjectCard.next([...this.cards])
       })
@@ -41,7 +41,7 @@ export class CardService {
     this.http
       .delete(this.url + '/deleteCard/' + id)
       .subscribe((result: { message: string }) => {
-        const updatedCards = this.cards.filter((card) => card.id != id)
+        const updatedCards = this.cards.filter((card) => card._id != id)
         this.cards = updatedCards
         this.subjectCard.next([...this.cards])
         console.log(result.message)

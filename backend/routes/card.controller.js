@@ -1,7 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const CardModel = require('../models/card')
-const UserModel = require('../models/user')
+const users = require('../models/user')
 
 const cardRouter = express.Router()
 
@@ -12,25 +12,36 @@ const cardRouter = express.Router()
  */
 /* CREATE */
 cardRouter.post('/addCard', (req, res, next) => {
-  const card = new CardModel({
-    UID: req.body.UID,
-    type: req.body.type,
-    is_active: false,
-    state: 'Salida',
-    is_user: false,
-  })
-  card.save().then((card) => {
-    res.status(201).json({
-      message: 'Tarjeta agregada con éxito',
-      card: card._id,
+  if (
+    req.body.UID &&
+    req.body.type &&
+    req.body.UID != '' &&
+    req.body.type != ''
+  ) {
+    const card = new CardModel({
+      UID: req.body.UID,
+      type: req.body.type,
+      is_active: false,
+      state: 'Salida',
+      is_user: false,
     })
-  })
+    card.save().then((card) => {
+      res.status(201).json({
+        message: 'Tarjeta agregada con éxito',
+        card: card._id,
+      })
+    })
+  } else {
+    res.status(201).json({
+      message: 'Error al agregar tarjeta',
+    })
+  }
 })
 
 /* READ ONE */
 cardRouter.get('/getCard/:id', (req, res, next) => {
   let id = req.params.id
-  console.log(id)
+  //console.log(id)
   CardModel.findOne({ _id: id }).then((card) => {
     res.status(201).json(card)
     //console.log(card)
@@ -38,45 +49,38 @@ cardRouter.get('/getCard/:id', (req, res, next) => {
 })
 
 /* READ */
-cardRouter.get('/getCards', async (req, res, next) => {
-  var cards = await CardModel.find()
-  for (let i = 0; i < cards.length; i++) {
-    let card = cards[i]
-    var user = await UserModel.findOne({ card_id: card._id })
-    if (user != null) {
-      card = {
-        id: card._id,
-        UID: card.UID,
-        type: card.type,
-        is_active: card.is_active,
-        is_user: card.is_user,
-        state: card.state,
-        user_id: user._id,
-        firstname: user.firstname,
-        lastname: user.lastname,
-      }
-    } else {
-      card = {
-        id: card._id,
-        UID: card.UID,
-        type: card.type,
-        is_active: card.is_active,
-        is_user: card.is_user,
-        state: card.state,
-        user_id: null,
-        firstname: null,
-        lastname: null,
-      }
-    }
-    cards[i] = card
-  }
-  res.status(201).json(cards)
+cardRouter.get('/getCards', (req, res, next) => {
+  CardModel.aggregate([
+    {
+      $lookup: {
+        from: 'users',
+        localField: '_id',
+        foreignField: 'card_id',
+        as: 'usuario',
+      },
+    },
+    {
+      $project: {
+        _id: 1,
+        UID: 1,
+        type: 1,
+        is_active: 1,
+        state: 1,
+        is_user: 1,
+        user_id: '$usuario._id',
+        firstname: '$usuario.firstname',
+        lastname: '$usuario.lastname',
+      },
+    },
+  ]).then((result) => {
+    res.status(201).json(result)
+  })
 })
 
 /* READ CARDS NOT ASIGNED*/
 cardRouter.get('/getCardsNotAsigned', (req, res, next) => {
   CardModel.find({ is_user: false }).then((cards) => {
-    console.log(cards)
+    //console.log(cards)
     for (let i = 0; i < cards.length; i++) {
       let card = cards[i]
       card = {
@@ -98,16 +102,14 @@ cardRouter.get('/getCardsNotAsigned', (req, res, next) => {
 
 /* DELETE */
 cardRouter.delete('/deleteCard/:id', (req, res, next) => {
-  UserModel.find({ card_id: req.params.id }).then((result) => {
+  users.find({ card_id: req.params.id }).then((result) => {
     if (result) {
       result.forEach((user) => {
-        UserModel.updateOne(
-          { _id: user._id },
-          { card_id: '' },
-          { new: true },
-        ).then((res) => {
-          console.log(res)
-        })
+        users
+          .updateOne({ _id: user._id }, { card_id: '' }, { new: true })
+          .then((res) => {
+            //console.log(res)
+          })
       })
     }
   })

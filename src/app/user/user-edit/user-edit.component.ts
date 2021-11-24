@@ -115,6 +115,7 @@ export class UserEditComponent implements OnInit {
               }),
             })
           }
+          this.date.setValue(this.form.get('date_of_birth').value)
         })
       }
     })
@@ -150,6 +151,7 @@ export class UserEditComponent implements OnInit {
     )
     this._route.navigateByUrl('/user/list')
   }
+  
   onImagePicked(event: Event) {
     const file = (event.target as HTMLInputElement).files[0]
     this.form.patchValue({ photo: file })

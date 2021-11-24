@@ -88,7 +88,9 @@ export class DepartmentListComponent
     })
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.departmentService.updateDepartment(id, result)
+      if (result) {
+        this.departmentService.updateDepartment(id, result)
+      }
     })
   }
 }

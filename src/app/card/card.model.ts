@@ -1,5 +1,5 @@
 export interface ICard {
-  id: string | null
+  _id: string | null
   UID: string
   type: string
   is_active: boolean

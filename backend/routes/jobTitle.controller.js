@@ -12,94 +12,104 @@ const jobTitleRouter = express.Router()
 
 /* CREATE */
 jobTitleRouter.post('/addJobTitle', (req, res, next) => {
-  const jobTitle = new JobTitleModel({
-    name: req.body.name,
-    department_id: req.body.department_id,
-  })
-  jobTitle.save().then((jobTitleCreated) => {
-    res.status(201).json({
-      message: 'Cargo agregado con éxito',
-      jobTitle_id: jobTitleCreated._id,
+  if (req.body.name && req.body.name != '') {
+    let jobTitle
+    if (req.body.department_id && req.body.department_id != '') {
+      jobTitle = new JobTitleModel({
+        name: req.body.name,
+        department_id: req.body.department_id,
+      })
+    } else {
+      jobTitle = new JobTitleModel({
+        name: req.body.name,
+      })
+    }
+    jobTitle.save().then((jobTitleCreated) => {
+      res.status(201).json({
+        message: 'Cargo agregado con éxito',
+        jobTitle_id: jobTitleCreated._id,
+      })
     })
-  })
+  } else {
+    res.status(201).json({
+      message: 'Error al agregar cargo',
+    })
+  }
 })
 
 /* READ */
 jobTitleRouter.get('/getJobTitles', (req, res, next) => {
-  JobTitleModel.find()
-    .sort({ name: 1 })
-    .populate('department_id')
-    .then((job_titles) => {
-      for (let i = 0; i < job_titles.length; i++) {
-        if (job_titles[i].department_id && job_titles[i].department_id != '') {
-          let jobTitle = {
-            id: job_titles[i]._id,
-            name: job_titles[i].name,
-            department_id: job_titles[i].department_id._id,
-            department_name: job_titles[i].department_id.name,
-          }
-          job_titles[i] = jobTitle
-        } else {
-          let jobTitle = {
-            id: job_titles[i]._id,
-            name: job_titles[i].name,
-            department_id: '',
-            department_name: '',
-          }
-          job_titles[i] = jobTitle
-        }
-      }
-      res.status(201).json({
-        message: 'Cargos listados',
-        jobTitles: job_titles,
-      })
+  JobTitleModel.aggregate([
+    {
+      $lookup: {
+        from: 'departments',
+        localField: 'department_id',
+        foreignField: '_id',
+        as: 'departamento',
+      },
+    },
+    {
+      $project: {
+        _id: 1,
+        name: 1,
+        department_id: 1,
+        department_name: '$departamento.name',
+      },
+    },
+    { $sort: { name: 1 } },
+  ]).then((job_titles) => {
+    res.status(201).json({
+      message: 'Cargos listados',
+      jobTitles: job_titles,
     })
+  })
 })
 
 /* UPDATE */
 jobTitleRouter.put('/updateJobTitle', (req, res, next) => {
-  let id = req.body.id
-  let name = req.body.name
-  let department_id = req.body.department_id
-  if ((department_id != null) & (department_id != '')) {
-    //console.log(id + ' ' + name + ' ' + department_id)
-    JobTitleModel.updateOne(
-      { _id: id },
-      { name: name, department_id: department_id },
-      { new: true },
-    ).then((result) => {
-      //console.log(result)
-      res.status(201).json({
-        message: 'Cargo editado con éxito',
+  if (
+    req.body.id &&
+    req.body.name &&
+    req.body.id != '' &&
+    req.body.name != ''
+  ) {
+    if (req.body.department_id && req.body.department_id != '') {
+      JobTitleModel.updateOne(
+        { _id: req.body.id },
+        { name: req.body.name, department_id: req.body.department_id },
+        { new: true },
+      ).then((result) => {
+        //console.log(result)
+        res.status(201).json({
+          message: 'Cargo editado con éxito',
+        })
       })
-    })
+    } else {
+      JobTitleModel.updateOne(
+        { _id: req.body.id },
+        { name: req.body.name, department_id: null },
+        { new: true },
+      ).then((result) => {
+        res.status(201).json({
+          message: 'Cargo editado con éxito',
+        })
+      })
+    }
   } else {
-    // console.log(id + ' ' + name + ' ' + department_id)
-    JobTitleModel.updateOne(
-      { _id: id },
-      { name: name, department_id: null },
-      { new: true },
-    ).then((result) => {
-      //console.log(result)
-      res.status(201).json({
-        message: 'Cargo editado con éxito',
-      })
+    res.status(201).json({
+      message: 'Error al editar el cargo',
     })
   }
 })
 
 /* DELETE */
 jobTitleRouter.delete('/deleteJobTitle/:id', (req, res, next) => {
-  UserModel.find({ job_title_id: req.params.id }).then((result) => {
-    result.forEach((user) => {
-      UserModel.updateOne(
-        { _id: user._id },
-        { job_title_id: null },
-        { new: true },
-      ).then((res) => {
-        console.log(res)
-      })
-    })
+  UserModel.updateMany(
+    { job_title_id: req.params.id },
+    { job_title_id: null },
+    { new: true },
+  ).then((result) => {
+    console.log(result)
   })
   JobTitleModel.deleteOne({ _id: req.params.id }).then((result) => {
     //console.log(result)
@@ -108,4 +118,5 @@ jobTitleRouter.delete('/deleteJobTitle/:id', (req, res, next) => {
     })
   })
 })
+
 module.exports = jobTitleRouter

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const recordSchema = mongoose.Schema({
-  id: { type: String },
+  id: { type: mongoose.Types.ObjectId },
   firstname: { type: String, required: true, maxLength: 80 },
   lastname: { type: String, required: true, maxLength: 80 },
   date: { type: String, require: true },
