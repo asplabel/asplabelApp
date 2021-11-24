@@ -3,11 +3,11 @@
 <br />
 <app-brand title="Editar colaborador"></app-brand>
 <mat-card>
-  <form (submit)="saveChanges()" [formGroup]="form">
+  <div [formGroup]="form">
     <!-- Input user firstname-->
     <section>
       <mat-form-field class="example-form-field" appearance="fill">
-        <mat-label>Nombres:</mat-label>
+        <mat-label>Nombres: {{ form.get('firstname').invalid }}</mat-label>
         <input
           matInput
           type="text"
@@ -15,10 +15,9 @@
           formControlName="firstname"
           [value]="form?.get('firstname').value"
         />
-        <mat-error *ngIf="form?.get('firstname').invalid">
+        <mat-error *ngIf="form.get('firstname').invalid">
           Por favor ingrese el nombre del colaborador. Maximo 80 caractéres.
         </mat-error>
-
         <button
           *ngIf="
             form.get('firstname').value != null ||
@@ -257,9 +256,15 @@
       >
         Regresar
       </button>
-      <button mat-button class="button" type="submit" style="margin-left: 2%;">
+      <button
+        mat-button
+        class="button"
+        style="margin-left: 2%;"
+        type="button"
+        (click)="saveChanges()"
+      >
         Guardar cambios
       </button>
     </section>
-  </form>
+  </div>
 </mat-card>

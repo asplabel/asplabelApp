@@ -90,6 +90,7 @@ userRouter.post('/addUser', (req, res, next) => {
       address: req.body.address,
       date_of_birth: req.body.date_of_birth,
       is_active: req.body.is_active,
+      job_title_id: mongoose.Types.ObjectId(req.body.job_title_id),
       role_id: mongoose.Types.ObjectId(roleColaborador),
       card_id: null,
       type: req.body.type,

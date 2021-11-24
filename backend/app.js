@@ -2,7 +2,6 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 
-
 const departmentRouter = require('./routes/department.controller')
 const jobTitleRouter = require('./routes/jobTitle.controller')
 const cardRouter = require('./routes/card.controller')

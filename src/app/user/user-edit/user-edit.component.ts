@@ -71,12 +71,36 @@ export class UserEditComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.jobTitleService.getJobTitles()
-    this.subJobTitles = this.jobTitleService
-      .getSubjectJobTitles()
-      .subscribe((data) => {
-        this.jobTitles = data
-      })
+    this.form = new FormGroup({
+      /* Primer argumento: valor inicial*/
+      firstname: new FormControl(null, {
+        validators: [Validators.required, Validators.maxLength(80)],
+      }),
+      lastname: new FormControl(null, {
+        validators: [Validators.required, Validators.maxLength(80)],
+      }),
+      email: new FormControl(null, {
+        validators: [Validators.email, Validators.maxLength(120)],
+      }),
+      phone: new FormControl(null, {
+        validators: Validators.maxLength(30),
+      }),
+      document: new FormControl(null, {
+        validators: [Validators.required, Validators.maxLength(20)],
+      }),
+      address: new FormControl(null, {
+        validators: Validators.maxLength(200),
+      }),
+      date_of_birth: new FormControl(null),
+      is_active: new FormControl(null, {
+        validators: Validators.required,
+      }),
+      job_title_id: new FormControl(null),
+      type: new FormControl(null),
+      photo: new FormControl(null, {
+        asyncValidators: [mimeType],
+      }),
+    })
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has('id')) {
         this.userid = paramMap.get('id')
@@ -114,13 +138,16 @@ export class UserEditComponent implements OnInit {
                 asyncValidators: [mimeType],
               }),
             })
-            this.date = new FormControl(
-              moment(user.date_of_birth, 'MM-DD-YYYY'),
-            )
           }
         })
       }
     })
+    this.jobTitleService.getJobTitles()
+    this.subJobTitles = this.jobTitleService
+      .getSubjectJobTitles()
+      .subscribe((data) => {
+        this.jobTitles = data
+      })
   }
 
   saveChanges() {
@@ -134,10 +161,39 @@ export class UserEditComponent implements OnInit {
     let phone = this.form.get('phone').value
     let document = this.form.get('document').value
     let address = this.form.get('address').value
-    let date_of_birth = this.form.get('date_of_birth').value
     let is_active = this.form.get('is_active').value
     let job_title_id = this.form.get('job_title_id').value
     let type = this.form.get('type').value
+    let userBirth = this.form.get('date_of_birth').value
+    console.log(userBirth)
+    console.dir(userBirth)
+    let date_of_birth = ''
+    if (userBirth && userBirth != '') {
+      if (userBirth._f) {
+        if (userBirth._i != undefined) {
+          date_of_birth = userBirth._i
+        } else {
+          date_of_birth = userBirth
+        }
+      } else {
+        if (userBirth._i != undefined) {
+          if (userBirth._i.month + 1 < 10) {
+            date_of_birth = '0' + (userBirth._i.month + 1) + '/'
+          } else {
+            date_of_birth = userBirth._i.month + 1 + '/'
+          }
+          if (userBirth._i.date < 10) {
+            date_of_birth =
+              date_of_birth + '0' + userBirth._i.date + '/' + userBirth._i.year
+          } else {
+            date_of_birth =
+              date_of_birth + userBirth._i.date + '/' + userBirth._i.year
+          }
+        } else {
+          date_of_birth = userBirth
+        }
+      }
+    }
     this.userService.updateUser(
       id,
       firstname,
