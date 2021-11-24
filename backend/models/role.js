@@ -6,4 +6,4 @@ const RoleSchema = mongoose.Schema({
   description: { type: String, required: false, maxLength: 350 },
 })
 
-module.exports = mongoose.model('Role', RoleSchema)
+module.exports = mongoose.model('roles', RoleSchema)

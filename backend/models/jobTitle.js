@@ -12,4 +12,4 @@ const jobTitleSchema = mongoose.Schema({
   },
 })
 
-module.exports = mongoose.model('JobTitle', jobTitleSchema)
+module.exports = mongoose.model('jobtitles', jobTitleSchema)

@@ -114,8 +114,10 @@ export class UserEditComponent implements OnInit {
                 asyncValidators: [mimeType],
               }),
             })
+            this.date = new FormControl(
+              moment(user.date_of_birth, 'MM-DD-YYYY'),
+            )
           }
-          this.date.setValue(this.form.get('date_of_birth').value)
         })
       }
     })
@@ -151,7 +153,7 @@ export class UserEditComponent implements OnInit {
     )
     this._route.navigateByUrl('/user/list')
   }
-  
+
   onImagePicked(event: Event) {
     const file = (event.target as HTMLInputElement).files[0]
     this.form.patchValue({ photo: file })

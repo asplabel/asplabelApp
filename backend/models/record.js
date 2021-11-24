@@ -9,4 +9,4 @@ const recordSchema = mongoose.Schema({
   type: { type: String, required: true, enum: ['Ingreso', 'Salida'] },
 })
 
-module.exports = mongoose.model('Record', recordSchema)
+module.exports = mongoose.model('records', recordSchema)

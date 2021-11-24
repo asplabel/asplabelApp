@@ -101,8 +101,7 @@ export class UserCreateComponent implements OnInit {
     if (form.invalid) {
       return
     }
-    let date = null
-    console.dir(this.date)
+    let date
     if (this.userBirth) {
       if (this.userBirth._f) {
         date = this.userBirth._i
@@ -125,9 +124,9 @@ export class UserCreateComponent implements OnInit {
         }
       }
     }
-    console.log(date)
+
     let user: IUser = {
-      id: null,
+      _id: null,
       firstname: form.value.userFirstname,
       lastname: form.value.userLastname,
       email: this.userEmail,
@@ -142,6 +141,12 @@ export class UserCreateComponent implements OnInit {
       department_name: null,
       card_id: null,
       card_UID: null,
+    }
+    if (user.date_of_birth == undefined) {
+      user.date_of_birth = ''
+    }
+    if (user.email == undefined) {
+      user.email = ''
     }
     //console.dir(user)
     this.userService.addUser(user)

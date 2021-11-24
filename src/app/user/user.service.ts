@@ -29,6 +29,7 @@ export class UserService {
 
   addUser(newUser: IUser) {
     //console.log('add User')
+    console.dir(newUser)
     this.http
       .post<{ message: string; user_id: string }>(
         this.url + '/addUser',
@@ -74,7 +75,7 @@ export class UserService {
     this.http
       .delete(this.url + '/deleteUser/' + id)
       .subscribe((result: { message: string }) => {
-        const updatedUsers = this.users.filter((user) => user.id != id)
+        const updatedUsers = this.users.filter((user) => user._id != id)
         this.users = updatedUsers
         this.subjectUser.next([...this.users])
       })

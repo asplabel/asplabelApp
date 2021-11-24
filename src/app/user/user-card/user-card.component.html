@@ -35,7 +35,7 @@
           Selecciona el codigo de la tarjeta
         </mat-label>
         <mat-select ngModel name="selected" #selected required>
-          <mat-option *ngFor="let card of cards" value="{{ card.id }}">
+          <mat-option *ngFor="let card of cards" value="{{ card._id }}">
             {{ card.UID }}
           </mat-option>
         </mat-select>

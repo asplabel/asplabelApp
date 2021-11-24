@@ -163,13 +163,16 @@
     <!-- Fecha de Nacimiento -->
     <section>
       <mat-form-field class="example-form-field" appearance="fill">
-        <mat-label>Fecha de Nacimiento</mat-label>
+        <mat-label>
+          Fecha de Nacimiento:
+        </mat-label>
         <input
           matInput
           [matDatepicker]="picker"
           [formControl]="date"
           formControlName="date_of_birth"
           [value]="form?.get('date_of_birth').value"
+          [placeholder]="form?.get('date_of_birth').value"
         />
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
@@ -202,7 +205,7 @@
           formControlName="job_title_id"
           [value]="form?.get('job_title_id').value"
         >
-          <mat-option *ngFor="let jobTitle of jobTitles" [value]="jobTitle.id">
+          <mat-option *ngFor="let jobTitle of jobTitles" [value]="jobTitle._id">
             {{ jobTitle.name }}
           </mat-option>
         </mat-select>

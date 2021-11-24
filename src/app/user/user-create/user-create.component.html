@@ -201,7 +201,7 @@
         <mat-select ngModel name="jobtitle_id">
           <mat-option
             *ngFor="let jobTitle of jobTitles"
-            value="{{ jobTitle.id }}"
+            value="{{ jobTitle._id }}"
           >
             {{ jobTitle.name }}
           </mat-option>
