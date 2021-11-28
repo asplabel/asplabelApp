@@ -22,7 +22,7 @@
       matSuffix
       mat-icon-button
       aria-label="Clear"
-      (click)="cardName.reset()"
+      (click)="data.UID = ''"
     >
       <mat-icon>close</mat-icon>
     </button>
@@ -43,9 +43,7 @@
 </div>
 <div mat-dialog-actions>
   <mat-form-field class="example-form-field" appearance="fill">
-    <mat-label>
-      Activación
-    </mat-label>
+    <mat-label>Activación {{ data.is_active }}</mat-label>
     <mat-select [(ngModel)]="data.is_active" placeholder="Seleccionar el tipo">
       <mat-option [value]="true">
         Activada

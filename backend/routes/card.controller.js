@@ -119,7 +119,14 @@ cardRouter.put('/updateCard', (req, res, next) => {
   let type = req.body.type
   let is_active = req.body.is_active
   let state = req.body.state
-  if (id && UID && type && is_active && state) {
+
+  if (
+    id != null &&
+    UID != null &&
+    type != null &&
+    is_active != null &&
+    state != null
+  ) {
     CardModel.updateOne(
       { _id: id },
       { UID: UID, type: type, is_active: is_active, state: state },
@@ -129,6 +136,10 @@ cardRouter.put('/updateCard', (req, res, next) => {
       res.status(201).json({
         message: 'Tarjeta editada con éxito',
       })
+    })
+  } else {
+    res.status(201).json({
+      message: 'Error: no fue posible editar la tarjeta',
     })
   }
 })

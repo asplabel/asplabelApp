@@ -33,7 +33,6 @@ export class MonitorService {
       )
       .subscribe((recordsData) => {
         this.records = recordsData
-        //console.dir(this.records)
         this.subjectRecord.next([...this.records])
       })
   }

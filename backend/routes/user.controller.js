@@ -67,11 +67,12 @@ userRouter.get('/getUsers', (req, res, next) => {
         department_name: '$department.name',
         type: 1,
         is_active: 1,
-        card_id: '$card._id',
-        card_UID: '$card.UID',
+        card_id: { $ifNull: ['$card._id', ''] },
+        card_UID: { $ifNull: ['$card.UID', ''] },
       },
     },
   ]).then((result) => {
+    //console.log(result)
     res.status(201).json(result)
   })
 })
@@ -156,28 +157,36 @@ userRouter.put('/updateUser', (req, res, next) => {
       type: userUpdate.type,
     },
     { new: true },
-  ).then((result) => {
-    //console.log(result)
-    res.status(201).json({
-      message: 'Usuario editado con éxito ',
+  )
+    .then((result) => {
+      //console.log(result)
+      res.status(201).json({
+        message: 'Usuario editado con éxito ',
+      })
     })
-  })
+    .catch((err) => {
+      res.status(201).json({
+        message: 'Error: ' + err,
+      })
+    })
 })
 
 /* DELETE */
 userRouter.delete('/deleteUser/:id', (req, res, next) => {
   UserModel.findOne({ _id: req.params.id }).then((user) => {
-    if (user.card_id && user.card_id != '') {
-      CardModel.findByIdAndUpdate(
-        user.card_id,
-        {
-          is_user: false,
-          is_active: false,
-        },
-        { new: true },
-      ).then((card) => {
-        //console.log(card)
-      })
+    if (user) {
+      if (user.card_id && user.card_id != '') {
+        CardModel.findByIdAndUpdate(
+          user.card_id,
+          {
+            is_user: false,
+            is_active: false,
+          },
+          { new: true },
+        ).then((card) => {
+          //console.log(card)
+        })
+      }
     }
   })
   UserModel.deleteOne({ _id: req.params.id }).then((result) => {
@@ -191,16 +200,65 @@ userRouter.delete('/deleteUser/:id', (req, res, next) => {
 userRouter.post('/asignarTarjeta', (req, res, next) => {
   let card_id = req.body.card_id
   let user_id = req.body.user_id
-  UserModel.findOne({ _id: user_id }).then((user) => {
-    if (user.card_id == null) {
-      UserModel.findByIdAndUpdate(
-        user_id,
-        { card_id: card_id },
-        { new: true },
-      ).then((user) => {
-        // console.log(user)
+  if (card_id && user_id && card_id != '' && user_id != '') {
+    UserModel.findOne({ _id: user_id })
+      .then((user) => {
+        if (user.card_id == null && user.card_id != '') {
+          UserModel.findByIdAndUpdate(
+            user_id,
+            { card_id: card_id },
+            { new: true },
+          ).then((user) => {
+            //console.log('tarjeta asignada a: ' + user)
+          })
+        } else {
+          CardModel.findByIdAndUpdate(
+            user.card_id,
+            {
+              is_user: false,
+              is_active: false,
+            },
+            { new: true },
+          ).then((card) => {
+            //console.log('liberar tarjeta anterior: ' + card)
+          })
+          UserModel.findByIdAndUpdate(
+            user_id,
+            { card_id: card_id },
+            { new: true },
+          ).then((u) => {
+            //console.log('Tarjeta asignada a: ' + u)
+          })
+        }
       })
-    } else {
+      .catch((err) => {
+        res.status(201).json('Error: ' + err)
+      })
+    CardModel.findByIdAndUpdate(
+      card_id,
+      { is_user: true, is_active: true },
+      { new: true },
+    )
+      .then((card) => {
+       // console.log('tarjeta actualizada:' + card)
+      })
+      .catch((err) => {
+        res.status(201).json('Error: ' + err)
+      })
+
+    res.status(201).json('Tarjeta asignada')
+  }
+})
+
+/*
+QUITAR TARJETA
+*/
+userRouter.get('/quitarTarjeta/:id', async (req, res, next) => {
+  //console.log(req.params.id)
+  UserModel.findById(req.params.id).then((user) => {
+    // El usuario tenía una tarjeta asignada
+    if (user.card_id) {
+      // Se libera la tarjeta
       CardModel.findByIdAndUpdate(
         user.card_id,
         {
@@ -209,51 +267,21 @@ userRouter.post('/asignarTarjeta', (req, res, next) => {
         },
         { new: true },
       ).then((card) => {
-        //console.log(card)
+        // Se pone null en el valor del id de la tarjeta del usuario
+        UserModel.findByIdAndUpdate(
+          req.params.id,
+          { card_id: null },
+          { new: true },
+        ).then((user) => {
+          //console.log('Usuario sin tarjeta: ' + user)
+          //console.log('tarjeta liberada: ' + card)
+          res.status(201).json('Se ha quitado la tarjeta de: ' + user.firstname)
+        })
       })
-      UserModel.findByIdAndUpdate(
-        user_id,
-        { card_id: card_id },
-        { new: true },
-      ).then((user) => {
-        //console.log(user)
-      })
+    } else {
+      //console.log('No card_id: ' + user.card_id)
+      res.status(201).json('Error: No hay tarjeta')
     }
   })
-  CardModel.findByIdAndUpdate(
-    card_id,
-    { is_user: true, is_active: true },
-    { new: true },
-  ).then((card) => {
-    // console.log(card)
-  })
-  res.status(201).json('Tarjeta asignada')
-})
-
-/*
-QUITAR TARJETA
-*/
-userRouter.get('/quitarTarjeta/:id', (req, res, next) => {
-  //console.log(req.params.id)
-  UserModel.findById(req.params.id).then((user) => {
-    CardModel.findByIdAndUpdate(
-      user.card_id,
-      {
-        is_user: false,
-        is_active: false,
-      },
-      { new: true },
-    ).then((card) => {
-      //console.log(card)
-    })
-  })
-  UserModel.findByIdAndUpdate(
-    req.params.id,
-    { card_id: null },
-    { new: true },
-  ).then((user) => {
-    //console.log(user)
-  })
-  res.status(201).json('Tarjeta quitada')
 })
 module.exports = userRouter

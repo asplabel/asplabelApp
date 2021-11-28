@@ -109,7 +109,7 @@ jobTitleRouter.delete('/deleteJobTitle/:id', (req, res, next) => {
     { job_title_id: null },
     { new: true },
   ).then((result) => {
-    console.log(result)
+    //console.log(result)
   })
   JobTitleModel.deleteOne({ _id: req.params.id }).then((result) => {
     //console.log(result)

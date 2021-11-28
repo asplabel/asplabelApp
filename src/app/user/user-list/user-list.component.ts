@@ -56,6 +56,7 @@ export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatPaginator) paginator: MatPaginator
 
   ngOnInit(): void {
+    console.log('ngOnInit() \n')
     this.isLoading = true
     this.isData = true
     this.userService.getUsers()
@@ -74,10 +75,10 @@ export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
+    console.log('ngAfterViewInit() \n')
     this.userService.getUsers()
     this.subUsers = this.userService.getSubjectUser().subscribe((data) => {
       this.users = data
-      //console.dir(data)
       this.dataSource = new MatTableDataSource<IUser>(this.users)
       this.dataSource.sort = this.sort
       this.dataSource.paginator = this.paginator

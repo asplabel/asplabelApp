@@ -17,7 +17,9 @@ export class UserService {
     return this.http.get(this.url + '/getUser/' + id)
   }
   getUsers() {
+    //return this.http.get<IUser[]>(this.url + '/getUsers')
     this.http.get(this.url + '/getUsers').subscribe((usersData: IUser[]) => {
+      console.dir(usersData)
       this.users = usersData
       this.subjectUser.next([...this.users])
     })
@@ -87,7 +89,6 @@ export class UserService {
         card_id: card_id,
       })
       .subscribe((response) => {
-        //console.log(response)
         this.getUsers()
       })
   }

@@ -105,6 +105,7 @@ export class CardListComponent implements OnInit, AfterViewInit, OnDestroy {
       })
       dialogRef.afterClosed().subscribe((result: cardData) => {
         if (result != undefined) {
+          console.log(result)
           this.cardService.updateCard(
             id,
             result.UID,

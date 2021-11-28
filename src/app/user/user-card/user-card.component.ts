@@ -1,8 +1,8 @@
-
 import { Component, OnInit } from '@angular/core'
 import { NgForm } from '@angular/forms'
 import { ActivatedRoute, ParamMap, Router } from '@angular/router'
 import { Subscription } from 'rxjs'
+import { delay } from 'rxjs/operators'
 import { ICard } from 'src/app/card/card.model'
 import { CardService } from 'src/app/card/card.service'
 import { IUser } from '../user.model'
@@ -32,6 +32,7 @@ export class UserCardComponent implements OnInit {
         this.userid = paramMap.get('id')
         this.userService.getUser(this.userid).subscribe((user: IUser) => {
           this.user = user
+          //console.dir(this.user)
         })
       }
     })
@@ -43,15 +44,27 @@ export class UserCardComponent implements OnInit {
       })
   }
   quitarTarjeta() {
-    this.userService.quitarTarjeta(this.userid)
-    this._route.navigateByUrl('/user/list')
+    this.route.paramMap.subscribe((paramMap: ParamMap) => {
+      if (paramMap.has('id')) {
+        this.userid = paramMap.get('id')
+        this.userService.quitarTarjeta(this.userid)
+      }
+
+      this._route.navigateByUrl('/user/list')
+    })
   }
+
   asignCard(form: NgForm) {
     if (form.invalid) {
       return
     }
-    this.userService.asignarTarjeta(this.userid, form.value.selected)
-    form.reset()
+    this.route.paramMap.subscribe((paramMap: ParamMap) => {
+      if (paramMap.has('id')) {
+        this.userid = paramMap.get('id')
+        this.userService.asignarTarjeta(this.userid, form.value.selected)
+      }
+    })
+    delay(8000)
     this._route.navigateByUrl('/user/list')
   }
 }

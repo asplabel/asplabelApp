@@ -2,11 +2,7 @@
 <br />
 <app-brand title="Agregar departamento"></app-brand>
 <mat-card>
-  <form
-    action=""
-    (submit)="addDepartment(departmentForm)"
-    #departmentForm="ngForm"
-  >
+  <form (submit)="addDepartment(departmentForm)" #departmentForm="ngForm">
     <!-- Input job title name-->
     <section>
       <mat-form-field
@@ -33,6 +29,7 @@
           matSuffix
           mat-icon-button
           aria-label="Clear"
+          type="button"
           (click)="departmentForm.reset()"
         >
           <mat-icon>close</mat-icon>

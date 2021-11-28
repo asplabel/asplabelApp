@@ -11,6 +11,7 @@ import { MatTableDataSource } from '@angular/material/table'
 import { Subscription } from 'rxjs'
 import { MonitorService } from './monitor.service'
 import { IRecord } from './record.model'
+import { MatSnackBar } from '@angular/material/snack-bar'
 
 @Component({
   selector: 'app-monitor',
@@ -32,7 +33,10 @@ export class MonitorComponent implements OnInit, AfterViewInit, OnDestroy {
   isLoading: boolean
   isData: boolean
 
-  constructor(private recordService: MonitorService) {}
+  constructor(
+    private recordService: MonitorService,
+    private _snackBar: MatSnackBar,
+  ) {}
 
   @ViewChild(MatSort) sort: MatSort
   @ViewChild(MatPaginator) paginator: MatPaginator
@@ -79,7 +83,11 @@ export class MonitorComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   deleteRecord(id: string) {
-    //console.log(id)
-    this.recordService.deleteRecord(id)
+    this._snackBar
+      .open('¿Desea eliminar el registro?', 'Sí', { duration: 2000 })
+      .onAction()
+      .subscribe(() => {
+        this.recordService.deleteRecord(id)
+      })
   }
 }

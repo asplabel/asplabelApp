@@ -34,6 +34,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 import { CardModule } from './card/card.module'
 import { UserModule } from './user/user.module'
 import { BrandModule } from './brand/brand.module'
+import { MatSnackBarModule } from '@angular/material/snack-bar'
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { BrandModule } from './brand/brand.module'
     BrowserAnimationsModule,
     HttpClientModule,
     MatInputModule,
+    MatSnackBarModule,
     MatButtonModule,
     MatCardModule,
     MatToolbarModule,

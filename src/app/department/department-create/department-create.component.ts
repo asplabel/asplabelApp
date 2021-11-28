@@ -4,7 +4,6 @@ import { IDepartment } from '../department.model'
 import { DepartmentService } from '../department.service'
 import { Location } from '@angular/common'
 
-
 @Component({
   selector: 'app-department-create',
   templateUrl: './department-create.component.html',
@@ -22,13 +21,13 @@ export class DepartmentCreateComponent implements OnInit {
     if (form.invalid) {
       return
     }
+    //console.log(form.value.nameDepartment)
     const newDepartment: IDepartment = {
       _id: null,
       name: form.value.nameDepartment,
     }
     this.departmentService.addDepartment(newDepartment)
     form.reset()
-    alert
     this._location.back()
   }
 }
