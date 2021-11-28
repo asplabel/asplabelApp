@@ -80,6 +80,7 @@ export class MonitorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subRecord.unsubscribe
+    this._snackBar.ngOnDestroy()
   }
 
   deleteRecord(id: string) {

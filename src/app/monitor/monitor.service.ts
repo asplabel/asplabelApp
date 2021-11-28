@@ -1,18 +1,20 @@
 import { HttpClient } from '@angular/common/http'
-import { Injectable } from '@angular/core'
+import { Component, Injectable } from '@angular/core'
 import { Subject } from 'rxjs'
 import { IRecord } from './record.model'
 import { map } from 'rxjs/operators'
+import { MatSnackBar } from '@angular/material/snack-bar'
 
 @Injectable({
   providedIn: 'root',
 })
+
 export class MonitorService {
   records: IRecord[] = []
   subjectRecord = new Subject<IRecord[]>()
 
   url: string = 'http://localhost:3000'
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private _snackBar: MatSnackBar) {}
 
   getRecords() {
     this.http
@@ -48,7 +50,9 @@ export class MonitorService {
         const updatedRecords = this.records.filter((record) => record.id != id)
         this.records = updatedRecords
         this.subjectRecord.next([...this.records])
-        console.log(result.message)
+        this._snackBar.open('' + result.message, '', {
+          duration: 2000,
+        })
       })
   }
 }
