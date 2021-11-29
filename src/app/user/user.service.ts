@@ -91,6 +91,7 @@ export class UserService {
       .subscribe((response) => {
         this.getUsers()
       })
+    this.getUsers()
   }
   quitarTarjeta(user_id: string) {
     this.http
@@ -99,5 +100,6 @@ export class UserService {
         //console.log(response)
         this.getUsers()
       })
+    this.getUsers()
   }
 }

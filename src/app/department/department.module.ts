@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms'
 
 import { DepartmentListComponent } from './department-list/department-list.component'
 import { DepartmentCreateComponent } from './department-create/department-create.component'
-import { DepartmentDeleteComponent } from './department-delete/department-delete.component'
 import { DepartmentEditComponent } from './department-edit/department-edit.component'
 import { MatCardModule } from '@angular/material/card'
 import { MatFormFieldModule } from '@angular/material/form-field'
@@ -19,18 +18,17 @@ import { MatPaginatorModule } from '@angular/material/paginator'
 import { BrandModule } from '../brand/brand.module'
 import { MatDialogModule } from '@angular/material/dialog'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
+import { MatSnackBarModule } from '@angular/material/snack-bar'
 
 @NgModule({
   declarations: [
     DepartmentListComponent,
     DepartmentCreateComponent,
-    DepartmentDeleteComponent,
     DepartmentEditComponent,
   ],
   exports: [
     DepartmentListComponent,
     DepartmentCreateComponent,
-    DepartmentDeleteComponent,
     DepartmentEditComponent,
   ],
   imports: [
@@ -41,6 +39,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
     MatFormFieldModule,
     MatTableModule,
     MatInputModule,
+    MatSnackBarModule,
     MatButtonModule,
     MatTableModule,
     MatSortModule,

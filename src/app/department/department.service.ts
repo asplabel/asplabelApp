@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core'
 import { Subject } from 'rxjs'
 import { HttpClient } from '@angular/common/http'
-import { map } from 'rxjs/operators'
+import { MatSnackBar } from '@angular/material/snack-bar'
 import { IDepartment } from './department.model'
 
 @Injectable({
@@ -13,28 +13,21 @@ export class DepartmentService {
 
   url: string = 'http://localhost:3000'
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private _snackBar: MatSnackBar) {}
 
   getDepartments() {
     this.http
       .get<{ message: string; departments: IDepartment[] }>(
         this.url + '/getDepartments',
       )
-      .subscribe(
-        (departmentsData: { message: string; departments: IDepartment[] }) => {
-          this.departments = departmentsData.departments
-          this.subjectDepartment.next([...this.departments])
-        },
-      )
-    //return [...this.jobTitles]
+      .subscribe((departmentsData: { departments: IDepartment[] }) => {
+        this.departments = departmentsData.departments
+        this.subjectDepartment.next([...this.departments])
+      })
   }
 
   getSubjectDepartments() {
     return this.subjectDepartment.asObservable()
-  }
-
-  getOneDepartment(id: String) {
-    return { ...this.departments.find((department) => department._id === id) }
   }
 
   addDepartment(newDepartment: IDepartment) {
@@ -43,11 +36,10 @@ export class DepartmentService {
         this.url + '/addDepartment',
         newDepartment,
       )
-      .subscribe((responseData) => {
-        console.log(responseData.message)
-        newDepartment._id = responseData.department_id
-        this.departments.push(newDepartment)
-        this.subjectDepartment.next([...this.departments])
+      .subscribe((responseData: { message: string }) => {
+        this._snackBar.open('' + responseData.message, '', {
+          duration: 2000,
+        })
       })
   }
 
@@ -55,12 +47,10 @@ export class DepartmentService {
     this.http
       .delete(this.url + '/deleteDepartment/' + id)
       .subscribe((result: { message: string }) => {
-        const updatedDepartments = this.departments.filter(
-          (department) => department._id != id,
-        )
-        this.departments = updatedDepartments
-        this.subjectDepartment.next([...this.departments])
-        console.log(result.message)
+        this.getDepartments()
+        this._snackBar.open('' + result.message, '', {
+          duration: 2000,
+        })
       })
   }
 
@@ -71,8 +61,10 @@ export class DepartmentService {
         name: name,
       })
       .subscribe((response: { message: string }) => {
-        console.log(response)
         this.getDepartments()
+        this._snackBar.open('' + response.message, '', {
+          duration: 2000,
+        })
       })
   }
 }

@@ -10,15 +10,19 @@ const departmentRouter = express.Router()
  */
 
 /* CREATE */
+/*
+ * Crear un departamento
+ * @param name: El nombre del nuevo departamento
+ */
 departmentRouter.post('/addDepartment', (req, res, next) => {
-  if (req.body.name && req.body.name != null) {
+  // Verificar que el nombre no sea nulo ni vacío
+  if (req.body.name && req.body.name != '') {
     const department = new DepartmentModel({
       name: req.body.name,
     })
     department.save().then((departmentCreated) => {
       res.status(201).json({
         message: 'Departamento agregado con éxito',
-        department_id: departmentCreated._id,
       })
     })
   } else {
@@ -29,18 +33,24 @@ departmentRouter.post('/addDepartment', (req, res, next) => {
 })
 
 /* READ */
+/*
+ * Listar departamentos
+   return los departamentos
+ */
 departmentRouter.get('/getDepartments', (req, res, next) => {
   DepartmentModel.find()
     .sort({ name: 1 })
     .then((departments) => {
       res.status(200).json({
-        message: 'Departamentos enviados con éxito',
         departments: departments,
       })
     })
 })
 
 /* DELETE */
+/*
+ *
+ */
 departmentRouter.delete('/deleteDepartment/:id', (req, res, next) => {
   JobTitleModel.updateMany(
     { department_id: req.params.id },
@@ -56,6 +66,9 @@ departmentRouter.delete('/deleteDepartment/:id', (req, res, next) => {
 })
 
 /*  UPDATE */
+/*
+ * @param name : Nombre nuevo del departamento
+ */
 departmentRouter.put('/updateDepartment', (req, res, next) => {
   if (
     req.body.id &&
@@ -66,11 +79,14 @@ departmentRouter.put('/updateDepartment', (req, res, next) => {
     DepartmentModel.updateOne(
       { _id: req.body.id },
       { name: req.body.name },
-    ).then((result) => {
-      //console.log(result)
+    ).then(() => {
       res.status(201).json({
         message: 'Departamento actualizado',
       })
+    })
+  } else {
+    res.status(201).json({
+      message: 'Error al actualizar el departamento',
     })
   }
 })

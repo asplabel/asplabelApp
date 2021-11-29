@@ -7,6 +7,7 @@ import {
 } from '@angular/core'
 import { MatDialog } from '@angular/material/dialog'
 import { MatPaginator } from '@angular/material/paginator'
+import { MatSnackBar } from '@angular/material/snack-bar'
 import { MatSort } from '@angular/material/sort'
 import { MatTableDataSource } from '@angular/material/table'
 import { Subscription } from 'rxjs'
@@ -31,6 +32,7 @@ export class DepartmentListComponent
   constructor(
     public departmentService: DepartmentService,
     public dialog: MatDialog,
+    private _snackBar: MatSnackBar,
   ) {}
 
   @ViewChild(MatSort) sort: MatSort
@@ -78,7 +80,12 @@ export class DepartmentListComponent
   }
 
   deleteDepartment(id: string) {
-    this.departmentService.deleteDepartment(id)
+    this._snackBar
+      .open('¿Desea eliminar el departamento?', 'Sí', { duration: 3000 })
+      .onAction()
+      .subscribe(() => {
+        this.departmentService.deleteDepartment(id)
+      })
   }
 
   openDialog(id: string, name: string): void {
