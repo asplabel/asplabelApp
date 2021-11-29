@@ -59,7 +59,7 @@ app.use(cardRouter)
 app.use(userRouter)
 
 /*
- *
+ * Usar las urls que controla el Router de Records (Monitor)
  */
 app.use(recordRouter)
 

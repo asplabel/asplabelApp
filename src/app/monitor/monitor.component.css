@@ -30,3 +30,6 @@ th.mat-sort-header-sorted {
 .snackbar-success {
   color: green;
 }
+.example-form-field {
+  width: 100%;
+}

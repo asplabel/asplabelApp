@@ -63,3 +63,6 @@ tr.example-element-row:not(.example-expanded-row):active {
   overflow: hidden;
   display: flex;
 }
+.example-form-field {
+  width: 100%;
+} 

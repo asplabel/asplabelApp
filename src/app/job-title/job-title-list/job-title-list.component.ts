@@ -92,4 +92,9 @@ export class JobTitleListComponent implements AfterViewInit, OnInit, OnDestroy {
         }
       })
   }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value
+    this.dataSource.filter = filterValue.trim().toLowerCase()
+  }
 }
