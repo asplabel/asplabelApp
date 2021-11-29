@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core'
 import { Subject } from 'rxjs'
 import { IjobTitle } from './job-title.model'
 import { HttpClient } from '@angular/common/http'
+import { MatSnackBar } from '@angular/material/snack-bar'
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,7 @@ export class JobTitleService {
   subjectJobTitle = new Subject<IjobTitle[]>()
 
   url: string = 'http://localhost:3000'
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private _snackBar: MatSnackBar) {}
 
   getJobTitles() {
     this.http
@@ -20,7 +21,6 @@ export class JobTitleService {
       )
       .subscribe((response: { message: string; jobTitles: IjobTitle[] }) => {
         this.jobTitles = response.jobTitles
-        //console.dir(this.jobTitles)
         this.subjectJobTitle.next([...this.jobTitles])
       })
   }
@@ -36,34 +36,35 @@ export class JobTitleService {
         newJobTitle,
       )
       .subscribe((responseData) => {
-        newJobTitle._id = responseData.jobTitle_id
-        this.jobTitles.push(newJobTitle)
-        this.subjectJobTitle.next([...this.jobTitles])
+        this._snackBar.open('' + responseData.message, '', {
+          duration: 2000,
+        })
+        this.getJobTitles()
       })
   }
 
   deleteJobTitle(id: string) {
     this.http
       .delete(this.url + '/deleteJobTitle/' + id)
-      .subscribe((result: { message: string }) => {
-        const updatedJobTitles = this.jobTitles.filter(
-          (jobtitle) => jobtitle._id != id,
-        )
-        this.jobTitles = updatedJobTitles
-        this.subjectJobTitle.next([...this.jobTitles])
+      .subscribe((responseData: { message: string }) => {
+        this.getJobTitles()
+        this._snackBar.open('' + responseData.message, '', {
+          duration: 2000,
+        })
       })
   }
 
   updateJobTitle(id: string, nombre: string, d_id: string) {
-    //console.log(id + ' ' + nombre + ' ' + d_id)
     this.http
       .put(this.url + '/updateJobTitle', {
         id: id,
         name: nombre,
         department_id: d_id,
       })
-      .subscribe((response: { message: string }) => {
-        //console.log(response)
+      .subscribe((responseData: { message: string }) => {
+        this._snackBar.open('' + responseData.message, '', {
+          duration: 2000,
+        })
         this.getJobTitles()
       })
   }

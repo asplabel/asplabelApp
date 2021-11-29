@@ -12,9 +12,9 @@ const jobTitleRouter = express.Router()
 
 /* CREATE */
 jobTitleRouter.post('/addJobTitle', (req, res, next) => {
-  if (req.body.name && req.body.name != '') {
+  if (req.body.name != null && req.body.name != '') {
     let jobTitle
-    if (req.body.department_id && req.body.department_id != '') {
+    if (req.body.department_id != null && req.body.department_id != '') {
       jobTitle = new JobTitleModel({
         name: req.body.name,
         department_id: req.body.department_id,
@@ -24,12 +24,18 @@ jobTitleRouter.post('/addJobTitle', (req, res, next) => {
         name: req.body.name,
       })
     }
-    jobTitle.save().then((jobTitleCreated) => {
-      res.status(201).json({
-        message: 'Cargo agregado con éxito',
-        jobTitle_id: jobTitleCreated._id,
+    jobTitle
+      .save()
+      .then(() => {
+        res.status(201).json({
+          message: 'Cargo agregado con éxito',
+        })
       })
-    })
+      .catch((err) => {
+        res.status(201).json({
+          message: 'No se pudo agregar el cargo: ' + err,
+        })
+      })
   } else {
     res.status(201).json({
       message: 'Error al agregar cargo',
@@ -38,6 +44,9 @@ jobTitleRouter.post('/addJobTitle', (req, res, next) => {
 })
 
 /* READ */
+/*
+ * Listar los cargos
+ */
 jobTitleRouter.get('/getJobTitles', (req, res, next) => {
   JobTitleModel.aggregate([
     {
@@ -57,12 +66,19 @@ jobTitleRouter.get('/getJobTitles', (req, res, next) => {
       },
     },
     { $sort: { name: 1 } },
-  ]).then((job_titles) => {
-    res.status(201).json({
-      message: 'Cargos listados',
-      jobTitles: job_titles,
+  ])
+    .then((job_titles) => {
+      res.status(201).json({
+        message: 'Cargos listados',
+        jobTitles: job_titles,
+      })
     })
-  })
+    .catch((err) => {
+      res.status(201).json({
+        message: 'No se pudo obtener los cargos: ' + err,
+        jobTitles: null,
+      })
+    })
 })
 
 /* UPDATE */

@@ -13,6 +13,7 @@ import { JobTitleEditComponent } from '../job-title-edit/job-title-edit.componen
 import { Subscription } from 'rxjs'
 import { IjobTitle } from '../job-title.model'
 import { JobTitleService } from '../job-title.service'
+import { MatSnackBar } from '@angular/material/snack-bar'
 
 @Component({
   selector: 'app-job-title-list',
@@ -30,6 +31,7 @@ export class JobTitleListComponent implements AfterViewInit, OnInit, OnDestroy {
   constructor(
     public jobTitleService: JobTitleService,
     public dialog: MatDialog,
+    private _snackBar: MatSnackBar,
   ) {}
 
   @ViewChild(MatSort) sort: MatSort
@@ -76,7 +78,12 @@ export class JobTitleListComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   deleteJobTitle(id: string) {
-    this.jobTitleService.deleteJobTitle(id)
+    this._snackBar
+      .open('¿Desea eliminar el cargo?', 'Sí', { duration: 3000 })
+      .onAction()
+      .subscribe(() => {
+        this.jobTitleService.deleteJobTitle(id)
+      })
   }
 
   openDialog(id: string, name: string, department_id: string): void {

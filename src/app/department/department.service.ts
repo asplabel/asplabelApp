@@ -41,6 +41,7 @@ export class DepartmentService {
           duration: 2000,
         })
       })
+    this.getDepartments()
   }
 
   deleteDepartment(id: string) {
