@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { Subject } from 'rxjs'
 import { ICard } from './card.model'
+import { MatSnackBar } from '@angular/material/snack-bar'
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,7 @@ export class CardService {
   subjectCard = new Subject<ICard[]>()
   url: string = 'http://localhost:3000'
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private _snackBar: MatSnackBar) {}
 
   getCard(id: string) {
     return this.http.get(this.url + '/getCard/' + id)
@@ -30,10 +31,10 @@ export class CardService {
     this.http
       .post<{ message: string; cardID: string }>(this.url + '/addCard', newCard)
       .subscribe((responseData) => {
-        console.log(responseData.message)
-        newCard._id = responseData.cardID
-        this.cards.push(newCard)
-        this.subjectCard.next([...this.cards])
+        this._snackBar.open('' + responseData.message, '', {
+          duration: 2000,
+        })
+        this.getCards()
       })
   }
 
@@ -41,10 +42,10 @@ export class CardService {
     this.http
       .delete(this.url + '/deleteCard/' + id)
       .subscribe((result: { message: string }) => {
-        const updatedCards = this.cards.filter((card) => card._id != id)
-        this.cards = updatedCards
-        this.subjectCard.next([...this.cards])
-        console.log(result.message)
+        this.getCards()
+        this._snackBar.open('' + result.message, '', {
+          duration: 2000,
+        })
       })
   }
 
@@ -72,9 +73,11 @@ export class CardService {
         is_active: is_active,
         state: state,
       })
-      .subscribe((response: { message: string }) => {
-        console.log(response)
+      .subscribe((responseData: { message: string }) => {
         this.getCards()
+        this._snackBar.open('' + responseData.message, '', {
+          duration: 2000,
+        })
       })
   }
 }

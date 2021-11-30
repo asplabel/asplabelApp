@@ -12,8 +12,8 @@ const cardRouter = express.Router()
 /* CREATE */
 cardRouter.post('/addCard', (req, res, next) => {
   if (
-    req.body.UID &&
-    req.body.type &&
+    req.body.UID != null &&
+    req.body.type != null &&
     req.body.UID != '' &&
     req.body.type != ''
   ) {
@@ -27,12 +27,15 @@ cardRouter.post('/addCard', (req, res, next) => {
     card.save().then((card) => {
       res.status(201).json({
         message: 'Tarjeta agregada con éxito',
-        card: card._id,
+      })
+    }).catch((err)=>{
+      res.status(201).json({
+        message: 'Error: '+err,
       })
     })
   } else {
     res.status(201).json({
-      message: 'Error al agregar tarjeta',
+      message: 'Error recibir datos de la tarjeta',
     })
   }
 })
@@ -101,15 +104,31 @@ cardRouter.get('/getCardsNotAsigned', (req, res, next) => {
 
 /* DELETE */
 cardRouter.delete('/deleteCard/:id', (req, res, next) => {
-  users
+  if (req.params.id != null && req.params.id!=''){
+    users
     .updateMany({ card_id: req.params.id }, { card_id: null }, { new: true })
-    .then((result) => {})
-  CardModel.deleteOne({ _id: req.params.id }).then((result) => {
-    //console.log(result)
-    res.status(201).json({
-      message: 'Tarjeta eliminada exitosamente',
+    .then(() => {
+      CardModel.deleteOne({ _id: req.params.id }).then(() => {
+        res.status(201).json({
+          message: 'Tarjeta eliminada exitosamente',
+        })
+      }).catch(
+        (err)=>{
+          res.status(201).json({
+            message: 'Error: '+err,
+          })
+        }
+      )
+    }).catch((err)=>{
+      res.status(201).json({
+        message: 'Error: '+err,
+      })
     })
-  })
+  }else{
+    res.status(201).json({
+      message: 'Error al recibir el id de la tarjeta a eliminar',
+    })
+  }
 })
 
 /* UPDATE */
@@ -131,15 +150,18 @@ cardRouter.put('/updateCard', (req, res, next) => {
       { _id: id },
       { UID: UID, type: type, is_active: is_active, state: state },
       { new: true },
-    ).then((result) => {
-      //console.log(result)
+    ).then(() => {
       res.status(201).json({
         message: 'Tarjeta editada con éxito',
+      })
+    }).catch((err)=>{
+      res.status(201).json({
+        message: 'Error: '+err,
       })
     })
   } else {
     res.status(201).json({
-      message: 'Error: no fue posible editar la tarjeta',
+      message: 'Error: no se obtuvieron las datos para editar la tarjeta',
     })
   }
 })

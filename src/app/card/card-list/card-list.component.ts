@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs'
 import { CardEditComponent } from '../card-edit/card-edit.component'
 import { ICard } from '../card.model'
 import { CardService } from '../card.service'
+import { MatSnackBar } from '@angular/material/snack-bar'
 
 export interface cardData {
   id: string
@@ -44,7 +45,7 @@ export class CardListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild(MatSort) sort: MatSort
   @ViewChild(MatPaginator) paginator: MatPaginator
-  constructor(private cardService: CardService, public dialog: MatDialog) {}
+  constructor(private cardService: CardService, public dialog: MatDialog, private _snackBar: MatSnackBar,) {}
 
   ngOnInit(): void {
     this.isLoading = true
@@ -88,7 +89,12 @@ export class CardListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   deleteCard(id: string) {
-    this.cardService.deleteCard(id)
+    this._snackBar
+      .open('¿Desea eliminar la tarjeta?', 'Sí', { duration: 3000 })
+      .onAction()
+      .subscribe(() => {
+        this.cardService.deleteCard(id)
+      })
   }
 
   openDialog(id: string): void {

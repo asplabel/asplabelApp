@@ -62,10 +62,10 @@ export class JobTitleService {
         department_id: d_id,
       })
       .subscribe((responseData: { message: string }) => {
+        this.getJobTitles()
         this._snackBar.open('' + responseData.message, '', {
           duration: 2000,
         })
-        this.getJobTitles()
       })
   }
 }
