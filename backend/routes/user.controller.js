@@ -9,11 +9,16 @@ const userRouter = express.Router()
  ***********   USER CRUD *********************************
  ***************************************************************
  */
+
 /* READ ONE USER*/
 userRouter.get('/getUser/:id', (req, res, next) => {
-  if (req.params.id) {
+  if (req.params.id != null & req.params.id != '' ) {
     UserModel.findOne({ _id: req.params.id }).then((user) => {
       res.status(201).json(user)
+    })
+  }else{
+    res.status(201).json({
+      message: "error"
     })
   }
 })
@@ -72,8 +77,9 @@ userRouter.get('/getUsers', (req, res, next) => {
       },
     },
   ]).then((result) => {
-    //console.log(result)
     res.status(201).json(result)
+  }).catch((err)=>{
+    res.status(201).json({message: "Error: "+err})
   })
 })
 
@@ -81,7 +87,7 @@ userRouter.get('/getUsers', (req, res, next) => {
 userRouter.post('/addUser', (req, res, next) => {
   let user
   let roleColaborador = '619db81197dfc0c05c85f629'
-  if (req.body.job_title_id && req.body.job_title_id != '') {
+  if (req.body.job_title_id !=null && req.body.job_title_id != '') {
     user = new UserModel({
       firstname: req.body.firstname,
       lastname: req.body.lastname,
@@ -100,7 +106,10 @@ userRouter.post('/addUser', (req, res, next) => {
     user.save().then((user) => {
       res.status(201).json({
         message: 'Usuario agregado con éxito',
-        user_id: user._id,
+      })
+    }).catch((err)=>{
+      res.status(201).json({
+        message: 'ERROR: '+err,
       })
     })
   } else {
@@ -122,6 +131,10 @@ userRouter.post('/addUser', (req, res, next) => {
       res.status(201).json({
         message: 'Usuario agregado con éxito',
         user_id: user._id,
+      })
+    }).catch((err)=>{
+      res.status(201).json({
+        message: 'ERROR: '+err,
       })
     })
   }
@@ -158,8 +171,7 @@ userRouter.put('/updateUser', (req, res, next) => {
     },
     { new: true },
   )
-    .then((result) => {
-      //console.log(result)
+    .then(() => {
       res.status(201).json({
         message: 'Usuario editado con éxito ',
       })
@@ -200,18 +212,25 @@ userRouter.delete('/deleteUser/:id', (req, res, next) => {
 userRouter.post('/asignarTarjeta', (req, res, next) => {
   let card_id = req.body.card_id
   let user_id = req.body.user_id
-  if (card_id && user_id && card_id != '' && user_id != '') {
+  /*Se recibio el Id del usuario al que se le va asignar una tarjeta y se recibe
+    el id de esa tarjeta que se asignará
+  */
+  if (card_id != null && user_id != null && card_id != '' && user_id != '') {
     UserModel.findOne({ _id: user_id })
       .then((user) => {
-        if (user.card_id == null && user.card_id != '') {
+        /* El usuario previamente no tenía tarjeta */
+        if (user.card_id == null || user.card_id == '') {
           UserModel.findByIdAndUpdate(
             user_id,
             { card_id: card_id },
             { new: true },
-          ).then((user) => {
-            //console.log('tarjeta asignada a: ' + user)
+          ).then(() => {
+            res.status(201).json({message:'Tarjeta asignada exitosamente'})
+          }).catch((err)=>{
+            res.status(201).json({message:'Error: '+err})
           })
         } else {
+          /*El usuario previamente tenía tarjeta, por lo tanto se debe liberar esa primero para asignar la nueva*/
           CardModel.findByIdAndUpdate(
             user.card_id,
             {
@@ -219,34 +238,38 @@ userRouter.post('/asignarTarjeta', (req, res, next) => {
               is_active: false,
             },
             { new: true },
-          ).then((card) => {
-            //console.log('liberar tarjeta anterior: ' + card)
-          })
-          UserModel.findByIdAndUpdate(
-            user_id,
-            { card_id: card_id },
-            { new: true },
-          ).then((u) => {
-            //console.log('Tarjeta asignada a: ' + u)
+          ).then(() => {
+            // la tarjeta se libero, ahora sí se asigna la tarjeta al usuario
+            UserModel.findByIdAndUpdate(
+              user_id,
+              { card_id: card_id },
+              { new: true },
+            ).then(() => {
+              /* Al usuario se le asigno la tarjeta, ahora se va a actualizar el estado de la tarjeta que ha sido asignada*/
+              CardModel.findByIdAndUpdate(
+                card_id,
+                { is_user: true, is_active: true },
+                { new: true },
+              )
+                .then(() => {
+                  res.status(201).json({message:'Tarjeta asignada con éxito'})
+                })
+                .catch((err) => {
+                  res.status(201).json({message:'Error: '+err})
+                })
+            }).catch((err)=>{
+              res.status(201).json({message:'Error: '+err})
+            })
+          }).catch((err)=>{
+            res.status(201).json({message:'Error: '+err})
           })
         }
       })
       .catch((err) => {
         res.status(201).json('Error: ' + err)
       })
-    CardModel.findByIdAndUpdate(
-      card_id,
-      { is_user: true, is_active: true },
-      { new: true },
-    )
-      .then((card) => {
-       // console.log('tarjeta actualizada:' + card)
-      })
-      .catch((err) => {
-        res.status(201).json('Error: ' + err)
-      })
-
-    res.status(201).json('Tarjeta asignada')
+  }else{
+    res.status(201).json({message: 'Error: No se obtuvo el Id de la tarjeta o del usuario' })
   }
 })
 

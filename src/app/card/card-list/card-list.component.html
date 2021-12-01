@@ -5,7 +5,6 @@
       Agregar una tarjeta nueva
     </a>
   </mat-card>
-  <mat-spinner *ngIf="isLoading" class="spinner" color="warn"></mat-spinner>
   <mat-form-field
     appearance="standard"
     class="example-form-field"
@@ -13,6 +12,7 @@
     <mat-label>Filtro</mat-label>
     <input matInput (keyup)="applyFilter($event)" #input />
   </mat-form-field>
+  <mat-spinner *ngIf="isLoading" class="spinner" color="warn"></mat-spinner>
   <table
     class="mat-elevation-z8"
     mat-table

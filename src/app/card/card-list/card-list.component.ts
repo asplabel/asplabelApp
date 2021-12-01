@@ -45,7 +45,7 @@ export class CardListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild(MatSort) sort: MatSort
   @ViewChild(MatPaginator) paginator: MatPaginator
-  constructor(private cardService: CardService, public dialog: MatDialog, private _snackBar: MatSnackBar,) {}
+  constructor(private cardService: CardService, public dialog: MatDialog, private _snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.isLoading = true

@@ -12,6 +12,7 @@ import { UserService } from '../user.service'
 import { MatSort } from '@angular/material/sort'
 import { MatPaginator } from '@angular/material/paginator'
 import { animate, state, style, transition, trigger } from '@angular/animations'
+import { MatSnackBar } from '@angular/material/snack-bar'
 
 @Component({
   selector: 'app-user-list',
@@ -50,7 +51,7 @@ export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
   isData: boolean
   expandedElement: IUser | null
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService,  private _snackBar: MatSnackBar) {}
 
   @ViewChild(MatSort) sort: MatSort
   @ViewChild(MatPaginator) paginator: MatPaginator
@@ -91,10 +92,16 @@ export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    //this.subUsers.unsubscribe()
+    this.subUsers.unsubscribe()
   }
   deleteUser(id: string) {
-    this.userService.deleteUser(id)
+    this._snackBar
+      .open('¿Desea eliminar este colaborador?', 'Sí', { duration: 3000 })
+      .onAction()
+      .subscribe(() => {
+        this.userService.deleteUser(id)
+      })
+
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value
