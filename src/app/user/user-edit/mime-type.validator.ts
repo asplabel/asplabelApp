@@ -40,7 +40,7 @@ export const mimeType = (
         }
         observer.complete()
       })
-      fileReader.readAsArrayBuffer(file)
+        fileReader.readAsArrayBuffer(file)
     },
   )
   return frObs

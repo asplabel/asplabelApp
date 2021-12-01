@@ -91,13 +91,14 @@ export class UserEditComponent implements OnInit {
       address: new FormControl(null, {
         validators: Validators.maxLength(200),
       }),
-      date_of_birth: new FormControl(null),
+      date_of_birth: new FormControl(null, {validators: [Validators.nullValidator]}),
       is_active: new FormControl(null, {
         validators: Validators.required,
       }),
       job_title_id: new FormControl(null),
       type: new FormControl(null),
       photo: new FormControl(null, {
+        validators: Validators.nullValidator,
         asyncValidators: [mimeType],
       }),
     })
@@ -107,37 +108,23 @@ export class UserEditComponent implements OnInit {
         this.userService.getUser(this.userid).subscribe((user: IUser) => {
           this.user = user
           if (this.user) {
-            //console.dir(this.user)
-            this.form = new FormGroup({
-              /* Primer argumento: valor inicial*/
-              firstname: new FormControl(user.firstname, {
-                validators: [Validators.required, Validators.maxLength(80)],
-              }),
-              lastname: new FormControl(user.lastname, {
-                validators: [Validators.required, Validators.maxLength(80)],
-              }),
-              email: new FormControl(user.email, {
-                validators: [Validators.email, Validators.maxLength(120)],
-              }),
-              phone: new FormControl(user.phone, {
-                validators: Validators.maxLength(30),
-              }),
-              document: new FormControl(user.document, {
-                validators: [Validators.required, Validators.maxLength(20)],
-              }),
-              address: new FormControl(user.address, {
-                validators: Validators.maxLength(200),
-              }),
-              date_of_birth: new FormControl(user.date_of_birth),
-              is_active: new FormControl(user.is_active, {
-                validators: Validators.required,
-              }),
-              job_title_id: new FormControl(user.job_title_id),
-              type: new FormControl(user.type),
-              photo: new FormControl(null, {
-                asyncValidators: [mimeType],
-              }),
+            if (this.user.date_of_birth && this.user.date_of_birth !=''){
+              //this.date = new FormControl(moment(this.user.date_of_birth).format('MM DD YYYY'))
+            }
+            this.form.setValue({
+              firstname: this.user.firstname,
+              lastname: this.user.lastname,
+              email: this.user.email,
+              phone: this.user.phone,
+              document: this.user.document,
+              address: this.user.address,
+              date_of_birth: moment(this.user.date_of_birth),
+              is_active: this.user.is_active,
+              job_title_id: this.user.job_title_id,
+              type: this.user.type,
+              photo: null,
             })
+
           }
         })
       }
@@ -151,7 +138,7 @@ export class UserEditComponent implements OnInit {
   }
 
   saveChanges() {
-    if (this.form.invalid) {
+    if (this.form.invalid ) {
       return
     }
     let id = this.userid
@@ -165,8 +152,7 @@ export class UserEditComponent implements OnInit {
     let job_title_id = this.form.get('job_title_id').value
     let type = this.form.get('type').value
     let userBirth = this.form.get('date_of_birth').value
-    console.log(userBirth)
-    console.dir(userBirth)
+    console.dir(userBirth._i)
     let date_of_birth = ''
     if (userBirth && userBirth != '') {
       if (userBirth._f) {
@@ -177,17 +163,23 @@ export class UserEditComponent implements OnInit {
         }
       } else {
         if (userBirth._i != undefined) {
-          if (userBirth._i.month + 1 < 10) {
-            date_of_birth = '0' + (userBirth._i.month + 1) + '/'
-          } else {
-            date_of_birth = userBirth._i.month + 1 + '/'
-          }
-          if (userBirth._i.date < 10) {
-            date_of_birth =
-              date_of_birth + '0' + userBirth._i.date + '/' + userBirth._i.year
-          } else {
-            date_of_birth =
-              date_of_birth + userBirth._i.date + '/' + userBirth._i.year
+          if(typeof(userBirth._i ) == 'object')
+          {
+            if (userBirth._i.month + 1 < 10) {
+              date_of_birth = '0' + (userBirth._i.month + 1) + '/'
+            } else {
+              date_of_birth = userBirth._i.month + 1 + '/'
+            }
+            if (userBirth._i.date < 10) {
+              date_of_birth =
+                date_of_birth + '0' + userBirth._i.date + '/' + userBirth._i.year
+            } else {
+              date_of_birth =
+                date_of_birth + userBirth._i.date + '/' + userBirth._i.year
+            }
+          }else{
+            console.log("AQUI"+ userBirth._i  )
+            date_of_birth = userBirth._i
           }
         } else {
           date_of_birth = userBirth
@@ -208,14 +200,13 @@ export class UserEditComponent implements OnInit {
       type,
     )
     this._route.navigateByUrl('/user/list')
+    this.form.reset()
   }
 
   onImagePicked(event: Event) {
     const file = (event.target as HTMLInputElement).files[0]
     this.form.patchValue({ photo: file })
-    // console.log(file)
     this.form.get('photo').updateValueAndValidity()
-    ///console.log(this.form)
     const reader = new FileReader()
     reader.onload = () => {
       this.imagePreview = reader.result as string

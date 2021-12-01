@@ -7,13 +7,13 @@
     <!-- Input user firstname-->
     <section>
       <mat-form-field class="example-form-field" appearance="fill">
-        <mat-label>Nombres: {{ form.get('firstname').invalid }}</mat-label>
+        <mat-label>Nombres: </mat-label>
         <input
           matInput
           type="text"
           placeholder="Ingrese el nombre completo del colaborador"
           formControlName="firstname"
-          [value]="form?.get('firstname').value"
+          [value]="form.get('firstname').value"
         />
         <mat-error *ngIf="form.get('firstname').invalid">
           Por favor ingrese el nombre del colaborador. Maximo 80 caractéres.
@@ -170,11 +170,12 @@
           [matDatepicker]="picker"
           [formControl]="date"
           formControlName="date_of_birth"
-          [value]="form?.get('date_of_birth').value"
-          [placeholder]="form?.get('date_of_birth').value"
+          [value]="form.get('date_of_birth').value"
+
         />
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="form.get('date_of_birth').valid"> Valido</mat-error>
       </mat-form-field>
       <!-- ES ACTIVO -->
       <mat-form-field class="example-form-field" appearance="fill">
@@ -243,8 +244,12 @@
         class="image-preview"
         *ngIf="imagePreview != '' && imagePreview && form.get('photo').valid"
       >
-        <img [src]="imagePreview" [alt]="form?.value.firstname" />
+
+        <img [src]="imagePreview" [alt]="form.value.firstname" />
       </div>
+      <mat-error *ngIf="form.get('photo').valid == false && form.get('photo').value != null ">
+        Archivo invalido. Seleccione imágenes: jpg, jpeg, png
+      </mat-error>
     </section>
     <!-- Button to save new User -->
     <section style="text-align: center;">

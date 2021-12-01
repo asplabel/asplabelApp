@@ -2,8 +2,17 @@ const express = require('express')
 const CardModel = require('../models/card')
 const UserModel = require('../models/user')
 const mongoose = require('mongoose')
+const multer = require('multer')
 
 const userRouter = express.Router()
+
+/* Configurar en donde se almacenará la imagen*/
+const storage = multer.diskStorage({
+  /*req: el request
+    file: el archivo que se va a extraer
+    cb: callback*/
+  destination: (req, file, cb) =>{}
+})
 /*
  ***************************************************************
  ***********   USER CRUD *********************************
@@ -196,7 +205,7 @@ userRouter.delete('/deleteUser/:id', (req, res, next) => {
           },
           { new: true },
         ).then((card) => {
-          //console.log(card)
+
         })
       }
     }
@@ -225,7 +234,17 @@ userRouter.post('/asignarTarjeta', (req, res, next) => {
             { card_id: card_id },
             { new: true },
           ).then(() => {
-            res.status(201).json({message:'Tarjeta asignada exitosamente'})
+            CardModel.findByIdAndUpdate(
+              card_id,
+              { is_user: true, is_active: true },
+              { new: true },
+            )
+              .then(() => {
+                res.status(201).json({message:'Tarjeta asignada con éxito'})
+              })
+              .catch((err) => {
+                res.status(201).json({message:'Error: '+err})
+              })
           }).catch((err)=>{
             res.status(201).json({message:'Error: '+err})
           })
@@ -289,21 +308,19 @@ userRouter.get('/quitarTarjeta/:id', async (req, res, next) => {
           is_active: false,
         },
         { new: true },
-      ).then((card) => {
+      ).then(() => {
         // Se pone null en el valor del id de la tarjeta del usuario
         UserModel.findByIdAndUpdate(
           req.params.id,
           { card_id: null },
           { new: true },
         ).then((user) => {
-          //console.log('Usuario sin tarjeta: ' + user)
-          //console.log('tarjeta liberada: ' + card)
-          res.status(201).json('Se ha quitado la tarjeta de: ' + user.firstname)
+          res.status(201).json({message:'Se ha quitado la tarjeta de: ' + user.firstname})
         })
       })
     } else {
       //console.log('No card_id: ' + user.card_id)
-      res.status(201).json('Error: No hay tarjeta')
+      res.status(201).json({message: 'Error: No hay tarjeta'})
     }
   })
 })

@@ -61,10 +61,12 @@ export class UserCardComponent implements OnInit {
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has('id')) {
         this.userid = paramMap.get('id')
-        this.userService.asignarTarjeta(this.userid, form.value.selected)
+        if (form.value.selected && form.value.selected != '')
+        {
+          this.userService.asignarTarjeta(this.userid, form.value.selected)
+        }
       }
     })
-    delay(8000)
     this._route.navigateByUrl('/user/list')
   }
 }
