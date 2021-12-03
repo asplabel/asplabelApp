@@ -14,4 +14,5 @@ export interface IUser {
   department_name: string | null
   card_id: string | null
   card_UID: string | null
+  photo: string
 }

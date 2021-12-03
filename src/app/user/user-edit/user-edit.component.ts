@@ -57,7 +57,6 @@ export class UserEditComponent implements OnInit {
   userid: string
   user: IUser
 
-  cargo = ''
   jobTitles: IjobTitle[]
   subJobTitles: Subscription
 
@@ -152,7 +151,7 @@ export class UserEditComponent implements OnInit {
     let job_title_id = this.form.get('job_title_id').value
     let type = this.form.get('type').value
     let userBirth = this.form.get('date_of_birth').value
-    console.dir(userBirth._i)
+    //console.dir(userBirth._i)
     let date_of_birth = ''
     if (userBirth && userBirth != '') {
       if (userBirth._f) {
@@ -178,7 +177,6 @@ export class UserEditComponent implements OnInit {
                 date_of_birth + userBirth._i.date + '/' + userBirth._i.year
             }
           }else{
-            console.log("AQUI"+ userBirth._i  )
             date_of_birth = userBirth._i
           }
         } else {
@@ -211,6 +209,8 @@ export class UserEditComponent implements OnInit {
     reader.onload = () => {
       this.imagePreview = reader.result as string
     }
-    reader.readAsDataURL(file)
+    if (typeof(file) == 'object'){
+      reader.readAsDataURL(file)
+    }
   }
 }

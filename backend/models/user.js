@@ -41,6 +41,7 @@ const userSchema = mongoose.Schema({
     required: true,
     enum: ['Permanente', 'Temporal', 'Tiempo parcial'],
   },
-})
+  photo: {type: String, default: null, required: false}
+}) 
 
 module.exports = mongoose.model('users', userSchema)

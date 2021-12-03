@@ -2,7 +2,15 @@ const express = require('express')
 const CardModel = require('../models/card')
 const UserModel = require('../models/user')
 const mongoose = require('mongoose')
+ /* DOCUMENTACIÓN DE MULTER
+ * https://github.com/expressjs/multer
+ */
 const multer = require('multer')
+const MIME_TIPE_MAP = {
+  'image/png': 'png',
+  'image/jpeg': 'jpeg',
+  'image/jpg': 'jpg'
+}
 
 const userRouter = express.Router()
 
@@ -11,8 +19,30 @@ const storage = multer.diskStorage({
   /*req: el request
     file: el archivo que se va a extraer
     cb: callback*/
-  destination: (req, file, cb) =>{}
+  destination: (req, file, cb) => {
+    let err
+    let isValid
+    if (file !=null){
+      isValid = MIME_TIPE_MAP[file.mimetype]
+      err = new Error("Invalid mime type")
+    }else{
+      isValid = false
+    }
+    if(isValid){
+      err = null
+      cb(err, "backend/images")
+    }
+
+  },
+  filename: (req,file,cb) =>{
+    if (file !=null){
+      const name = file.originalname.toLowerCase().split(' ').join('-')
+      const ext = MIME_TIPE_MAP[file.mimetype]
+      cb(null, name + '-' + Date.now() + '.' + ext)
+    }
+  }
 })
+
 /*
  ***************************************************************
  ***********   USER CRUD *********************************
@@ -93,23 +123,28 @@ userRouter.get('/getUsers', (req, res, next) => {
 })
 
 /* CREATE*/
-userRouter.post('/addUser', (req, res, next) => {
+// Create with Image //
+userRouter.post('/addUser', multer({storage: storage}).single("photo"), (req, res, next) => {
   let user
+  const url = req.protocol + '://' + req.get("host")
   let roleColaborador = '619db81197dfc0c05c85f629'
-  if (req.body.job_title_id !=null && req.body.job_title_id != '') {
+  console.dir(req.file)
+  if (req.body.job_title_id !='null' && req.body.job_title_id != '') {
+    console.log("sí jobTitle")
     user = new UserModel({
-      firstname: req.body.firstname,
-      lastname: req.body.lastname,
-      email: req.body.email,
-      phone: req.body.phone,
-      document: req.body.document,
-      address: req.body.address,
-      date_of_birth: req.body.date_of_birth,
-      is_active: req.body.is_active,
+      firstname: req.body.firstname, // Nunca puede ser nulo
+      lastname: req.body.lastname, // Nunca puede ser nulo
+      email: req.body.email === 'null' || req.body.email === '' ? null : req.body.email,
+      phone: req.body.phone === 'null'? null: req.body.phone,
+      document: req.body.document, // Nunca puede ser nulo
+      address: req.body.address === 'null'? null : req.body.address,
+      date_of_birth: req.body.date_of_birth === 'null' || req.body.date_of_birth === '' ? null : req.body.date_of_birth,
+      is_active: req.body.is_active === 'true'? true: false ,
       job_title_id: mongoose.Types.ObjectId(req.body.job_title_id),
       role_id: mongoose.Types.ObjectId(roleColaborador),
       card_id: null,
       type: req.body.type,
+      photo: req.file != undefined ? url + "/images/" + req.file.filename : ''
     })
 
     user.save().then((user) => {
@@ -122,24 +157,25 @@ userRouter.post('/addUser', (req, res, next) => {
       })
     })
   } else {
+    console.log("NO jobTitle")
     user = new UserModel({
       firstname: req.body.firstname,
       lastname: req.body.lastname,
-      email: req.body.email,
-      phone: req.body.phone,
-      document: req.body.document,
-      address: req.body.address,
-      date_of_birth: req.body.date_of_birth,
-      is_active: req.body.is_active,
+      email: req.body.email === 'null' || req.body.email === '' ? null : req.body.email,
+      phone: req.body.phone === 'null'? null: req.body.phone,
+      document: req.body.document, // Nunca puede ser nulo
+      address: req.body.address === 'null'? null : req.body.address,
+      date_of_birth: req.body.date_of_birth === 'null' || req.body.date_of_birth === '' ? null : req.body.date_of_birth,
+      is_active: req.body.is_active === 'true'? true: false ,
       role_id: mongoose.Types.ObjectId(roleColaborador),
       card_id: null,
       type: req.body.type,
+      photo:  req.file != undefined ? url + "/images/" + req.file.filename : ''
     })
 
     user.save().then((user) => {
       res.status(201).json({
         message: 'Usuario agregado con éxito',
-        user_id: user._id,
       })
     }).catch((err)=>{
       res.status(201).json({

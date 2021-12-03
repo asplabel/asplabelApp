@@ -29,12 +29,29 @@ export class UserService {
     return this.subjectUser.asObservable()
   }
 
-  addUser(newUser: IUser) {
+  addUser(newUser: IUser, photo: File) {
     console.dir(newUser)
+    const userData = new FormData()
+    userData.append("firstname", newUser.firstname)
+    userData.append("lastname", newUser.lastname)
+    userData.append("email",newUser.email)
+    userData.append("phone",newUser.phone)
+    userData.append("document",newUser.document)
+    userData.append("address",newUser.address)
+    userData.append("date_of_birth", newUser.date_of_birth)
+    userData.append("is_active", newUser.is_active ? 'true' : 'false' )
+    userData.append("job_title_id", newUser.job_title_id)
+    userData.append("card_id", newUser.card_id)
+    userData.append("type", newUser.type)
+    //console.dir(photo)
+    if ( photo) {
+      userData.append("photo", photo === null ? '': photo, newUser.firstname + ' '+ newUser.lastname)
+    }
+
     this.http
       .post<{ message: string; user_id: string }>(
         this.url + '/addUser',
-        newUser,
+        userData,
       )
       .subscribe((responseData:{message: string}) => {
         this.getUsers()

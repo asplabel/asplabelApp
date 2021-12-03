@@ -1,16 +1,20 @@
 .example-full-width {
   width: 100%;
 }
+
 .example-form-field {
   width: 45%;
   margin: 0px 15px;
 }
+
 section {
   margin: 10px 0px;
 }
+
 button {
   margin-left: 40%;
 }
+
 .button {
   color: white;
   background-color: #ef7f01;
@@ -19,6 +23,20 @@ button {
   font-stretch: ultra-expanded !important;
   font-size: 16px;
 }
+
 .button:hover {
   color: green;
+}
+
+.filepicker {
+  visibility: hidden;
+}
+
+.image-preview {
+  height: 5rem;
+  margin: 1rem 0;
+}
+
+.image-preview img {
+  height: 100%;
 }

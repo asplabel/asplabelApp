@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core'
 import {
   FormControl,
-  FormGroupDirective,
-  NgForm,
+  FormGroup,
   Validators,
 } from '@angular/forms'
+import { mimeType } from './mime-type.validator'
 import {
   MomentDateAdapter,
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
@@ -16,7 +16,6 @@ import {
 } from '@angular/material/core'
 import * as _moment from 'moment'
 import { default as _rollupMoment } from 'moment'
-import { ErrorStateMatcher } from '@angular/material/core'
 import { Subscription } from 'rxjs'
 import { IjobTitle } from 'src/app/job-title/job-title.model'
 import { JobTitleService } from 'src/app/job-title/job-title.service'
@@ -38,21 +37,6 @@ export const MY_FORMATS = {
   },
 }
 
-/** Error when invalid control is dirty, touched, or submitted. */
-export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(
-    control: FormControl | null,
-    form: FormGroupDirective | NgForm | null,
-  ): boolean {
-    const isSubmitted = form && form.submitted
-    return !!(
-      control &&
-      control.invalid &&
-      (control.dirty || control.touched || isSubmitted)
-    )
-  }
-}
-
 @Component({
   selector: 'app-user-create',
   templateUrl: './user-create.component.html',
@@ -71,17 +55,12 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   ],
 })
 export class UserCreateComponent implements OnInit {
-  cargo = ''
+  form: FormGroup
   jobTitles: IjobTitle[]
   subJobTitles: Subscription
-  userBirth: any
-  userEmail: any
-
+  imagePreview: string
   date = new FormControl(moment())
 
-  emailFormControl = new FormControl('', [Validators.email])
-
-  matcher = new MyErrorStateMatcher()
 
   constructor(
     private jobTitleService: JobTitleService,
@@ -90,6 +69,36 @@ export class UserCreateComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.form = new FormGroup({
+      /* Primer argumento: valor inicial*/
+      firstname: new FormControl(null, {
+        validators: [Validators.required, Validators.maxLength(80)],
+      }),
+      lastname: new FormControl(null, {
+        validators: [Validators.required, Validators.maxLength(80)],
+      }),
+      email: new FormControl(null, {
+        validators: [Validators.email, Validators.maxLength(120)],
+      }),
+      phone: new FormControl(null, {
+        validators: Validators.maxLength(30),
+      }),
+      document: new FormControl(null, {
+        validators: [Validators.required, Validators.maxLength(20)],
+      }),
+      address: new FormControl(null, {
+        validators: Validators.maxLength(200),
+      }),
+      date_of_birth: new FormControl(null, {validators: [Validators.nullValidator]}),
+      is_active: new FormControl(null, {
+        validators: Validators.required,
+      }),
+      job_title_id: new FormControl(null),
+      type: new FormControl(null),
+      photo: new FormControl(null, {
+        asyncValidators: [mimeType],
+      }),
+    })
     this.jobTitleService.getJobTitles()
     this.subJobTitles = this.jobTitleService
       .getSubjectJobTitles()
@@ -98,45 +107,70 @@ export class UserCreateComponent implements OnInit {
       })
   }
 
-  addUser(form: NgForm) {
-    if (form.invalid) {
+  addUser() {
+    if (this.form.invalid) {
       return
     }
-    let date
-    if (this.userBirth) {
-      if (this.userBirth._f) {
-        date = this.userBirth._i
-      } else {
-        if (this.userBirth._i.month + 1 < 10) {
-          date = '0' + (this.userBirth._i.month + 1) + '/'
+    let firstname = this.form.get('firstname').value
+    let lastname = this.form.get('lastname').value
+    let email = this.form.get('email').value
+    let phone = this.form.get('phone').value
+    let document = this.form.get('document').value
+    let address = this.form.get('address').value
+    let is_active = this.form.get('is_active').value
+    let job_title_id = this.form.get('job_title_id').value
+    let type = this.form.get('type').value
+    let photo = this.form.value.photo
+    let userBirth = this.form.get('date_of_birth').value
+    let date_of_birth = ''
+     if (userBirth && userBirth != '') {
+      if (userBirth._f) {
+        if (userBirth._i != undefined) {
+          date_of_birth = userBirth._i
         } else {
-          date = this.userBirth._i.month + 1 + '/'
+          date_of_birth = userBirth
         }
-        if (this.userBirth._i.date < 10) {
-          date =
-            date + '0' + this.userBirth._i.date + '/' + this.userBirth._i.year
+      } else {
+        if (userBirth._i != undefined) {
+          if(typeof(userBirth._i ) == 'object')
+          {
+            if (userBirth._i.month + 1 < 10) {
+              date_of_birth = '0' + (userBirth._i.month + 1) + '/'
+            } else {
+              date_of_birth = userBirth._i.month + 1 + '/'
+            }
+            if (userBirth._i.date < 10) {
+              date_of_birth =
+                date_of_birth + '0' + userBirth._i.date + '/' + userBirth._i.year
+            } else {
+              date_of_birth =
+                date_of_birth + userBirth._i.date + '/' + userBirth._i.year
+            }
+          }else{
+            date_of_birth = userBirth._i
+          }
         } else {
-          date = date + this.userBirth._i.date + '/' + this.userBirth._i.year
+          date_of_birth = userBirth
         }
       }
     }
-
     let user: IUser = {
       _id: null,
-      firstname: form.value.userFirstname,
-      lastname: form.value.userLastname,
-      email: this.userEmail,
-      phone: form.value.userPhone,
-      document: form.value.userDocument,
-      address: form.value.userAddress,
-      date_of_birth: date,
-      is_active: form.value.userIsactive,
-      job_title_id: form.value.jobtitle_id,
-      type: form.value.userType,
+      firstname: firstname,
+      lastname: lastname,
+      email: email,
+      phone: phone,
+      document: document,
+      address: address,
+      date_of_birth: date_of_birth,
+      is_active: is_active,
+      job_title_id: job_title_id,
+      type: type,
       job_title_name: null,
       department_name: null,
       card_id: null,
       card_UID: null,
+      photo: null
     }
     if (user.date_of_birth == undefined) {
       user.date_of_birth = ''
@@ -145,11 +179,21 @@ export class UserCreateComponent implements OnInit {
       user.email = ''
     }
     //console.dir(user)
-    this.userService.addUser(user)
+    this.userService.addUser(user,photo)
 
-    form.reset()
-    this.userEmail = ''
-    this.userBirth = ''
     this._location.back()
+  }
+
+  onImagePicked(event: Event) {
+    const file = (event.target as HTMLInputElement).files[0]
+    this.form.patchValue({ photo: file })
+    this.form.get('photo').updateValueAndValidity()
+    const reader = new FileReader()
+    reader.onload = () => {
+      this.imagePreview = reader.result as string
+    }
+    if (typeof(file) == 'object'){
+      reader.readAsDataURL(file)
+    }
   }
 }

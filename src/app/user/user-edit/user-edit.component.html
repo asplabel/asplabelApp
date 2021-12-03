@@ -175,7 +175,7 @@
         />
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
-        <mat-error *ngIf="form.get('date_of_birth').valid"> Valido</mat-error>
+        <!--<mat-error *ngIf="form.get('date_of_birth').valid"> Valido</mat-error> -->
       </mat-form-field>
       <!-- ES ACTIVO -->
       <mat-form-field class="example-form-field" appearance="fill">
@@ -228,7 +228,7 @@
         </mat-select>
       </mat-form-field>
     </section>
-
+    <!-- Fotografía -->
     <section style="text-align: left; margin-left: 2%;">
       <button mat-stroked-button type="button" (click)="filePicker.click()">
         Agregar Foto
@@ -251,7 +251,7 @@
         Archivo invalido. Seleccione imágenes: jpg, jpeg, png
       </mat-error>
     </section>
-    <!-- Button to save new User -->
+    <!-- Button to save new User or go back-->
     <section style="text-align: center;">
       <button
         mat-stroked-button
