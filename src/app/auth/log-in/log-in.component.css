@@ -1,0 +1,17 @@
+.button {
+  color: white;
+  background-color: #ef7f01;
+  font-weight: bold;
+  font-family: Dubai;
+  font-stretch: ultra-expanded !important;
+  font-size: 16px;
+  margin-left: 44%;
+}
+.example-full-width {
+  width: 100%;
+}
+
+.example-form-field {
+  width: 45%;
+  margin: 0px 15px;
+}

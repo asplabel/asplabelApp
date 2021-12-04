@@ -10,8 +10,9 @@ import { DepartmentListComponent } from './department/department-list/department
 import { JobTitleCreateComponent } from './job-title/job-title-create/job-title-create.component'
 import { JobTitleListComponent } from './job-title/job-title-list/job-title-list.component'
 
-import { LogInComponent } from './log-in/log-in.component'
+import { LogInComponent } from './auth/log-in/log-in.component'
 import { LogOutComponent } from './log-out/log-out.component'
+
 import { MonitorComponent } from './monitor/monitor.component'
 
 import { UserCardComponent } from './user/user-card/user-card.component'
