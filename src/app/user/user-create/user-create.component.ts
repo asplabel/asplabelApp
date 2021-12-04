@@ -170,7 +170,7 @@ export class UserCreateComponent implements OnInit {
       department_name: null,
       card_id: null,
       card_UID: null,
-      photo: null
+      photo: photo
     }
     if (user.date_of_birth == undefined) {
       user.date_of_birth = ''

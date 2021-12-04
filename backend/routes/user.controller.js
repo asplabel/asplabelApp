@@ -129,9 +129,9 @@ userRouter.post('/addUser', multer({storage: storage}).single("photo"), (req, re
   let user
   const url = req.protocol + '://' + req.get("host")
   let roleColaborador = '619db81197dfc0c05c85f629'
-  console.dir(req.file)
+  //console.dir(req.file)
   if (req.body.job_title_id !='null' && req.body.job_title_id != '') {
-    console.log("sí jobTitle")
+    //console.log("sí jobTitle")
     user = new UserModel({
       firstname: req.body.firstname, // Nunca puede ser nulo
       lastname: req.body.lastname, // Nunca puede ser nulo
@@ -158,7 +158,6 @@ userRouter.post('/addUser', multer({storage: storage}).single("photo"), (req, re
       })
     })
   } else {
-    console.log("NO jobTitle")
     user = new UserModel({
       firstname: req.body.firstname,
       lastname: req.body.lastname,
@@ -187,9 +186,14 @@ userRouter.post('/addUser', multer({storage: storage}).single("photo"), (req, re
 })
 
 /*UPDATE*/
-userRouter.put('/updateUser', (req, res, next) => {
+userRouter.put('/updateUser',  multer({storage: storage}).single("photo"), (req, res, next) => {
+  let imagePath = req.body.photo
+  if(req.file){
+     const url = req.protocol + '://' + req.get("host")
+     imagePath = url + "/images/" + req.file.filename
+  }
   const userUpdate = {
-    id: req.body.id,
+    id: req.body._id,
     firstname: req.body.firstname,
     lastname: req.body.lastname,
     email: req.body.email,
@@ -200,6 +204,7 @@ userRouter.put('/updateUser', (req, res, next) => {
     is_active: req.body.is_active,
     job_title_id: req.body.job_title_id,
     type: req.body.type,
+    photo: imagePath
   }
   UserModel.updateOne(
     { _id: userUpdate.id },
@@ -214,6 +219,7 @@ userRouter.put('/updateUser', (req, res, next) => {
       is_active: userUpdate.is_active,
       job_title_id: userUpdate.job_title_id,
       type: userUpdate.type,
+      photo: userUpdate.photo
     },
     { new: true },
   )

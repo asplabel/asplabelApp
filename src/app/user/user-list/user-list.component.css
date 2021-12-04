@@ -74,12 +74,13 @@ tr.example-element-row:not(.example-expanded-row):active {
   font-weight: lighter;
   margin: 8px 0;
   height: 104px;
+  width: 90px !important;
   margin-right: 15px;
 }
 
 .photo
 {
-  width: 100%;
+  width: 99%;
   height: 100%;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
 }

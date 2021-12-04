@@ -10,9 +10,9 @@ export interface IUser {
   is_active: boolean
   job_title_id: string | null
   type: string | null
-  job_title_name: string | null
-  department_name: string | null
-  card_id: string | null
-  card_UID: string | null
+  job_title_name?: string | null
+  department_name?: string | null
+  card_id?: string | null
+  card_UID?: string | null
   photo: string
 }

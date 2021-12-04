@@ -97,7 +97,7 @@ export class UserEditComponent implements OnInit {
       job_title_id: new FormControl(null),
       type: new FormControl(null),
       photo: new FormControl(null, {
-        validators: Validators.nullValidator,
+        validators: [Validators.nullValidator],
         asyncValidators: [mimeType],
       }),
     })
@@ -106,10 +106,9 @@ export class UserEditComponent implements OnInit {
         this.userid = paramMap.get('id')
         this.userService.getUser(this.userid).subscribe((user: IUser) => {
           this.user = user
+          console.log(this.user.date_of_birth)
+          this.imagePreview = this.user.photo
           if (this.user) {
-            if (this.user.date_of_birth && this.user.date_of_birth !=''){
-              //this.date = new FormControl(moment(this.user.date_of_birth).format('MM DD YYYY'))
-            }
             this.form.setValue({
               firstname: this.user.firstname,
               lastname: this.user.lastname,
@@ -117,13 +116,12 @@ export class UserEditComponent implements OnInit {
               phone: this.user.phone,
               document: this.user.document,
               address: this.user.address,
-              date_of_birth: moment(this.user.date_of_birth),
+              date_of_birth: this.user.date_of_birth === '' || this.user.date_of_birth === null? null : moment(this.user.date_of_birth),
               is_active: this.user.is_active,
               job_title_id: this.user.job_title_id,
               type: this.user.type,
-              photo: null,
+              photo: this.user.photo === null ? '': this.user.photo,
             })
-
           }
         })
       }
@@ -137,6 +135,7 @@ export class UserEditComponent implements OnInit {
   }
 
   saveChanges() {
+    //console.log( this.form.get('date_of_birth').value)
     if (this.form.invalid ) {
       return
     }
@@ -151,6 +150,7 @@ export class UserEditComponent implements OnInit {
     let job_title_id = this.form.get('job_title_id').value
     let type = this.form.get('type').value
     let userBirth = this.form.get('date_of_birth').value
+    let photo = this.form.value.photo
     //console.dir(userBirth._i)
     let date_of_birth = ''
     if (userBirth && userBirth != '') {
@@ -196,6 +196,7 @@ export class UserEditComponent implements OnInit {
       is_active,
       job_title_id,
       type,
+      photo
     )
     this._route.navigateByUrl('/user/list')
     this.form.reset()

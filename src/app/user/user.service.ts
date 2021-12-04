@@ -30,7 +30,6 @@ export class UserService {
   }
 
   addUser(newUser: IUser, photo: File) {
-    console.dir(newUser)
     const userData = new FormData()
     userData.append("firstname", newUser.firstname)
     userData.append("lastname", newUser.lastname)
@@ -43,11 +42,9 @@ export class UserService {
     userData.append("job_title_id", newUser.job_title_id)
     userData.append("card_id", newUser.card_id)
     userData.append("type", newUser.type)
-    //console.dir(photo)
-    if ( photo) {
+    if (photo) {
       userData.append("photo", photo === null ? '': photo, newUser.firstname + ' '+ newUser.lastname)
     }
-
     this.http
       .post<{ message: string; user_id: string }>(
         this.url + '/addUser',
@@ -70,13 +67,29 @@ export class UserService {
     document: string,
     address: string,
     date_of_birth: string,
-    is_active: string,
+    is_active: boolean,
     job_title_id: string,
     type: string,
+    photo: File | string
   ) {
-    this.http
-      .put(this.url + '/updateUser', {
-        id: id,
+    let userData: IUser | FormData
+    if (typeof(photo) === 'object'){
+      userData = new FormData()
+      userData.append("_id", id)
+      userData.append("firstname", firstname)
+      userData.append("lastname",lastname)
+      userData.append("email",email)
+      userData.append("phone",phone)
+      userData.append("document",document)
+      userData.append("address",address)
+      userData.append("date_of_birth", date_of_birth)
+      userData.append("is_active", is_active ? 'true' : 'false' )
+      userData.append("job_title_id", job_title_id)
+      userData.append("type", type)
+      userData.append("photo", photo === null ? '': photo, firstname + ' '+ lastname)
+    } else {
+      userData = {
+        _id: id,
         firstname: firstname,
         lastname: lastname,
         email: email,
@@ -87,7 +100,11 @@ export class UserService {
         is_active: is_active,
         job_title_id: job_title_id,
         type: type,
-      })
+        photo: photo
+      }
+    }
+    this.http
+      .put(this.url + '/updateUser', userData)
       .subscribe((responseData: { message: string }) => {
         this.getUsers()
         this._snackBar.open('' + responseData.message, '', {
@@ -95,6 +112,7 @@ export class UserService {
         })
       })
   }
+
   deleteUser(id: string) {
     this.http
       .delete(this.url + '/deleteUser/' + id)
