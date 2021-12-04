@@ -113,6 +113,7 @@ userRouter.get('/getUsers', (req, res, next) => {
         is_active: 1,
         card_id: { $ifNull: ['$card._id', ''] },
         card_UID: { $ifNull: ['$card.UID', ''] },
+        photo: 1,
       },
     },
   ]).then((result) => {

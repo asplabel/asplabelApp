@@ -245,7 +245,7 @@
         *ngIf="imagePreview != '' && imagePreview && form.get('photo').valid"
       >
 
-        <img [src]="imagePreview" [alt]="form.value.firstname" />
+        <img [src]="imagePreview || form.get('photo').value " [alt]="form.value.firstname" />
       </div>
       <mat-error *ngIf="form.get('photo').valid == false && form.get('photo').value != null ">
         Archivo invalido. Seleccione imágenes: jpg, jpeg, png
