@@ -12,6 +12,7 @@ import { JobTitleListComponent } from './job-title/job-title-list/job-title-list
 
 import { LogInComponent } from './auth/log-in/log-in.component'
 import { LogOutComponent } from './log-out/log-out.component'
+import { SignupComponent } from './auth/signup/signup.component'
 
 import { MonitorComponent } from './monitor/monitor.component'
 
@@ -41,6 +42,7 @@ const routes: Routes = [
   { path: 'department/create', component: DepartmentCreateComponent },
 
   { path: 'logout', component: LogOutComponent },
+  { path: 'signup', component: SignupComponent},
 ]
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

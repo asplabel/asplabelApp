@@ -106,17 +106,17 @@ export class UserEditComponent implements OnInit {
         this.userid = paramMap.get('id')
         this.userService.getUser(this.userid).subscribe((user: IUser) => {
           this.user = user
-          console.log(this.user.date_of_birth)
+          console.log(this.user)
           this.imagePreview = this.user.photo
           if (this.user) {
             this.form.setValue({
               firstname: this.user.firstname,
               lastname: this.user.lastname,
               email: this.user.email,
-              phone: this.user.phone,
+              phone: this.user.phone ,
               document: this.user.document,
               address: this.user.address,
-              date_of_birth: this.user.date_of_birth === '' || this.user.date_of_birth === null? null : moment(this.user.date_of_birth),
+              date_of_birth: this.user.date_of_birth === '' || this.user.date_of_birth === null || this.user.date_of_birth === undefined? null : moment(this.user.date_of_birth),
               is_active: this.user.is_active,
               job_title_id: this.user.job_title_id,
               type: this.user.type,

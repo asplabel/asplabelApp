@@ -2,10 +2,12 @@ const express = require('express')
 const CardModel = require('../models/card')
 const UserModel = require('../models/user')
 const mongoose = require('mongoose')
+const bcrypt = require('bcrypt')
  /* DOCUMENTACIÓN DE MULTER
  * https://github.com/expressjs/multer
  */
 const multer = require('multer')
+const user = require('../models/user')
 const MIME_TIPE_MAP = {
   'image/png': 'png',
   'image/jpeg': 'jpeg',
@@ -366,5 +368,33 @@ userRouter.get('/quitarTarjeta/:id', async (req, res, next) => {
       res.status(201).json({message: 'Error: No hay tarjeta'})
     }
   })
+})
+
+// SIGN UP ADMINISTRADOR
+userRouter.post("/signup",(req,res,next)=>{
+  console.log(req.body)
+  let admin_role_id= '6167051ccb06eba131faee63'
+  bcrypt.hash(req.body.password, 10).then(hash =>{
+    const userAdmin = new UserModel({
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
+      email: req.body.email,
+      document: req.body.document,
+      is_active: true,
+      type: req.body.type,
+      role_id : mongoose.Types.ObjectId(admin_role_id),
+      password: hash
+    })
+    userAdmin.save().then(result =>{
+      res.status(201).json({
+        message: 'Administrador creado exitosamente'
+      })
+    }).catch((err)=>{
+      res.status(500).json({
+        message: 'Error: ' + err
+      })
+    })
+  })
+
 })
 module.exports = userRouter

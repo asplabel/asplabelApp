@@ -13,10 +13,10 @@ const userSchema = mongoose.Schema({
     maxLength: 120,
     default: null,
   },
-  phone: { type: String, required: false, maxLength: 30 },
+  phone: { type: String, required: false, maxLength: 30 , default: null},
   document: { type: String, required: true, maxLength: 20 },
-  address: { type: String, required: false, maxLength: 200 },
-  date_of_birth: { type: String, require: false },
+  address: { type: String, required: false, maxLength: 200 , default: null},
+  date_of_birth: { type: String, require: false, default: null},
   is_active: { type: Boolean, required: true },
   job_title_id: {
     type: mongoose.Types.ObjectId,
@@ -41,7 +41,8 @@ const userSchema = mongoose.Schema({
     required: true,
     enum: ['Permanente', 'Temporal', 'Tiempo parcial'],
   },
-  photo: {type: String, default: null, required: false}
-}) 
+  photo: {type: String, default: null, required: false},
+  password: {type: String, default: null, require: false},
+})
 
 module.exports = mongoose.model('users', userSchema)

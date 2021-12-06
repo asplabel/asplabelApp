@@ -34,7 +34,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 import { CardModule } from './card/card.module'
 import { UserModule } from './user/user.module'
 import { BrandModule } from './brand/brand.module'
-import { MatSnackBarModule } from '@angular/material/snack-bar'
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { SignupComponent } from './auth/signup/signup.component'
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar'
     MonitorComponent,
     LogInComponent,
     LogOutComponent,
+    SignupComponent,
   ],
   exports: [MatDatepickerModule, MatNativeDateModule],
   imports: [

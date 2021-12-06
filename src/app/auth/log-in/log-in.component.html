@@ -2,7 +2,7 @@
 
 <br />
 <mat-card>
-  <form  >
+  <form (submit)= "OnLogIn(loginForm)" #loginForm="ngForm">
 
     <!--  Input Email-->
     <section>
@@ -10,10 +10,15 @@
         <mat-label>Correo Electrónico:</mat-label>
         <input
           matInput
+          ngModel
+          name = "email"
+          #emailUser="ngModel"
           type="email"
           placeholder="Ejemplo: minombre@asplabel.co"
+          required
+          email
         />
-        <mat-error *ngIf="">
+        <mat-error *ngIf="emailUser.invalid">
           Por favor ingrese un correo electrónico válido
         </mat-error>
       </mat-form-field>
@@ -21,10 +26,14 @@
         <mat-label>Contraseña</mat-label>
         <input
           matInput
+          ngModel
+          name="password"
+          #passwordUser = "ngModel"
           type="password"
           placeholder="Ingrese la contraseña"
+          required
         />
-        <mat-error *ngIf="">
+        <mat-error *ngIf="passwordUser.invalid">
           Por favor ingrese una contraseña correcta
         </mat-error>
       </mat-form-field>
