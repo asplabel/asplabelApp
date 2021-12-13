@@ -59,6 +59,10 @@ userRouter.get('/getUser/:id',checkAuth, (req, res, next) => {
   if (req.params.id != null & req.params.id != '' ) {
     UserModel.findOne({ _id: req.params.id }).then((user) => {
       res.status(201).json(user)
+    }).catch(err =>{
+      res.status(500).json({
+        message: "Error: "+err
+      })
     })
   }else{
     res.status(500).json({
@@ -66,6 +70,7 @@ userRouter.get('/getUser/:id',checkAuth, (req, res, next) => {
     })
   }
 })
+
 /*READ*/
 userRouter.get('/getUsers',checkAuth, (req, res, next) => {
   UserModel.aggregate([

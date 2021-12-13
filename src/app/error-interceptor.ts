@@ -8,7 +8,7 @@ export class ErrorInterceptor implements HttpInterceptor {
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) =>{
         console.log(error)
-        alert(error.error.error.message)
+        alert(error.error.message)
         return throwError(error)
       })
     )

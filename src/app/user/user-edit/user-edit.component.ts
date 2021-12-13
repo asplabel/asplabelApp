@@ -135,7 +135,7 @@ export class UserEditComponent implements OnInit {
   }
 
   saveChanges() {
-    console.log(this.form.invalid)
+    //console.log(this.form.invalid)
     if (this.form.invalid ) {
       return
     }
