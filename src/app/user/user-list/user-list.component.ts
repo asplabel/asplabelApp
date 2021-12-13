@@ -76,7 +76,7 @@ export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    
+
     this.userService.getUsers()
     this.subUsers = this.userService.getSubjectUser().subscribe((data) => {
       this.users = data
@@ -95,10 +95,12 @@ export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subUsers.unsubscribe()
   }
   deleteUser(id: string) {
+
     this._snackBar
       .open('¿Desea eliminar este colaborador?', 'Sí', { duration: 3000 })
       .onAction()
       .subscribe(() => {
+        //console.log(id)
         this.userService.deleteUser(id)
       })
 

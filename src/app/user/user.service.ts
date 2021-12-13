@@ -114,6 +114,7 @@ export class UserService {
   }
 
   deleteUser(id: string) {
+    console.log(id)
     this.http
       .delete(this.url + '/deleteUser/' + id)
       .subscribe((responseData: { message: string }) => {

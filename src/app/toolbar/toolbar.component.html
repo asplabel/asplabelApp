@@ -26,7 +26,7 @@
     <mat-icon class="menu">keyboard_arrow_down</mat-icon>
   </a>
   <mat-menu #menu="matMenu" class="menu-content">
-    <button mat-menu-item routerLink="/logout" class="menu-option">
+    <button mat-menu-item (click)="onlogout()" class="menu-option">
       Cerrar Sesión
     </button>
     <button mat-menu-item routerLink="/signup" class="menu-option">

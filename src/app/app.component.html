@@ -1,6 +1,6 @@
-<app-toolbar></app-toolbar>
+<app-toolbar *ngIf="isAuthenticated" option = {{url}}></app-toolbar>
 <main>
-  
+
   <!--<app-job-title-create
     (jobTitleCreated)="onJobTitleAdded($event)"
   ></app-job-title-create>
@@ -8,5 +8,7 @@
     <app-job-title-create></app-job-title-create>
   <app-job-title-list></app-job-title-list>
 -->
-  <router-outlet></router-outlet>
+  <router-outlet>
+
+  </router-outlet>
 </main>

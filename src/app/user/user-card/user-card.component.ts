@@ -32,14 +32,15 @@ export class UserCardComponent implements OnInit {
         this.userid = paramMap.get('id')
         this.userService.getUser(this.userid).subscribe((user: IUser) => {
           this.user = user
-          //console.dir(this.user)
         })
       }
     })
+
     this.cardService.getCardsNotAsigned()
     this.subCard = this.cardService
       .getSubjectCards()
       .subscribe((data: ICard[]) => {
+        this.cards = []
         this.cards = data
       })
   }

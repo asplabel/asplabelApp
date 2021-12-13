@@ -53,6 +53,7 @@ export class CardService {
     this.http
       .get(this.url + '/getCardsNotAsigned')
       .subscribe((data: ICard[]) => {
+        this.cards = []
         this.cards = data
         this.subjectCard.next([...this.cards])
       })

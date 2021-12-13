@@ -4,6 +4,7 @@ const RecordModel = require('../models/record')
 const CardModel = require('../models/card')
 const UserModel = require('../models/user')
 const moment = require('moment')
+const checkAuth = require('../middleware/check-auth')
 
 const recordRouter = express.Router()
 /*
@@ -11,7 +12,7 @@ const recordRouter = express.Router()
  ****************   MONITORING *********************************
  ***************************************************************
  */
-recordRouter.get('/getRecords', (req, res, next) => {
+recordRouter.get('/getRecords', checkAuth, (req, res, next) => {
   RecordModel.find()
     .sort({ date: -1, time: -1 })
     .then((records) => {
@@ -22,7 +23,7 @@ recordRouter.get('/getRecords', (req, res, next) => {
     })
 })
 
-recordRouter.delete('/deleteRecord/:id', (req, res, next) => {
+recordRouter.delete('/deleteRecord/:id', checkAuth, (req, res, next) => {
   RecordModel.deleteOne({ _id: req.params.id }).then((result) => {
     res.status(201).json({
       message: 'Registro eliminado exitosamente',

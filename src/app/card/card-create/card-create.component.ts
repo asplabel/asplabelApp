@@ -1,6 +1,7 @@
 import { Location } from '@angular/common'
 import { Component, OnInit } from '@angular/core'
 import { NgForm } from '@angular/forms'
+import { Router } from '@angular/router'
 import { ICard } from '../card.model'
 import { CardService } from '../card.service'
 
@@ -11,7 +12,7 @@ import { CardService } from '../card.service'
 })
 export class CardCreateComponent implements OnInit {
   type = ''
-  constructor(private cardService: CardService, private _location: Location) {}
+  constructor(private cardService: CardService, private _location: Location, private _route: Router) {}
 
   ngOnInit(): void {}
 
@@ -30,6 +31,7 @@ export class CardCreateComponent implements OnInit {
     }
     this.cardService.addCard(card)
     form.reset()
-    this._location.back()
+    this._route.navigateByUrl('/card/list')
+    //this._location.back()
   }
 }

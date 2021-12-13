@@ -3,6 +3,9 @@ const CardModel = require('../models/card')
 const UserModel = require('../models/user')
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+const checkAuth = require('../middleware/check-auth')
+
  /* DOCUMENTACIÓN DE MULTER
  * https://github.com/expressjs/multer
  */
@@ -52,7 +55,7 @@ const storage = multer.diskStorage({
  */
 
 /* READ ONE USER*/
-userRouter.get('/getUser/:id', (req, res, next) => {
+userRouter.get('/getUser/:id',checkAuth, (req, res, next) => {
   if (req.params.id != null & req.params.id != '' ) {
     UserModel.findOne({ _id: req.params.id }).then((user) => {
       res.status(201).json(user)
@@ -64,7 +67,7 @@ userRouter.get('/getUser/:id', (req, res, next) => {
   }
 })
 /*READ*/
-userRouter.get('/getUsers', (req, res, next) => {
+userRouter.get('/getUsers',checkAuth, (req, res, next) => {
   UserModel.aggregate([
     {
       $lookup: {
@@ -127,7 +130,7 @@ userRouter.get('/getUsers', (req, res, next) => {
 
 /* CREATE*/
 // Create with Image //
-userRouter.post('/addUser', multer({storage: storage}).single("photo"), (req, res, next) => {
+userRouter.post('/addUser',checkAuth, multer({storage: storage}).single("photo"), (req, res, next) => {
   let user
   const url = req.protocol + '://' + req.get("host")
   let roleColaborador = '619db81197dfc0c05c85f629'
@@ -188,7 +191,7 @@ userRouter.post('/addUser', multer({storage: storage}).single("photo"), (req, re
 })
 
 /*UPDATE*/
-userRouter.put('/updateUser',  multer({storage: storage}).single("photo"), (req, res, next) => {
+userRouter.put('/updateUser',checkAuth,  multer({storage: storage}).single("photo"), (req, res, next) => {
   let imagePath = req.body.photo
   if(req.file){
      const url = req.protocol + '://' + req.get("host")
@@ -238,10 +241,10 @@ userRouter.put('/updateUser',  multer({storage: storage}).single("photo"), (req,
 })
 
 /* DELETE */
-userRouter.delete('/deleteUser/:id', (req, res, next) => {
+userRouter.delete('/deleteUser/:id',checkAuth, (req, res, next) => {
   UserModel.findOne({ _id: req.params.id }).then((user) => {
     if (user) {
-      if (user.card_id && user.card_id != '') {
+      if (user.card_id != null && user.card_id != '' && user.card_id != 'null' ) {
         CardModel.findByIdAndUpdate(
           user.card_id,
           {
@@ -250,20 +253,20 @@ userRouter.delete('/deleteUser/:id', (req, res, next) => {
           },
           { new: true },
         ).then((card) => {
-
+          UserModel.deleteOne({ _id: req.params.id }).then((result) => {
+            res.status(201).json({
+              message: 'Usuario eliminado exitosamente',
+            })
+          })
         })
       }
     }
   })
-  UserModel.deleteOne({ _id: req.params.id }).then((result) => {
-    res.status(201).json({
-      message: 'Usuario eliminado exitosamente',
-    })
-  })
+
 })
 
 /*ASIGNAR TARJETA*/
-userRouter.post('/asignarTarjeta', (req, res, next) => {
+userRouter.post('/asignarTarjeta',checkAuth, (req, res, next) => {
   let card_id = req.body.card_id
   let user_id = req.body.user_id
   /*Se recibio el Id del usuario al que se le va asignar una tarjeta y se recibe
@@ -340,7 +343,7 @@ userRouter.post('/asignarTarjeta', (req, res, next) => {
 /*
 QUITAR TARJETA
 */
-userRouter.get('/quitarTarjeta/:id', async (req, res, next) => {
+userRouter.get('/quitarTarjeta/:id',checkAuth, async (req, res, next) => {
   //console.log(req.params.id)
   UserModel.findById(req.params.id).then((user) => {
     // El usuario tenía una tarjeta asignada
@@ -371,7 +374,7 @@ userRouter.get('/quitarTarjeta/:id', async (req, res, next) => {
 })
 
 // SIGN UP ADMINISTRADOR
-userRouter.post("/signup",(req,res,next)=>{
+userRouter.post("/signup",checkAuth, (req,res,next)=>{
   console.log(req.body)
   let admin_role_id= '6167051ccb06eba131faee63'
   bcrypt.hash(req.body.password, 10).then(hash =>{
@@ -396,5 +399,42 @@ userRouter.post("/signup",(req,res,next)=>{
     })
   })
 
+})
+
+/****  LOG IN *****/
+userRouter.post("/login", (req,res,next)=>{
+  let fetchedUser
+  //console.log(req.body)
+  UserModel.findOne({
+    email: req.body.email
+  }).then(user =>{
+    if (!user){
+      return res.status(401).json(
+        {message: "El correo no existe"})
+    } else {
+      if (user.role_id == '6167051ccb06eba131faee63'){
+        fetchedUser = user
+        return bcrypt.compare(req.body.password, user.password)
+      }else {
+        return res.status(401).json(
+          {message: "No tienes permiso para ingresar a la plataforma (No eres administrador) "})
+      }
+    }
+  }).then( result =>{
+      if (!result){
+        return res.status(401).json(
+          {message: "Contraseña incorrecta "})
+      }else{
+        /* Creación del token */
+        /* https://jwt.io/ */
+        const token = jwt.sign({email: fetchedUser.email, user_id: fetchedUser._id}, 'hoi123ashdbjbae',{expiresIn: '24h'})
+        res.status(200).json({
+          token: token
+        })
+      }
+  }).catch(err =>{
+    return res.status(401).json(
+      {message: "Error en la autenticación: "+ err})
+  })
 })
 module.exports = userRouter

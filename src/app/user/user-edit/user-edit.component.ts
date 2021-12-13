@@ -106,7 +106,7 @@ export class UserEditComponent implements OnInit {
         this.userid = paramMap.get('id')
         this.userService.getUser(this.userid).subscribe((user: IUser) => {
           this.user = user
-          console.log(this.user)
+          //console.log(this.user)
           this.imagePreview = this.user.photo
           if (this.user) {
             this.form.setValue({
@@ -116,7 +116,7 @@ export class UserEditComponent implements OnInit {
               phone: this.user.phone ,
               document: this.user.document,
               address: this.user.address,
-              date_of_birth: this.user.date_of_birth === '' || this.user.date_of_birth === null || this.user.date_of_birth === undefined? null : moment(this.user.date_of_birth),
+              date_of_birth: this.user.date_of_birth === '' || this.user.date_of_birth === null || this.user.date_of_birth === undefined? '' : moment(this.user.date_of_birth),
               is_active: this.user.is_active,
               job_title_id: this.user.job_title_id,
               type: this.user.type,
@@ -135,7 +135,7 @@ export class UserEditComponent implements OnInit {
   }
 
   saveChanges() {
-    //console.log( this.form.get('date_of_birth').value)
+    console.log(this.form.invalid)
     if (this.form.invalid ) {
       return
     }

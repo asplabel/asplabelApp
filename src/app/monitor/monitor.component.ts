@@ -59,6 +59,9 @@ export class MonitorComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         this.isLoading = false
       })
+      /*setInterval(()=>{
+        this.ngAfterViewInit()
+      },5000)*/
   }
 
   ngAfterViewInit() {
@@ -67,6 +70,7 @@ export class MonitorComponent implements OnInit, AfterViewInit, OnDestroy {
       .getSubjectRecords()
       .subscribe((data) => {
         this.records = data
+        //console.log('New data')
         this.dataSource = new MatTableDataSource<IRecord>(this.records)
         this.dataSource.sort = this.sort
         this.dataSource.paginator = this.paginator

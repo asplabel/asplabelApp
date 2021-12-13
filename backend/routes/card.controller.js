@@ -1,6 +1,7 @@
 const express = require('express')
 const CardModel = require('../models/card')
 const users = require('../models/user')
+const checkAuth = require('../middleware/check-auth')
 
 const cardRouter = express.Router()
 
@@ -10,7 +11,7 @@ const cardRouter = express.Router()
  ***************************************************************
  */
 /* CREATE */
-cardRouter.post('/addCard', (req, res, next) => {
+cardRouter.post('/addCard',checkAuth, (req, res, next) => {
   if (
     req.body.UID != null &&
     req.body.type != null &&
@@ -41,14 +42,14 @@ cardRouter.post('/addCard', (req, res, next) => {
 })
 
 /* READ ONE */
-cardRouter.get('/getCard/:id', (req, res, next) => {
+cardRouter.get('/getCard/:id',checkAuth, (req, res, next) => {
   CardModel.findOne({ _id: req.params.id }).then((card) => {
     res.status(201).json(card)
   })
 })
 
 /* READ */
-cardRouter.get('/getCards', (req, res, next) => {
+cardRouter.get('/getCards',checkAuth, (req, res, next) => {
   CardModel.aggregate([
     {
       $lookup: {
@@ -77,7 +78,7 @@ cardRouter.get('/getCards', (req, res, next) => {
 })
 
 /* READ CARDS NOT ASIGNED*/
-cardRouter.get('/getCardsNotAsigned', (req, res, next) => {
+cardRouter.get('/getCardsNotAsigned',checkAuth, (req, res, next) => {
   CardModel.aggregate([
     {
       $match: {
@@ -103,7 +104,7 @@ cardRouter.get('/getCardsNotAsigned', (req, res, next) => {
 })
 
 /* DELETE */
-cardRouter.delete('/deleteCard/:id', (req, res, next) => {
+cardRouter.delete('/deleteCard/:id',checkAuth, (req, res, next) => {
   if (req.params.id != null && req.params.id!=''){
     users
     .updateMany({ card_id: req.params.id }, { card_id: null }, { new: true })
@@ -132,7 +133,7 @@ cardRouter.delete('/deleteCard/:id', (req, res, next) => {
 })
 
 /* UPDATE */
-cardRouter.put('/updateCard', (req, res, next) => {
+cardRouter.put('/updateCard',checkAuth, (req, res, next) => {
   let id = req.body.id
   let UID = req.body.UID
   let type = req.body.type

@@ -1,6 +1,7 @@
 const express = require('express')
 const JobTitleModel = require('../models/jobTitle')
 const UserModel = require('../models/user')
+const checkAuth = require('../middleware/check-auth')
 
 const jobTitleRouter = express.Router()
 
@@ -11,7 +12,7 @@ const jobTitleRouter = express.Router()
  */
 
 /* CREATE */
-jobTitleRouter.post('/addJobTitle', (req, res, next) => {
+jobTitleRouter.post('/addJobTitle',checkAuth, (req, res, next) => {
   if (req.body.name != null && req.body.name != '') {
     let jobTitle
     if (req.body.department_id != null && req.body.department_id != '') {
@@ -47,7 +48,7 @@ jobTitleRouter.post('/addJobTitle', (req, res, next) => {
 /*
  * Listar los cargos
  */
-jobTitleRouter.get('/getJobTitles', (req, res, next) => {
+jobTitleRouter.get('/getJobTitles',checkAuth, (req, res, next) => {
   JobTitleModel.aggregate([
     {
       $lookup: {
@@ -82,7 +83,7 @@ jobTitleRouter.get('/getJobTitles', (req, res, next) => {
 })
 
 /* UPDATE */
-jobTitleRouter.put('/updateJobTitle', (req, res, next) => {
+jobTitleRouter.put('/updateJobTitle',checkAuth,(req, res, next) => {
   if (
     req.body.id &&
     req.body.name &&
@@ -119,7 +120,7 @@ jobTitleRouter.put('/updateJobTitle', (req, res, next) => {
 })
 
 /* DELETE */
-jobTitleRouter.delete('/deleteJobTitle/:id', (req, res, next) => {
+jobTitleRouter.delete('/deleteJobTitle/:id', checkAuth, (req, res, next) => {
   UserModel.updateMany(
     { job_title_id: req.params.id },
     { job_title_id: null },

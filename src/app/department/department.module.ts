@@ -19,6 +19,8 @@ import { BrandModule } from '../brand/brand.module'
 import { MatDialogModule } from '@angular/material/dialog'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 import { MatSnackBarModule } from '@angular/material/snack-bar'
+import { HTTP_INTERCEPTORS } from '@angular/common/http'
+import { AuthInterceptor } from '../auth/auth-interceptor'
 
 @NgModule({
   declarations: [
@@ -50,5 +52,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar'
     MatProgressSpinnerModule,
     BrandModule,
   ],
+  providers: [{
+    provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }]
 })
 export class DepartmentModule {}
