@@ -61,7 +61,7 @@ userRouter.get('/getUser/:id',checkAuth, (req, res, next) => {
       res.status(201).json(user)
     })
   }else{
-    res.status(201).json({
+    res.status(500).json({
       message: "error"
     })
   }
@@ -124,7 +124,7 @@ userRouter.get('/getUsers',checkAuth, (req, res, next) => {
   ]).then((result) => {
     res.status(201).json(result)
   }).catch((err)=>{
-    res.status(201).json({message: "Error: "+err})
+    res.status(500).json({message: "Error: "+err})
   })
 })
 
@@ -158,7 +158,7 @@ userRouter.post('/addUser',checkAuth, multer({storage: storage}).single("photo")
         message: 'Usuario agregado con éxito',
       })
     }).catch((err)=>{
-      res.status(201).json({
+      res.status(500).json({
         message: 'ERROR: '+err,
       })
     })
@@ -183,7 +183,7 @@ userRouter.post('/addUser',checkAuth, multer({storage: storage}).single("photo")
         message: 'Usuario agregado con éxito',
       })
     }).catch((err)=>{
-      res.status(201).json({
+      res.status(500).json({
         message: 'ERROR: '+err,
       })
     })
@@ -234,7 +234,7 @@ userRouter.put('/updateUser',checkAuth,  multer({storage: storage}).single("phot
       })
     })
     .catch((err) => {
-      res.status(201).json({
+      res.status(500).json({
         message: 'Error: ' + err,
       })
     })
@@ -257,10 +257,32 @@ userRouter.delete('/deleteUser/:id',checkAuth, (req, res, next) => {
             res.status(201).json({
               message: 'Usuario eliminado exitosamente',
             })
+          }).catch(err =>{
+            res.status(500).json({
+              message: 'Error: No se eliminó el usuario: ' + err,
+            })
+          })
+        }).catch(err =>{
+          res.status(500).json({
+            message: 'Error: No se pudo liberar la tarjeta del usuario: ' + err,
+          })
+        })
+      } else {
+        UserModel.deleteOne({ _id: req.params.id }).then((result) => {
+          res.status(201).json({
+            message: 'Usuario eliminado exitosamente',
+          })
+        }).catch(err =>{
+          res.status(500).json({
+            message: 'Error: No se eliminó el usuario: ' + err,
           })
         })
       }
     }
+  }).catch(err=>{
+    res.status(500).json({
+      message: 'Error: Usuario a eliminar no encontrado: ' + err,
+    })
   })
 
 })
@@ -291,10 +313,10 @@ userRouter.post('/asignarTarjeta',checkAuth, (req, res, next) => {
                 res.status(201).json({message:'Tarjeta asignada con éxito'})
               })
               .catch((err) => {
-                res.status(201).json({message:'Error: '+err})
+                res.status(500).json({message:'Error: '+err})
               })
           }).catch((err)=>{
-            res.status(201).json({message:'Error: '+err})
+            res.status(500).json({message:'Error: '+err})
           })
         } else {
           /*El usuario previamente tenía tarjeta, por lo tanto se debe liberar esa primero para asignar la nueva*/
@@ -322,21 +344,21 @@ userRouter.post('/asignarTarjeta',checkAuth, (req, res, next) => {
                   res.status(201).json({message:'Tarjeta asignada con éxito'})
                 })
                 .catch((err) => {
-                  res.status(201).json({message:'Error: '+err})
+                  res.status(500).json({message:'Error: '+err})
                 })
             }).catch((err)=>{
-              res.status(201).json({message:'Error: '+err})
+              res.status(500).json({message:'Error: '+err})
             })
           }).catch((err)=>{
-            res.status(201).json({message:'Error: '+err})
+            res.status(500).json({message:'Error: '+err})
           })
         }
       })
       .catch((err) => {
-        res.status(201).json('Error: ' + err)
+        res.status(500).json('Error: ' + err)
       })
   }else{
-    res.status(201).json({message: 'Error: No se obtuvo el Id de la tarjeta o del usuario' })
+    res.status(500).json({message: 'Error: No se obtuvo el Id de la tarjeta o del usuario' })
   }
 })
 
@@ -368,7 +390,7 @@ userRouter.get('/quitarTarjeta/:id',checkAuth, async (req, res, next) => {
       })
     } else {
       //console.log('No card_id: ' + user.card_id)
-      res.status(201).json({message: 'Error: No hay tarjeta'})
+      res.status(500).json({message: 'Error: No hay tarjeta'})
     }
   })
 })
@@ -433,7 +455,7 @@ userRouter.post("/login", (req,res,next)=>{
         })
       }
   }).catch(err =>{
-    return res.status(401).json(
+    return res.status(500).json(
       {message: "Error en la autenticación: "+ err})
   })
 })

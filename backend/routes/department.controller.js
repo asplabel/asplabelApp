@@ -29,12 +29,12 @@ departmentRouter.post('/addDepartment',checkAuth, (req, res, next) => {
         })
       })
       .catch((err) => {
-        res.status(201).json({
+        res.status(500).json({
           message: 'No se agrego el departamento: ' + err,
         })
       })
   } else {
-    res.status(201).json({
+    res.status(500).json({
       message: 'Error al agregar departamento',
     })
   }
@@ -54,7 +54,9 @@ departmentRouter.get('/getDepartments',checkAuth, (req, res, next) => {
       })
     })
     .catch((err) => {
-      res.status(200).json()
+      res.status(500).json({
+        message: 'Error: '+err
+      })
     })
 })
 
@@ -78,19 +80,19 @@ departmentRouter.delete('/deleteDepartment/:id',checkAuth, (req, res, next) => {
             })
           })
           .catch((err) => {
-            res.status(201).json({
+            res.status(500).json({
               message: 'NO se elimino el cargo: ' + err,
             })
           })
       })
       .catch((err) => {
-        res.status(201).json({
+        res.status(500).json({
           message:
             'No se pudo disvincular cargos del departamento a eliminar: ' + err,
         })
       })
   } else {
-    res.status(201).json({
+    res.status(500).json({
       message: 'No se recibio el ID',
     })
   }
@@ -115,12 +117,12 @@ departmentRouter.put('/updateDepartment',checkAuth, (req, res, next) => {
         })
       })
       .catch((err) => {
-        res.status(201).json({
+        res.status(500).json({
           message: 'NO fue posible editar el departamento: ' + err,
         })
       })
   } else {
-    res.status(201).json({
+    res.status(500).json({
       message: 'Error al actualizar el departamento',
     })
   }

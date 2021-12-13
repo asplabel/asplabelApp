@@ -33,12 +33,12 @@ jobTitleRouter.post('/addJobTitle',checkAuth, (req, res, next) => {
         })
       })
       .catch((err) => {
-        res.status(201).json({
+        res.status(500).json({
           message: 'No se pudo agregar el cargo: ' + err,
         })
       })
   } else {
-    res.status(201).json({
+    res.status(500).json({
       message: 'Error al agregar cargo',
     })
   }
@@ -75,7 +75,7 @@ jobTitleRouter.get('/getJobTitles',checkAuth, (req, res, next) => {
       })
     })
     .catch((err) => {
-      res.status(201).json({
+      res.status(500).json({
         message: 'No se pudo obtener los cargos: ' + err,
         jobTitles: null,
       })
@@ -113,7 +113,7 @@ jobTitleRouter.put('/updateJobTitle',checkAuth,(req, res, next) => {
       })
     }
   } else {
-    res.status(201).json({
+    res.status(500).json({
       message: 'Error al editar el cargo',
     })
   }

@@ -30,12 +30,12 @@ cardRouter.post('/addCard',checkAuth, (req, res, next) => {
         message: 'Tarjeta agregada con éxito',
       })
     }).catch((err)=>{
-      res.status(201).json({
+      res.status(500).json({
         message: 'Error: '+err,
       })
     })
   } else {
-    res.status(201).json({
+    res.status(500).json({
       message: 'Error recibir datos de la tarjeta',
     })
   }
@@ -115,18 +115,18 @@ cardRouter.delete('/deleteCard/:id',checkAuth, (req, res, next) => {
         })
       }).catch(
         (err)=>{
-          res.status(201).json({
+          res.status(500).json({
             message: 'Error: '+err,
           })
         }
       )
     }).catch((err)=>{
-      res.status(201).json({
+      res.status(500).json({
         message: 'Error: '+err,
       })
     })
   }else{
-    res.status(201).json({
+    res.status(500).json({
       message: 'Error al recibir el id de la tarjeta a eliminar',
     })
   }
@@ -156,12 +156,12 @@ cardRouter.put('/updateCard',checkAuth, (req, res, next) => {
         message: 'Tarjeta editada con éxito',
       })
     }).catch((err)=>{
-      res.status(201).json({
+      res.status(500).json({
         message: 'Error: '+err,
       })
     })
   } else {
-    res.status(201).json({
+    res.status(500).json({
       message: 'Error: no se obtuvieron las datos para editar la tarjeta',
     })
   }
