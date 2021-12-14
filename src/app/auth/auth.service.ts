@@ -40,6 +40,7 @@ export class AuthService {
       this._snackBar.open('' + responseData.message, '', {
         duration: 3000,
       })
+      this.router.navigate(['/user/list'])
     })
   }
 
@@ -84,7 +85,6 @@ export class AuthService {
   }
 
   autoAuthUser(){
-    console.log("Auto Auth")
     const localeStorage = this.getAutoData()
     if(!localStorage){
       return
@@ -94,12 +94,12 @@ export class AuthService {
     //console.log()
     if (localeStorage.expirationDate != null){
       const isInFuture = localeStorage.expirationDate > now
-      console.log(isInFuture)
+      //console.log(isInFuture)
       if (isInFuture){
         this.token = localeStorage.token
         this.isAuthenticated = true
         this.authStatusListener.next(true)
-        console.log(this.isAuthenticated)
+        //console.log(this.isAuthenticated)
       }
   }
   }
