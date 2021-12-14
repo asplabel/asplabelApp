@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core'
-import { Router } from '@angular/router'
 import { Subscription } from 'rxjs'
 import { AuthService } from './auth/auth.service'
-//import { IjobTitle } from './job-title/job-title.model'
 
 @Component({
   selector: 'app-root',
@@ -14,7 +12,7 @@ export class AppComponent implements OnInit{
   subAuht: Subscription
   title = 'asplabelApp'
   isAuthenticated = false
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService) {
   }
 
   ngOnInit(){
@@ -24,11 +22,5 @@ export class AppComponent implements OnInit{
     })
     this.authService.autoAuthUser()
     this.url = window.location.href
-    //console.log(this.url)
   }
-  /*storedJobTitles: IjobTitle[] = []
-
-  onJobTitleAdded(jobTitle) {
-    this.storedJobTitles.push(jobTitle)
-  }*/
 }

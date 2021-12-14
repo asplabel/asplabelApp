@@ -2,7 +2,7 @@
 const CardModel = require('../models/card')
 const UserModel = require('../models/user')
 const mongoose = require('mongoose')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
 

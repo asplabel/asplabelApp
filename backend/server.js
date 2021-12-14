@@ -1,5 +1,5 @@
 const http = require('http')
-const app = require('./backend/app')
+const app = require('./app')
 
 /*const server = http.createServer((req, res) => {
   res.end('respuesta')
@@ -11,4 +11,3 @@ app.set('port', port)
 const server = http.createServer(app)
 
 server.listen(port)
-  

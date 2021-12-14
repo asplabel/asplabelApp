@@ -84,17 +84,22 @@ export class AuthService {
   }
 
   autoAuthUser(){
+    console.log("Auto Auth")
     const localeStorage = this.getAutoData()
     if(!localStorage){
       return
     }
     const now = new Date()
-    if (localStorage.expirationDate){
+    //console.log("paso")
+    //console.log()
+    if (localeStorage.expirationDate != null){
       const isInFuture = localeStorage.expirationDate > now
+      console.log(isInFuture)
       if (isInFuture){
         this.token = localeStorage.token
         this.isAuthenticated = true
         this.authStatusListener.next(true)
+        console.log(this.isAuthenticated)
       }
   }
   }
