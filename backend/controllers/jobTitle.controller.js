@@ -1,18 +1,7 @@
-const express = require('express')
 const JobTitleModel = require('../models/jobTitle')
 const UserModel = require('../models/user')
-const checkAuth = require('../middleware/check-auth')
 
-const jobTitleRouter = express.Router()
-
-/*
- ***************************************************************
- ***********   JOB TITLES CRUD *********************************
- ***************************************************************
- */
-
-/* CREATE */
-jobTitleRouter.post('/addJobTitle',checkAuth, (req, res, next) => {
+exports.addJobTitle = (req, res, next) => {
   if (req.body.name != null && req.body.name != '') {
     let jobTitle
     if (req.body.department_id != null && req.body.department_id != '') {
@@ -42,13 +31,9 @@ jobTitleRouter.post('/addJobTitle',checkAuth, (req, res, next) => {
       message: 'Error al agregar cargo',
     })
   }
-})
+}
 
-/* READ */
-/*
- * Listar los cargos
- */
-jobTitleRouter.get('/getJobTitles',checkAuth, (req, res, next) => {
+exports.getJobTitles =(req, res, next) => {
   JobTitleModel.aggregate([
     {
       $lookup: {
@@ -80,10 +65,9 @@ jobTitleRouter.get('/getJobTitles',checkAuth, (req, res, next) => {
         jobTitles: null,
       })
     })
-})
+}
 
-/* UPDATE */
-jobTitleRouter.put('/updateJobTitle',checkAuth,(req, res, next) => {
+exports.updateJobTitle = (req, res, next) => {
   if (
     req.body.id &&
     req.body.name &&
@@ -117,23 +101,28 @@ jobTitleRouter.put('/updateJobTitle',checkAuth,(req, res, next) => {
       message: 'Error al editar el cargo',
     })
   }
-})
+}
 
-/* DELETE */
-jobTitleRouter.delete('/deleteJobTitle/:id', checkAuth, (req, res, next) => {
+exports.deleteJobTitle = (req, res, next) => {
   UserModel.updateMany(
     { job_title_id: req.params.id },
     { job_title_id: null },
     { new: true },
   ).then((result) => {
     //console.log(result)
+  }).catch(err => {
+    res.status(500).json({
+      message: 'Error: ' + err,
+    })
   })
   JobTitleModel.deleteOne({ _id: req.params.id }).then((result) => {
     //console.log(result)
     res.status(201).json({
       message: 'Cargo eliminado exitosamente',
     })
+  }).catch(err =>{
+    res.status(500).json({
+      message: 'Error: ' + err,
+    })
   })
-})
-
-module.exports = jobTitleRouter
+}

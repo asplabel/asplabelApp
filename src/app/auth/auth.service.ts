@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class AuthService {
   private isAuthenticated = false
   private authStatusListener = new Subject<boolean>();
 
-  url: string = 'http://localhost:3000'
+  url: string =  environment.apiUrl
   constructor(private http: HttpClient, private _snackBar: MatSnackBar, private router: Router) { }
 
   getToken(){

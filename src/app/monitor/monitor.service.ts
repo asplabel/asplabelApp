@@ -4,6 +4,7 @@ import { Subject } from 'rxjs'
 import { IRecord } from './record.model'
 import { map } from 'rxjs/operators'
 import { MatSnackBar } from '@angular/material/snack-bar'
+import { environment } from 'src/environments/environment'
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,7 @@ export class MonitorService {
   records: IRecord[] = []
   subjectRecord = new Subject<IRecord[]>()
 
-  url: string = 'http://localhost:3000'
+  url: string =  environment.apiUrl
   constructor(private http: HttpClient, private _snackBar: MatSnackBar) {}
 
   getRecords() {

@@ -1,45 +1,10 @@
-const express = require('express')
 
-const RecordModel = require('../models/record')
 const CardModel = require('../models/card')
 const UserModel = require('../models/user')
 const moment = require('moment')
-const checkAuth = require('../middleware/check-auth')
+const RecordModel = require('../models/record')
 
-const recordRouter = express.Router()
-/*
- ***************************************************************
- ****************   MONITORING *********************************
- ***************************************************************
- */
-recordRouter.get('/getRecords', checkAuth, (req, res, next) => {
-  RecordModel.find()
-    .sort({ date: -1, time: -1 })
-    .then((records) => {
-      res.status(201).json({
-        message: 'Cargos enviado con éxito',
-        records: records,
-      })
-    })
-})
-
-recordRouter.delete('/deleteRecord/:id', checkAuth, (req, res, next) => {
-  RecordModel.deleteOne({ _id: req.params.id }).then((result) => {
-    res.status(201).json({
-      message: 'Registro eliminado exitosamente',
-    })
-  })
-})
-
-/*
- ***************************************************************
- ***********   ESP8266 ACCESO *********************************
- ***************************************************************
- */
-
-/* VALIDATE ACCESS AND ADD A RECORD*/
-recordRouter.get('/validateAccess/:uid', (req, res, next) => {
-  //console.log(req.params.uid)
+exports.validateAccess = (req, res, next) => {
   CardModel.findOne({ UID: req.params.uid })
     .then((result) => {
       if (result != null) {
@@ -104,6 +69,27 @@ recordRouter.get('/validateAccess/:uid', (req, res, next) => {
         message: 'Error: '+err
       })
     })
-})
+}
 
-module.exports = recordRouter
+exports.getRecords = (req, res, next) => {
+  RecordModel.find()
+    .sort({ date: -1, time: -1 })
+    .then((records) => {
+      res.status(201).json({
+        message: 'Cargos enviado con éxito',
+        records: records,
+      })
+    }).catch(err => {
+      res.status(500).json({
+        message: 'Error: '+ err
+      })
+    })
+}
+
+exports.deleteRecord = (req, res, next) => {
+  RecordModel.deleteOne({ _id: req.params.id }).then((result) => {
+    res.status(201).json({
+      message: 'Registro eliminado exitosamente',
+    })
+  })
+}

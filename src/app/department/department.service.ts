@@ -3,6 +3,7 @@ import { Subject } from 'rxjs'
 import { HttpClient } from '@angular/common/http'
 import { MatSnackBar } from '@angular/material/snack-bar'
 import { IDepartment } from './department.model'
+import { environment } from 'src/environments/environment'
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,7 @@ export class DepartmentService {
   departments: IDepartment[]
   subjectDepartment = new Subject<IDepartment[]>()
 
-  url: string = 'http://localhost:3000'
+  url: string =  environment.apiUrl
 
   constructor(private http: HttpClient, private _snackBar: MatSnackBar) {}
 

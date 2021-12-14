@@ -3,17 +3,17 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 
-const departmentRouter = require('./routes/department.controller')
-const jobTitleRouter = require('./routes/jobTitle.controller')
-const cardRouter = require('./routes/card.controller')
-const userRouter = require('./routes/user.controller')
-const recordRouter = require('./routes/record.controller')
+const departmentRouter = require('./routes/department.router')
+const jobTitleRouter = require('./routes/jobTitle.router')
+const cardRouter = require('./routes/card.router')
+const userRouter = require('./routes/user.router')
+const recordRouter = require('./routes/record.router')
 
 const app = express()
 
 mongoose
   .connect(
-    'mongodb+srv://NodeJS:07erV3ukBjukLOJy@clusterasplabel2021.qrd4x.mongodb.net/asplabelDB?retryWrites=true&w=majority',
+    'mongodb+srv://NodeJS:'+process.env.MONGO_ATLAS_PW+'@clusterasplabel2021.qrd4x.mongodb.net/asplabelDB?retryWrites=true&w=majority',
   )
   .then(() => {
     console.log('Se ha conectado correctamente a MongoDB Cloud')

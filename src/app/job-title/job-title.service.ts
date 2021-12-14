@@ -3,6 +3,7 @@ import { Subject } from 'rxjs'
 import { IjobTitle } from './job-title.model'
 import { HttpClient } from '@angular/common/http'
 import { MatSnackBar } from '@angular/material/snack-bar'
+import { environment } from 'src/environments/environment'
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,7 @@ export class JobTitleService {
   jobTitles: IjobTitle[] = []
   subjectJobTitle = new Subject<IjobTitle[]>()
 
-  url: string = 'http://localhost:3000'
+  url: string =  environment.apiUrl
   constructor(private http: HttpClient, private _snackBar: MatSnackBar) {}
 
   getJobTitles() {

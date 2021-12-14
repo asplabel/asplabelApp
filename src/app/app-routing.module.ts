@@ -10,7 +10,6 @@ import { DepartmentListComponent } from './department/department-list/department
 import { JobTitleCreateComponent } from './job-title/job-title-create/job-title-create.component'
 import { JobTitleListComponent } from './job-title/job-title-list/job-title-list.component'
 
-import { LogInComponent } from './auth/log-in/log-in.component'
 import { SignupComponent } from './auth/signup/signup.component'
 
 import { MonitorComponent } from './monitor/monitor.component'
@@ -20,9 +19,10 @@ import { UserCreateComponent } from './user/user-create/user-create.component'
 import { UserEditComponent } from './user/user-edit/user-edit.component'
 import { UserListComponent } from './user/user-list/user-list.component'
 import { AuthGuard } from './auth/auth.guard'
+import { LogInComponent } from './auth/log-in/log-in.component'
 
 const routes: Routes = [
-  { path: '', component: LogInComponent },
+
   { path: 'monitor', component: MonitorComponent, canActivate: [AuthGuard] },
 
   { path: 'user/list', component: UserListComponent, canActivate: [AuthGuard] },
@@ -40,6 +40,7 @@ const routes: Routes = [
   { path: 'department/create', component: DepartmentCreateComponent, canActivate: [AuthGuard] },
 
   { path: 'signup', component: SignupComponent, canActivate: [AuthGuard]},
+  { path: '', component: LogInComponent },
 ]
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

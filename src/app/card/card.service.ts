@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core'
 import { Subject } from 'rxjs'
 import { ICard } from './card.model'
 import { MatSnackBar } from '@angular/material/snack-bar'
+import { environment } from 'src/environments/environment'
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar'
 export class CardService {
   cards: ICard[]
   subjectCard = new Subject<ICard[]>()
-  url: string = 'http://localhost:3000'
+  url: string =  environment.apiUrl
 
   constructor(private http: HttpClient, private _snackBar: MatSnackBar) {}
 
@@ -51,7 +52,7 @@ export class CardService {
 
   getCardsNotAsigned() {
     this.http
-      .get(this.url + '/getCardsNotAsigned')
+      .get(this.url + '/getCardsNotAssigned')
       .subscribe((data: ICard[]) => {
         this.cards = []
         this.cards = data

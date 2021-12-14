@@ -1,17 +1,6 @@
-const express = require('express')
 const CardModel = require('../models/card')
 const users = require('../models/user')
-const checkAuth = require('../middleware/check-auth')
-
-const cardRouter = express.Router()
-
-/*
- ***************************************************************
- ***********   CARD CRUD *********************************
- ***************************************************************
- */
-/* CREATE */
-cardRouter.post('/addCard',checkAuth, (req, res, next) => {
+exports.add = (req, res, next) => {
   if (
     req.body.UID != null &&
     req.body.type != null &&
@@ -39,17 +28,15 @@ cardRouter.post('/addCard',checkAuth, (req, res, next) => {
       message: 'Error recibir datos de la tarjeta',
     })
   }
-})
+}
 
-/* READ ONE */
-cardRouter.get('/getCard/:id',checkAuth, (req, res, next) => {
+exports.getOne =  (req, res, next) => {
   CardModel.findOne({ _id: req.params.id }).then((card) => {
     res.status(201).json(card)
   })
-})
+}
 
-/* READ */
-cardRouter.get('/getCards',checkAuth, (req, res, next) => {
+exports.getAll = (req, res, next) => {
   CardModel.aggregate([
     {
       $lookup: {
@@ -75,10 +62,9 @@ cardRouter.get('/getCards',checkAuth, (req, res, next) => {
   ]).then((result) => {
     res.status(201).json(result)
   })
-})
+}
 
-/* READ CARDS NOT ASIGNED*/
-cardRouter.get('/getCardsNotAsigned',checkAuth, (req, res, next) => {
+exports.getNotAssigned = (req, res, next) => {
   CardModel.aggregate([
     {
       $match: {
@@ -101,10 +87,9 @@ cardRouter.get('/getCardsNotAsigned',checkAuth, (req, res, next) => {
   ]).then((cards) => {
     res.status(201).json(cards)
   })
-})
+}
 
-/* DELETE */
-cardRouter.delete('/deleteCard/:id',checkAuth, (req, res, next) => {
+exports.delete = (req, res, next) => {
   if (req.params.id != null && req.params.id!=''){
     users
     .updateMany({ card_id: req.params.id }, { card_id: null }, { new: true })
@@ -130,10 +115,9 @@ cardRouter.delete('/deleteCard/:id',checkAuth, (req, res, next) => {
       message: 'Error al recibir el id de la tarjeta a eliminar',
     })
   }
-})
+}
 
-/* UPDATE */
-cardRouter.put('/updateCard',checkAuth, (req, res, next) => {
+exports.update = (req, res, next) => {
   let id = req.body.id
   let UID = req.body.UID
   let type = req.body.type
@@ -165,5 +149,4 @@ cardRouter.put('/updateCard',checkAuth, (req, res, next) => {
       message: 'Error: no se obtuvieron las datos para editar la tarjeta',
     })
   }
-})
-module.exports = cardRouter
+}

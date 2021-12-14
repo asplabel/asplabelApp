@@ -1,21 +1,7 @@
-const express = require('express')
 const JobTitleModel = require('../models/jobTitle')
 const DepartmentModel = require('../models/department')
-const departmentRouter = express.Router()
-const checkAuth = require('../middleware/check-auth')
 
-/*
- ***************************************************************
- ***********   DEPARTMENT CRUD *********************************
- ***************************************************************
- */
-
-/* CREATE */
-/*
- * Crear un departamento
- * @param name: El nombre del nuevo departamento
- */
-departmentRouter.post('/addDepartment',checkAuth, (req, res, next) => {
+exports.add = (req, res, next) => {
   // Verificar que el nombre no sea nulo ni vacío
   if (req.body.name != null && req.body.name != '') {
     const department = new DepartmentModel({
@@ -38,14 +24,9 @@ departmentRouter.post('/addDepartment',checkAuth, (req, res, next) => {
       message: 'Error al agregar departamento',
     })
   }
-})
+}
 
-/* READ */
-/*
- * Listar departamentos
-   return los departamentos
- */
-departmentRouter.get('/getDepartments',checkAuth, (req, res, next) => {
+exports.getDepartments =(req, res, next) => {
   DepartmentModel.find()
     .sort({ name: 1 })
     .then((departments) => {
@@ -58,14 +39,9 @@ departmentRouter.get('/getDepartments',checkAuth, (req, res, next) => {
         message: 'Error: '+err
       })
     })
-})
+}
 
-/* DELETE */
-/*
- * Eliminar un departamento. Si hay cargos que hagan parte del departamento a eliminar
- * quedan en null (sin departamento)
- */
-departmentRouter.delete('/deleteDepartment/:id',checkAuth, (req, res, next) => {
+exports.delete = (req, res, next) => {
   if ((req.params.id != null) & (req.params.id != '')) {
     JobTitleModel.updateMany(
       { department_id: req.params.id },
@@ -88,7 +64,7 @@ departmentRouter.delete('/deleteDepartment/:id',checkAuth, (req, res, next) => {
       .catch((err) => {
         res.status(500).json({
           message:
-            'No se pudo disvincular cargos del departamento a eliminar: ' + err,
+            'No se pudo desvincular cargos del departamento a eliminar: ' + err,
         })
       })
   } else {
@@ -96,14 +72,9 @@ departmentRouter.delete('/deleteDepartment/:id',checkAuth, (req, res, next) => {
       message: 'No se recibio el ID',
     })
   }
-})
+}
 
-/*  UPDATE */
-/*
- * Actualizar, editar el nombre del departamento
- * @param name : Nombre nuevo del departamento
- */
-departmentRouter.put('/updateDepartment',checkAuth, (req, res, next) => {
+exports.update = (req, res, next) => {
   if (
     req.body.id != null &&
     req.body.name != null &&
@@ -126,6 +97,4 @@ departmentRouter.put('/updateDepartment',checkAuth, (req, res, next) => {
       message: 'Error al actualizar el departamento',
     })
   }
-})
-
-module.exports = departmentRouter
+}

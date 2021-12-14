@@ -1,61 +1,17 @@
-const express = require('express')
+
 const CardModel = require('../models/card')
 const UserModel = require('../models/user')
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const checkAuth = require('../middleware/check-auth')
+
 
  /* DOCUMENTACIÓN DE MULTER
  * https://github.com/expressjs/multer
  */
 const multer = require('multer')
-const user = require('../models/user')
-const MIME_TIPE_MAP = {
-  'image/png': 'png',
-  'image/jpeg': 'jpeg',
-  'image/jpg': 'jpg'
-}
 
-const userRouter = express.Router()
-
-/* Configurar en donde se almacenará la imagen*/
-const storage = multer.diskStorage({
-  /*req: el request
-    file: el archivo que se va a extraer
-    cb: callback*/
-  destination: (req, file, cb) => {
-    let err
-    let isValid
-    if (file !=null){
-      isValid = MIME_TIPE_MAP[file.mimetype]
-      err = new Error("Invalid mime type")
-    }else{
-      isValid = false
-    }
-    if(isValid){
-      err = null
-      cb(err, "backend/images")
-    }
-
-  },
-  filename: (req,file,cb) =>{
-    if (file !=null){
-      const name = file.originalname.toLowerCase().split(' ').join('-')
-      const ext = MIME_TIPE_MAP[file.mimetype]
-      cb(null, name + '-' + Date.now() + '.' + ext)
-    }
-  }
-})
-
-/*
- ***************************************************************
- ***********   USER CRUD *********************************
- ***************************************************************
- */
-
-/* READ ONE USER*/
-userRouter.get('/getUser/:id',checkAuth, (req, res, next) => {
+exports.getOneUser = (req, res, next) => {
   if (req.params.id != null & req.params.id != '' ) {
     UserModel.findOne({ _id: req.params.id }).then((user) => {
       res.status(201).json(user)
@@ -69,10 +25,9 @@ userRouter.get('/getUser/:id',checkAuth, (req, res, next) => {
       message: "error"
     })
   }
-})
+}
 
-/*READ*/
-userRouter.get('/getUsers',checkAuth, (req, res, next) => {
+exports.getUsers = (req, res, next) => {
   UserModel.aggregate([
     {
       $lookup: {
@@ -131,11 +86,9 @@ userRouter.get('/getUsers',checkAuth, (req, res, next) => {
   }).catch((err)=>{
     res.status(500).json({message: "Error: "+err})
   })
-})
+}
 
-/* CREATE*/
-// Create with Image //
-userRouter.post('/addUser',checkAuth, multer({storage: storage}).single("photo"), (req, res, next) => {
+exports.createUser = (req, res, next) => {
   let user
   const url = req.protocol + '://' + req.get("host")
   let roleColaborador = '619db81197dfc0c05c85f629'
@@ -193,10 +146,9 @@ userRouter.post('/addUser',checkAuth, multer({storage: storage}).single("photo")
       })
     })
   }
-})
+}
 
-/*UPDATE*/
-userRouter.put('/updateUser',checkAuth,  multer({storage: storage}).single("photo"), (req, res, next) => {
+exports.updateUser = (req, res, next) => {
   let imagePath = req.body.photo
   if(req.file){
      const url = req.protocol + '://' + req.get("host")
@@ -243,10 +195,9 @@ userRouter.put('/updateUser',checkAuth,  multer({storage: storage}).single("phot
         message: 'Error: ' + err,
       })
     })
-})
+}
 
-/* DELETE */
-userRouter.delete('/deleteUser/:id',checkAuth, (req, res, next) => {
+exports.deleteUser = (req, res, next) => {
   UserModel.findOne({ _id: req.params.id }).then((user) => {
     if (user) {
       if (user.card_id != null && user.card_id != '' && user.card_id != 'null' ) {
@@ -289,11 +240,9 @@ userRouter.delete('/deleteUser/:id',checkAuth, (req, res, next) => {
       message: 'Error: Usuario a eliminar no encontrado: ' + err,
     })
   })
+}
 
-})
-
-/*ASIGNAR TARJETA*/
-userRouter.post('/asignarTarjeta',checkAuth, (req, res, next) => {
+exports.assignCard = (req, res, next) => {
   let card_id = req.body.card_id
   let user_id = req.body.user_id
   /*Se recibio el Id del usuario al que se le va asignar una tarjeta y se recibe
@@ -365,12 +314,9 @@ userRouter.post('/asignarTarjeta',checkAuth, (req, res, next) => {
   }else{
     res.status(500).json({message: 'Error: No se obtuvo el Id de la tarjeta o del usuario' })
   }
-})
+}
 
-/*
-QUITAR TARJETA
-*/
-userRouter.get('/quitarTarjeta/:id',checkAuth, async (req, res, next) => {
+exports.removeCard = (req, res, next) => {
   //console.log(req.params.id)
   UserModel.findById(req.params.id).then((user) => {
     // El usuario tenía una tarjeta asignada
@@ -398,10 +344,9 @@ userRouter.get('/quitarTarjeta/:id',checkAuth, async (req, res, next) => {
       res.status(500).json({message: 'Error: No hay tarjeta'})
     }
   })
-})
+}
 
-// SIGN UP ADMINISTRADOR
-userRouter.post("/signup",checkAuth, (req,res,next)=>{
+exports.signUp = (req,res,next)=>{
   console.log(req.body)
   let admin_role_id= '6167051ccb06eba131faee63'
   bcrypt.hash(req.body.password, 10).then(hash =>{
@@ -426,10 +371,9 @@ userRouter.post("/signup",checkAuth, (req,res,next)=>{
     })
   })
 
-})
+}
 
-/****  LOG IN *****/
-userRouter.post("/login", (req,res,next)=>{
+exports.logIn = (req,res,next)=>{
   let fetchedUser
   //console.log(req.body)
   UserModel.findOne({
@@ -454,7 +398,7 @@ userRouter.post("/login", (req,res,next)=>{
       }else{
         /* Creación del token */
         /* https://jwt.io/ */
-        const token = jwt.sign({email: fetchedUser.email, user_id: fetchedUser._id}, 'hoi123ashdbjbae',{expiresIn: '24h'})
+        const token = jwt.sign({email: fetchedUser.email, user_id: fetchedUser._id}, process.env.JWT_KEY,{expiresIn: '24h'})
         res.status(200).json({
           token: token
         })
@@ -463,5 +407,4 @@ userRouter.post("/login", (req,res,next)=>{
     return res.status(500).json(
       {message: "Error en la autenticación: "+ err})
   })
-})
-module.exports = userRouter
+}

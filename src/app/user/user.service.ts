@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { MatSnackBar } from '@angular/material/snack-bar'
 import { Subject } from 'rxjs'
+import { environment } from 'src/environments/environment'
 import { IUser } from './user.model'
 
 @Injectable({
@@ -10,7 +11,7 @@ import { IUser } from './user.model'
 export class UserService {
   users: IUser[] = []
   subjectUser = new Subject<IUser[]>()
-  url: string = 'http://localhost:3000'
+  url: string =  environment.apiUrl
 
   constructor(private http: HttpClient, private _snackBar: MatSnackBar) {}
 
