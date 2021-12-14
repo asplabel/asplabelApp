@@ -87,12 +87,14 @@ export class AuthService {
       return
     }
     const now = new Date()
-    const isInFuture = localeStorage.expirationDate > now
-    if (isInFuture){
-      this.token = localeStorage.token
-      this.isAuthenticated = true
-      this.authStatusListener.next(true)
-    }
+    if (localStorage.expirationDate){
+      const isInFuture = localeStorage.expirationDate > now
+      if (isInFuture){
+        this.token = localeStorage.token
+        this.isAuthenticated = true
+        this.authStatusListener.next(true)
+      }
+  }
   }
   private getAutoData(){
     const token = localStorage.getItem('token')

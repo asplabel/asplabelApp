@@ -1,65 +1,67 @@
-<app-brand title="Editar cargo"></app-brand>
-<br />
-<div mat-dialog-content>
-  <p>Modifica los datos del cargo:</p>
-  <mat-form-field
-    class="example-form-field"
-    appearance="fill"
-    style="display: block;"
-  >
-    <mat-label>Nuevo nombre del cargo:</mat-label>
-    <input
-      matInput
-      type="text"
-      [(ngModel)]="data.name"
-      required
-      maxlength="150"
-      #name
-    />
-    <mat-error *ngIf="name.invalid">
-      Por favor ingrese el nombre del cargo.
-    </mat-error>
-    <button
-      *ngIf="name.value"
-      matSuffix
-      mat-icon-button
-      aria-label="Clear"
-      type="button"
-      (click)="data.name = ''"
+<div class="container">
+  <app-brand title="Editar cargo"></app-brand>
+  <br />
+  <div mat-dialog-content>
+    <p>Modifica los datos del cargo:</p>
+    <mat-form-field
+      class="example-form-field"
+      appearance="fill"
+      style="display: block;"
     >
-      <mat-icon>close</mat-icon>
-    </button>
-  </mat-form-field>
-</div>
-<div mat-dialog-actions>
-  <mat-form-field
-    style="display: block;"
-    class="example-form-field"
-    appearance="fill"
-  >
-    <mat-label>
-      Modifica el departamento al que pertenece el cargo
-    </mat-label>
-    <mat-select [(ngModel)]="data.department_id">
-      <mat-option [value]="">
-        Ninguno
-      </mat-option>
-      <mat-option
-        *ngFor="let department of departments"
-        [value]="department._id"
+      <mat-label>Nuevo nombre del cargo:</mat-label>
+      <input
+        matInput
+        type="text"
+        [(ngModel)]="data.name"
+        required
+        maxlength="150"
+        #name
+      />
+      <mat-error *ngIf="name.invalid">
+        Por favor ingrese el nombre del cargo.
+      </mat-error>
+      <button
+        *ngIf="name.value"
+        matSuffix
+        mat-icon-button
+        aria-label="Clear"
+        type="button"
+        (click)="data.name = ''"
       >
-        {{ department.name }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-</div>
-<div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">Cancelar</button>
-  <button
-    mat-button
-    [mat-dialog-close]="{ nombre: data.name, d_id: data.department_id }"
-    cdkFocusInitial
-  >
-    Guardar cambios
-  </button>
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions>
+    <mat-form-field
+      style="display: block;"
+      class="example-form-field"
+      appearance="fill"
+    >
+      <mat-label>
+        Modifica el departamento al que pertenece el cargo
+      </mat-label>
+      <mat-select [(ngModel)]="data.department_id">
+        <mat-option [value]="">
+          Ninguno
+        </mat-option>
+        <mat-option
+          *ngFor="let department of departments"
+          [value]="department._id"
+        >
+          {{ department.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancelar</button>
+    <button
+      mat-button
+      [mat-dialog-close]="{ nombre: data.name, d_id: data.department_id }"
+      cdkFocusInitial
+    >
+      Guardar cambios
+    </button>
+  </div>
 </div>

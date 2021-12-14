@@ -1,156 +1,154 @@
-<br />
+<br>
+<div class="container">
+  <app-brand title="Agregar administrador"></app-brand>
+  <mat-card>
+    <form (submit)= "signUp(signUpForm)" #signUpForm="ngForm">
+      <!-- Input user firstname-->
+      <section>
+        <mat-form-field class="example-form-field" appearance="fill">
+          <mat-label>Nombres:</mat-label>
+          <input
+            ngModel
+            matInput
+            name="firstname"
+            type="text"
+            #userFirstname = "ngModel"
+            required
+            placeholder="Ingrese el nombre completo del colaborador"
+          />
+          <mat-error *ngIf="userFirstname.invalid">
+            Por favor ingrese el nombre del colaborador.
+          </mat-error>
+          <button
+            *ngIf="userFirstname.value != null || userFirstname.value != ''"
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+            type="button"
+            (click)="userFirstname.reset()"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
 
-<br />
-<app-brand title="Agregar administrador"></app-brand>
-<mat-card>
-  <form (submit)= "signUp(signUpForm)" #signUpForm="ngForm">
-    <!-- Input user firstname-->
-    <section>
-      <mat-form-field class="example-form-field" appearance="fill">
-        <mat-label>Nombres:</mat-label>
-        <input
-          ngModel
-          matInput
-          name="firstname"
-          type="text"
-          #userFirstname = "ngModel"
-          required
-          placeholder="Ingrese el nombre completo del colaborador"
-        />
-        <mat-error *ngIf="userFirstname.invalid">
-          Por favor ingrese el nombre del colaborador.
-        </mat-error>
-        <button
-          *ngIf="userFirstname.value != null || userFirstname.value != ''"
-          matSuffix
-          mat-icon-button
-          aria-label="Clear"
-          type="button"
-          (click)="userFirstname.reset()"
-        >
-          <mat-icon>close</mat-icon>
-        </button>
-      </mat-form-field>
+        <!-- Input User lastname-->
 
-      <!-- Input User lastname-->
-
-      <mat-form-field class="example-form-field" appearance="fill">
-        <mat-label>Apellidos:</mat-label>
-        <input
-          ngModel
-          matInput
-          type="text"
-          name="lastname"
-          #userLastname = "ngModel"
-          required
-          placeholder="Ingrese los apellidos del colaborador"
-        />
-        <mat-error *ngIf="userLastname.invalid">
-          Por favor ingrese los apellidos del colaborador.
-        </mat-error>
-        <button
-          *ngIf="userLastname.value != null || userLastname.value != ''"
-          matSuffix
-          mat-icon-button
-          aria-label="Clear"
-          type="button"
-          (click)="userLastname.reset()"
-        >
-          <mat-icon>close</mat-icon>
-        </button>
-      </mat-form-field>
+        <mat-form-field class="example-form-field" appearance="fill">
+          <mat-label>Apellidos:</mat-label>
+          <input
+            ngModel
+            matInput
+            type="text"
+            name="lastname"
+            #userLastname = "ngModel"
+            required
+            placeholder="Ingrese los apellidos del colaborador"
+          />
+          <mat-error *ngIf="userLastname.invalid">
+            Por favor ingrese los apellidos del colaborador.
+          </mat-error>
+          <button
+            *ngIf="userLastname.value != null || userLastname.value != ''"
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+            type="button"
+            (click)="userLastname.reset()"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+        <br>
+      </section>
       <br>
-    </section>
-    <br>
-     <!-- Input Document -->
-     <section>
-      <mat-form-field class="example-form-field" appearance="fill">
-        <mat-label>Número del documento de identidad:</mat-label>
-        <input
-          matInput
-          ngModel
-          type="text"
-          required
-          name="document"
-          #userDocument = "ngModel"
-          placeholder="Ingrese el número del documento de identidad del colaborador"
-        />
-        <mat-error *ngIf="userDocument.invalid">
-          Por favor ingrese el número del documento de identidad del
-          colaborador.
-        </mat-error>
-        <button
-          *ngIf="userDocument.value != null || userDocument.value != ''"
-          matSuffix
-          mat-icon-button
-          aria-label="Clear"
-          type="button"
-          (click)="userDocument.reset()"
-        >
-          <mat-icon>close</mat-icon>
+      <!-- Input Document -->
+      <section>
+        <mat-form-field class="example-form-field" appearance="fill">
+          <mat-label>Número del documento de identidad:</mat-label>
+          <input
+            matInput
+            ngModel
+            type="text"
+            required
+            name="document"
+            #userDocument = "ngModel"
+            placeholder="Ingrese el número del documento de identidad del colaborador"
+          />
+          <mat-error *ngIf="userDocument.invalid">
+            Por favor ingrese el número del documento de identidad del
+            colaborador.
+          </mat-error>
+          <button
+            *ngIf="userDocument.value != null || userDocument.value != ''"
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+            type="button"
+            (click)="userDocument.reset()"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+        <!-- Tipo de contrato -->
+        <mat-form-field class="example-form-field" appearance="fill">
+          <mat-label>
+            Selecciona el tipo de contrato del administrador:
+          </mat-label>
+          <mat-select  ngModel name="type" #userType="ngModel" required>
+            <mat-option [value]="'Permanente'">
+              Permanente
+            </mat-option>
+            <mat-option [value]="'Tiempo parcial'">
+              Tiempo Parcial
+            </mat-option>
+            <mat-option [value]="'Temporal'">
+              Temporal
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </section>
+      <br>
+      <!--  Input Email-->
+      <section>
+        <mat-form-field class="example-form-field" appearance="fill">
+          <mat-label>Correo Electrónico:</mat-label>
+          <input
+            matInput
+            ngModel
+            name = "email"
+            #emailUser="ngModel"
+            type="email"
+            placeholder="Ejemplo: minombre@asplabel.co"
+            required
+            email
+          />
+          <mat-error *ngIf="emailUser.invalid">
+            Por favor ingrese un correo electrónico válido
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-form-field" appearance="fill">
+          <mat-label>Contraseña</mat-label>
+          <input
+            matInput
+            ngModel
+            name="password"
+            #passwordUser = "ngModel"
+            type="password"
+            placeholder="Ingrese la contraseña"
+            required
+          />
+          <mat-error *ngIf="passwordUser.invalid">
+            Por favor ingrese una contraseña correcta
+          </mat-error>
+        </mat-form-field>
+      </section>
+      <!-- Button to save new User -->
+      <br>
+      <section>
+        <button mat-raised-button class="button" type="submit" >
+          Agregar Administrador
         </button>
-      </mat-form-field>
-      <!-- Tipo de contrato -->
-      <mat-form-field class="example-form-field" appearance="fill">
-        <mat-label>
-          Selecciona el tipo de contrato del administrador:
-        </mat-label>
-        <mat-select  ngModel name="type" #userType="ngModel" required>
-          <mat-option [value]="'Permanente'">
-            Permanente
-          </mat-option>
-          <mat-option [value]="'Tiempo parcial'">
-            Tiempo Parcial
-          </mat-option>
-          <mat-option [value]="'Temporal'">
-            Temporal
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </section>
-    <br>
-    <!--  Input Email-->
-    <section>
-      <mat-form-field class="example-form-field" appearance="fill">
-        <mat-label>Correo Electrónico:</mat-label>
-        <input
-          matInput
-          ngModel
-          name = "email"
-          #emailUser="ngModel"
-          type="email"
-          placeholder="Ejemplo: minombre@asplabel.co"
-          required
-          email
-        />
-        <mat-error *ngIf="emailUser.invalid">
-          Por favor ingrese un correo electrónico válido
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field class="example-form-field" appearance="fill">
-        <mat-label>Contraseña</mat-label>
-        <input
-          matInput
-          ngModel
-          name="password"
-          #passwordUser = "ngModel"
-          type="password"
-          placeholder="Ingrese la contraseña"
-          required
-        />
-        <mat-error *ngIf="passwordUser.invalid">
-          Por favor ingrese una contraseña correcta
-        </mat-error>
-      </mat-form-field>
-    </section>
-    <!-- Button to save new User -->
-    <br>
-    <section>
-      <button mat-raised-button class="button" type="submit" >
-        Agregar Administrador
-      </button>
-    </section>
-  </form>
-</mat-card>
-<br />
-<br />
+      </section>
+    </form>
+  </mat-card>
+</div>

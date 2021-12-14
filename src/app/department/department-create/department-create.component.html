@@ -1,47 +1,48 @@
-<br />
-<br />
-<app-brand title="Agregar departamento"></app-brand>
-<mat-card>
-  <form (submit)="addDepartment(departmentForm)" #departmentForm="ngForm">
-    <!-- Input job title name-->
-    <section>
-      <mat-form-field
-        class="example-form-field"
-        appearance="fill"
-        style="display: block;"
-      >
-        <mat-label>Nombre del Departamento:</mat-label>
-        <input
-          matInput
-          type="text"
-          name="nameDepartment"
-          ngModel
-          placeholder="Ingrese el nombre del departamento, no puede ser igual a otro ya existente"
-          required
-          maxlength="150"
-          #name2="ngModel"
-        />
-        <mat-error *ngIf="name2.invalid">
-          Por favor ingrese el nombre del departamento.
-        </mat-error>
-        <button
-          *ngIf="departmentForm.value.nameDepartment"
-          matSuffix
-          mat-icon-button
-          aria-label="Clear"
-          type="button"
-          (click)="departmentForm.reset()"
+<br>
+<div class="container">
+  <app-brand title="Agregar departamento"></app-brand>
+  <mat-card>
+    <form (submit)="addDepartment(departmentForm)" #departmentForm="ngForm">
+      <!-- Input job title name-->
+      <section>
+        <mat-form-field
+          class="example-form-field"
+          appearance="fill"
+          style="display: block;"
         >
-          <mat-icon>close</mat-icon>
+          <mat-label>Nombre del Departamento:</mat-label>
+          <input
+            matInput
+            type="text"
+            name="nameDepartment"
+            ngModel
+            placeholder="Ingrese el nombre del departamento, no puede ser igual a otro ya existente"
+            required
+            maxlength="150"
+            #name2="ngModel"
+          />
+          <mat-error *ngIf="name2.invalid">
+            Por favor ingrese el nombre del departamento.
+          </mat-error>
+          <button
+            *ngIf="departmentForm.value.nameDepartment"
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+            type="button"
+            (click)="departmentForm.reset()"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+      </section>
+      <br />
+      <!-- Button to save new Job title -->
+      <section>
+        <button mat-raised-button class="button" type="submit">
+          Crear departamento
         </button>
-      </mat-form-field>
-    </section>
-    <br />
-    <!-- Button to save new Job title -->
-    <section>
-      <button mat-raised-button class="button" type="submit">
-        Crear departamento
-      </button>
-    </section>
-  </form>
-</mat-card>
+      </section>
+    </form>
+  </mat-card>
+</div>

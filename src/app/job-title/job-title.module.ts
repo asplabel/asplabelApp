@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms'
 import { AppRoutingModule } from '../app-routing.module'
 
 import { JobTitleEditComponent } from './job-title-edit/job-title-edit.component'
-import { JobTitleDeleteComponent } from './job-title-delete/job-title-delete.component'
+
 import { JobTitleCreateComponent } from './job-title-create/job-title-create.component'
 import { JobTitleListComponent } from './job-title-list/job-title-list.component'
 
@@ -23,13 +23,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 @NgModule({
   declarations: [
     JobTitleEditComponent,
-    JobTitleDeleteComponent,
     JobTitleCreateComponent,
     JobTitleListComponent,
   ],
   exports: [
     JobTitleEditComponent,
-    JobTitleDeleteComponent,
+
+
     JobTitleCreateComponent,
     JobTitleListComponent,
   ],

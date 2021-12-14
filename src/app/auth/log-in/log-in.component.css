@@ -1,3 +1,41 @@
+:root {
+
+  /* Colors: */
+  --unnamed-color-ffffff: #FFFFFF;
+  --unnamed-color-ef7f01: #EF7F01;
+  --unnamed-color-4a4949: #4A4949;
+  --unnamed-color-008f38: #008F38;
+  --unnamed-color-000000: #000000;
+  --unnamed-color-f9e800: #F9E800;
+  --unnamed-color-464646: #464646;
+  --unnamed-color-b7defb: #B7DEFB;
+
+  /* Font/text values */
+  --unnamed-font-family-segoe-ui: Segoe UI;
+  --unnamed-font-family-dubai: Dubai;
+  --unnamed-font-family-cooper: Cooper;
+  --unnamed-font-family-bauhaus-93: Bauhaus 93;
+  --unnamed-font-style-normal: normal;
+  --unnamed-font-style-italic: italic;
+  --unnamed-font-weight-400: 400px;
+  --unnamed-font-weight-900: 900px;
+  --unnamed-font-weight-normal: normal;
+  --unnamed-font-weight-bold: bold;
+  --unnamed-font-size-15: 15px;
+  --unnamed-font-size-20: 20px;
+  --unnamed-font-size-18: 18px;
+  --unnamed-font-size-24: 24px;
+  --unnamed-font-size-40: 40px;
+  --unnamed-character-spacing-0: 0px;
+  --unnamed-character-spacing-4-2: 4.2px;
+  --unnamed-character-spacing-1-44: 1.44px;
+  --unnamed-character-spacing-2-1: 2.1px;
+  --unnamed-line-spacing-20: 20px;
+  --unnamed-line-spacing-27: 27px;
+  --unnamed-line-spacing-58: 58px;
+  --unnamed-line-spacing-65: 65px;
+  }
+
 .button {
   color: white;
   background-color: #ef7f01;
@@ -5,13 +43,45 @@
   font-family: Dubai;
   font-stretch: ultra-expanded !important;
   font-size: 16px;
-  margin-left: 44%;
 }
-.example-full-width {
-  width: 100%;
+.example-form-field {
+  display: block;
+  margin: 0px 15px 10px 15px;
 }
 
-.example-form-field {
-  width: 45%;
-  margin: 0px 15px;
+.background {
+  position: absolute;
+  opacity: 0.6;
 }
+
+body {
+  display: flex;
+  background: url("../../../assets/images/login.png") transparent 0 0;
+  background-repeat: no-repeat;
+  background-origin: padding-box;
+  background-position: absolute;
+  background-size: 100% 100%;
+  position: absolute;
+
+}
+ .style-4 {
+  font-family: var(--unnamed-font-family-cooper);
+  font-style: var(--unnamed-font-style-normal);
+  font-weight: var(--unnamed-font-weight-900);
+  font-size: var(--unnamed-font-size-18);
+  line-height: var(--unnamed-line-spacing-20);
+  letter-spacing: var(--unnamed-character-spacing-1-44);
+  color: var(--unnamed-color-000000);
+  }
+
+  .style-5 {
+    font-family: var(--unnamed-font-family-cooper);
+    font-style: var(--unnamed-font-style-normal);
+    font-weight: var(--unnamed-font-weight-900);
+    font-size: var(--unnamed-font-size-24);
+    line-height: var(--unnamed-line-spacing-20);
+    letter-spacing: var(--unnamed-character-spacing-2-1);
+    color: var(--unnamed-color-000000);
+    }
+
+

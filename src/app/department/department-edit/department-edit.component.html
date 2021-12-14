@@ -1,16 +1,18 @@
-<app-brand title="Editar departamento"></app-brand>
-<br />
-<div mat-dialog-content>
-  <p>Modifica los datos del departamento:</p>
+<div class="container">
+  <app-brand title="Editar departamento"></app-brand>
+  <br />
+  <div mat-dialog-content>
+    <p>Modifica los datos del departamento:</p>
 
-  <mat-form-field class="example-form-field" appearance="fill">
-    <mat-label>Nombre:</mat-label>
-    <input required matInput [(ngModel)]="data.name" />
-  </mat-form-field>
-</div>
-<div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">Cancelar</button>
-  <button mat-button [mat-dialog-close]="data.name" cdkFocusInitial>
-    Guardar cambios
-  </button>
+    <mat-form-field class="example-form-field" appearance="fill">
+      <mat-label>Nombre:</mat-label>
+      <input required matInput [(ngModel)]="data.name" />
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancelar</button>
+    <button mat-button [mat-dialog-close]="data.name" cdkFocusInitial>
+      Guardar cambios
+    </button>
+  </div>
 </div>
