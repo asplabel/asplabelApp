@@ -152,4 +152,17 @@ export class UserService {
       })
     //this.getUsers()
   }
+
+  changePassword(password: string){
+    //console.log(password + ' '+ localStorage.getItem('userId'))
+    this.http.put(this.url + '/changePassword',{
+      password: password,
+      userId: localStorage.getItem('userId')
+    }).subscribe((responseData:{message:string})=>{
+      this.getUsers()
+        this._snackBar.open('' + responseData.message, '', {
+          duration: 2000,
+        })
+    })
+  }
 }

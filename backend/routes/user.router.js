@@ -44,5 +44,7 @@ userRouter.post("/signup",checkAuth, userController.signUp)
 /****  LOG IN *****/
 userRouter.post("/login", userController.logIn)
 
+/**** CHANGE PASSWORD *****/
+userRouter.put("/changePassword", userController.changePW)
 
 module.exports = userRouter

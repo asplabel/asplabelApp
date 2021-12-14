@@ -48,7 +48,7 @@ export class AuthService {
       email: email,
       password: password
     }
-    this.http.post(this.url+'/login',auth).subscribe((result: {token: string})=>{
+    this.http.post(this.url+'/login',auth).subscribe((result: {token: string, userId: string})=>{
       //console.log(result)
       this.token = result.token
       if (this.token){
@@ -57,7 +57,7 @@ export class AuthService {
         const now = new Date()
         // 86400 = 24 horas => 86400 segundos
         const expirationDate = new Date(now.getTime() + (86400 * 1000))
-        this.saveAuthData(this.token, expirationDate)
+        this.saveAuthData(this.token, expirationDate,result.userId)
         this.router.navigate(['/monitor'])
       }
     })
@@ -71,14 +71,16 @@ export class AuthService {
     this.router.navigate(['/'])
   }
 
-  private saveAuthData(token: string, expirationDate: Date){
+  private saveAuthData(token: string, expirationDate: Date, userId: string){
     localStorage.setItem('token',token)
+    localStorage.setItem('userId',userId)
     localStorage.setItem('expiration',expirationDate.toUTCString())
   }
 
   private clearAuthData(){
     localStorage.removeItem('token');
     localStorage.removeItem('expiration')
+    localStorage.removeItem('userId')
   }
 
   autoAuthUser(){

@@ -347,7 +347,7 @@ exports.removeCard = (req, res, next) => {
 }
 
 exports.signUp = (req,res,next)=>{
-  console.log(req.body)
+  //console.log(req.body)
   let admin_role_id= '6167051ccb06eba131faee63'
   bcrypt.hash(req.body.password, 10).then(hash =>{
     const userAdmin = new UserModel({
@@ -400,11 +400,48 @@ exports.logIn = (req,res,next)=>{
         /* https://jwt.io/ */
         const token = jwt.sign({email: fetchedUser.email, user_id: fetchedUser._id}, process.env.JWT_KEY,{expiresIn: '24h'})
         res.status(200).json({
-          token: token
+          token: token,
+          userId: fetchedUser._id
         })
       }
   }).catch(err =>{
     return res.status(500).json(
       {message: "Error en la autenticación: "+ err})
   })
+}
+
+exports.changePW = (req,res,next)=>{
+  let password = req.body.password
+  let userId = req.body.userId
+  if (password != null && userId != null && password != '' && userId !=''){
+    bcrypt.hash(password, 10).then(hash => {
+      UserModel.updateOne({_id: userId},{password: hash})
+      .then(result => {
+        console.log(result)
+        if (result.modifiedCount > 0){
+          res.status(201).json({
+            message: 'Contraseña modificada exitosamente'
+          })
+        }else {
+          res.status(500).json({
+            message: 'Ingrese una contraseña diferente a la actual'
+          })
+        }
+      })
+      .catch(err => {
+        res.status(500).json({
+          message: 'Error: '+err
+        })
+      })
+    }).catch(err => {
+      res.status(500).json({
+        message: 'Error: '+err
+      })
+    })
+
+  }else {
+    res.status(500).json({
+      message: "No se recibieron los datos correctos: contraseña y/o id del administrador"
+    })
+  }
 }

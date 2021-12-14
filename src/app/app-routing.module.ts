@@ -20,6 +20,7 @@ import { UserEditComponent } from './user/user-edit/user-edit.component'
 import { UserListComponent } from './user/user-list/user-list.component'
 import { AuthGuard } from './auth/auth.guard'
 import { LogInComponent } from './auth/log-in/log-in.component'
+import { UserChangePWComponent } from './user/user-change-pw/user-change-pw.component'
 
 const routes: Routes = [
 
@@ -29,6 +30,7 @@ const routes: Routes = [
   { path: 'user/create', component: UserCreateComponent, canActivate: [AuthGuard] },
   { path: 'user/edit/:id', component: UserEditComponent, canActivate: [AuthGuard] },
   { path: 'user/card/:id', component: UserCardComponent, canActivate: [AuthGuard] },
+  { path: 'user/changePassword', component: UserChangePWComponent, canActivate: [AuthGuard] },
 
   { path: 'card/list', component: CardListComponent, canActivate: [AuthGuard] },
   { path: 'card/create', component: CardCreateComponent, canActivate: [AuthGuard] },

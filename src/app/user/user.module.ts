@@ -22,7 +22,8 @@ import { BrandModule } from '../brand/brand.module'
 import { UserCardComponent } from './user-card/user-card.component'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 import { MatExpansionModule } from '@angular/material/expansion'
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { UserChangePWComponent } from './user-change-pw/user-change-pw.component'
 
 @NgModule({
   declarations: [
@@ -30,12 +31,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
     UserEditComponent,
     UserCreateComponent,
     UserCardComponent,
+    UserChangePWComponent,
   ],
   exports: [
     UserListComponent,
     UserEditComponent,
     UserCreateComponent,
     UserCardComponent,
+    UserChangePWComponent
   ],
   imports: [
     CommonModule,
