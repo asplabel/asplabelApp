@@ -8,9 +8,10 @@
     </mat-form-field>
     <table
       mat-table
-      class="mat-elevation-z8"
       [dataSource]="dataSource"
       matSort
+      multiTemplateDataRows
+      class="mat-elevation-z8"
       #recordTable
     >
       <!-- Name Column -->
