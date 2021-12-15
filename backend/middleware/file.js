@@ -25,7 +25,7 @@ const storage = multer.diskStorage({
     }
     if(isValid){
       err = null
-      cb(err, "backend/images")
+      cb(err, "images")
     }
 
   },
