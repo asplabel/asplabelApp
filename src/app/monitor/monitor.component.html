@@ -4,7 +4,7 @@
     <app-brand title="Historial de ingreso a las instalaciones"></app-brand>
     <mat-form-field appearance="standard" class="example-form-field">
       <mat-label>Filtro</mat-label>
-      <input matInput (keyup)="applyFilter($event)" #input />
+      <input matInput (keyup)="applyFilter(input.value)" #input [(ngModel)] ="filterData"/>
     </mat-form-field>
     <table
       mat-table

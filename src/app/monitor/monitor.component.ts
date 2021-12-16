@@ -32,6 +32,7 @@ export class MonitorComponent implements OnInit, AfterViewInit, OnDestroy {
   dataSource: MatTableDataSource<IRecord>
   isLoading: boolean
   isData: boolean
+  filterData: string = ''
 
   constructor(
     private recordService: MonitorService,
@@ -59,9 +60,10 @@ export class MonitorComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         this.isLoading = false
       })
-      /*setInterval(()=>{
+      setInterval(()=>{
         this.ngAfterViewInit()
-      },5000)*/
+        //this.applyFilter()
+      },5000)
   }
 
   ngAfterViewInit() {
@@ -74,6 +76,8 @@ export class MonitorComponent implements OnInit, AfterViewInit, OnDestroy {
         this.dataSource = new MatTableDataSource<IRecord>(this.records)
         this.dataSource.sort = this.sort
         this.dataSource.paginator = this.paginator
+        this.dataSource.filter = this.filterData.trim().toLowerCase()
+        //console.log(this.filterData)
         if (this.records.length > 0) {
           this.isData = true
         } else {
@@ -96,8 +100,8 @@ export class MonitorComponent implements OnInit, AfterViewInit, OnDestroy {
       })
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value
+  applyFilter(filterValue: string) {
+    //const filterValue = (event.target as HTMLInputElement).value
     this.dataSource.filter = filterValue.trim().toLowerCase()
   }
 }
