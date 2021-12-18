@@ -84,6 +84,7 @@ export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
       this.dataSource.sort = this.sort
       this.dataSource.paginator = this.paginator
       if (this.users.length > 0) {
+        console.dir(this.users)
         this.isData = true
       } else {
         this.isData = false
