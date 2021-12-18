@@ -12,15 +12,6 @@ export class AuthGuard implements CanActivate{
     if (!isAuth){
       this.router.navigate(['/'])
     }
-    /*console.log(localStorage.getItem('userId') != null && localStorage.getItem('userId') != undefined)
-    if (localStorage.getItem('userId') != null && localStorage.getItem('userId') != undefined)
-    {
-      console.log(window.location.href)
-      if(window.location.href == 'http://localhost:4200/'){
-        isAuth = false
-        this.router.navigate(['/monitor'])
-      }
-    }*/
     return isAuth
   }
 

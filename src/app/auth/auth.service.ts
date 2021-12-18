@@ -90,16 +90,12 @@ export class AuthService {
       return
     }
     const now = new Date()
-    //console.log("paso")
-    //console.log()
-    if (localeStorage.expirationDate != null){
+    if (localeStorage.expirationDate != null && localeStorage.expirationDate != undefined){
       const isInFuture = localeStorage.expirationDate > now
-      //console.log(isInFuture)
       if (isInFuture){
         this.token = localeStorage.token
         this.isAuthenticated = true
         this.authStatusListener.next(true)
-        //console.log(this.isAuthenticated)
       }
   }
   }
