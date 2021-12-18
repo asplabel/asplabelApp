@@ -12,6 +12,7 @@ import { Subscription } from 'rxjs'
 import { MonitorService } from './monitor.service'
 import { IRecord } from './record.model'
 import { MatSnackBar } from '@angular/material/snack-bar'
+import { AuthService } from '../auth/auth.service'
 
 @Component({
   selector: 'app-monitor',
@@ -37,6 +38,7 @@ export class MonitorComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private recordService: MonitorService,
     private _snackBar: MatSnackBar,
+    private authService: AuthService
   ) {}
 
   @ViewChild(MatSort) sort: MatSort
@@ -61,6 +63,10 @@ export class MonitorComponent implements OnInit, AfterViewInit, OnDestroy {
         this.isLoading = false
       })
       setInterval(()=>{
+        if (!this.authService.getIsAuthenticated){
+          this.ngOnDestroy()
+          return
+        }
         this.ngAfterViewInit()
         //this.applyFilter()
       },5000)
