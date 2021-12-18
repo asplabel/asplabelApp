@@ -86,8 +86,10 @@ export class AuthService {
 
   autoAuthUser(){
     const localeStorage = this.getAutoData()
-    if(!localStorage){
-      return
+    if(!localStorage || localeStorage == undefined){
+      this.isAuthenticated = false
+      this.authStatusListener.next(false)
+      return false
     }
     const now = new Date()
     if (localeStorage.expirationDate != null && localeStorage.expirationDate != undefined){
@@ -99,11 +101,12 @@ export class AuthService {
       }
   }
   }
+
   private getAutoData(){
     const token = localStorage.getItem('token')
     const expireDate = localStorage.getItem('expiration')
-    if (!token || !expireDate) {
-      return;
+    if (!token || !expireDate || token == undefined || expireDate == undefined) {
+      return undefined;
     }
     return {token: token, expirationDate: new Date(expireDate)}
   }
