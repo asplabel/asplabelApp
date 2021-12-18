@@ -3,11 +3,11 @@ const path = require('path');
 
 const app = express();
 
-app.use(express.static(__dirname + '/dist/asplabel-app'));
+app.use(express.static(__dirname + '/dist/asplabelApp'));
 
 app.get('/*', function(req,res) {
   try {
-    res.sendFile(path.join(__dirname+'/dist/asplabel-app/index.html'));
+    res.sendFile(path.join(__dirname+'/dist/asplabelApp/index.html'));
   } catch (error) {
     console.log("Error: "+ error)
   }
