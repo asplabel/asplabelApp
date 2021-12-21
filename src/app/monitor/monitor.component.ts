@@ -62,14 +62,14 @@ export class MonitorComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         this.isLoading = false
       })
-      setInterval(()=>{
+      /*setInterval(()=>{
         if (!this.authService.getIsAuthenticated()){
           this.ngOnDestroy()
           return
         }
         this.ngAfterViewInit()
         //this.applyFilter()
-      },5000)
+      },5000)*/
   }
 
   ngAfterViewInit() {
