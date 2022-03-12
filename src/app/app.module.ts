@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core'
+import { NgModule, LOCALE_ID } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { BrowserModule } from '@angular/platform-browser'
 import { AppComponent } from './app.component'
@@ -20,6 +20,10 @@ import { SignupComponent } from './auth/signup/signup.component'
 import { AuthInterceptor } from './auth/auth-interceptor'
 import { ErrorInterceptor } from './error-interceptor'
 import { AngularMaterialModule } from './angular-material.module'
+import { registerLocaleData } from '@angular/common';
+import localeEsCo from '@angular/common/locales/es-CO';
+
+registerLocaleData(localeEsCo, 'es');
 
 @NgModule({
   declarations: [
@@ -46,6 +50,7 @@ import { AngularMaterialModule } from './angular-material.module'
   exports:[AngularMaterialModule],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: LOCALE_ID, useValue: 'es-Co' },
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }],
   bootstrap: [AppComponent],
 })

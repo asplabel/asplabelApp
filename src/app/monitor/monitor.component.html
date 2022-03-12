@@ -2,10 +2,10 @@
   <mat-spinner *ngIf="isLoading" class="spinner" color="warn"></mat-spinner>
   <div *ngIf="!isLoading">
     <app-brand title="Historial de ingreso a las instalaciones"></app-brand>
-    <mat-form-field appearance="standard" class="example-form-field">
-      <mat-label>Filtro</mat-label>
-      <input matInput (keyup)="applyFilter(input.value)" #input [(ngModel)] ="filterData"/>
-    </mat-form-field>
+      <mat-form-field appearance="standard" class="example-form-field">
+        <mat-label>Filtro</mat-label>
+        <input matInput (keyup)="applyFilter(input.value)" #input [(ngModel)] ="filterData"/>
+      </mat-form-field>
     <table
       mat-table
       [dataSource]="dataSource"
@@ -17,18 +17,12 @@
       <!-- Name Column -->
       <ng-container matColumnDef="firstname">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
-        <td mat-cell *matCellDef="let element">{{ element.firstname }}</td>
-      </ng-container>
-
-      <!-- Lastname Column -->
-      <ng-container matColumnDef="lastname">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Apellido</th>
-        <td mat-cell *matCellDef="let element">{{ element.lastname }}</td>
+        <td mat-cell *matCellDef="let element">{{ element.firstname }} {{ element.lastname }}</td>
       </ng-container>
       <!-- Fecha -->
       <ng-container matColumnDef="date">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
-        <td mat-cell *matCellDef="let element">{{ element.date }}</td>
+        <td mat-cell *matCellDef="let element">{{ element.date | date:'MMMM d, y' }}</td>
       </ng-container>
       <!-- Hora -->
       <ng-container matColumnDef="time">
@@ -42,12 +36,18 @@
       </ng-container>
       <!-- Acciones -->
       <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef>Eliminar</th>
+        <th mat-header-cell *matHeaderCellDef>Acciones</th>
         <td mat-cell *matCellDef="let element" class="action-link">
           <mat-action-row>
             <a mat-button color="warn" (click)="deleteRecord(element.id)">
               <mat-icon aria-hidden="false" aria-label="Delete button">
                 delete
+              </mat-icon>
+            </a>
+            
+            <a mat-button color="info" (click)="filterToday(element.firstname, element.lastname, element.date)">
+              <mat-icon aria-hidden="false" aria-label="Delete button">
+                {{isFiltered ? 'clear' : 'event' }}
               </mat-icon>
             </a>
           </mat-action-row>
