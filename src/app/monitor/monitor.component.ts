@@ -80,7 +80,6 @@ export class MonitorComponent implements OnInit, AfterViewInit, OnDestroy {
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
         this.dataSource.filter = this.filterData.trim().toLowerCase();
-        let myDate = new Date();
         if (this.records.length > 0) {
           this.isData = true;
         } else {
