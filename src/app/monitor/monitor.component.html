@@ -2,10 +2,13 @@
   <mat-spinner *ngIf="isLoading" class="spinner" color="warn"></mat-spinner>
   <div *ngIf="!isLoading">
     <app-brand title="Historial de ingreso a las instalaciones"></app-brand>
-      <mat-form-field appearance="standard" class="example-form-field">
+    <div class="row mt-3 mb-3">
+      <mat-form-field appearance="standard" class="example-form-field col">
         <mat-label>Filtro</mat-label>
         <input matInput (keyup)="applyFilter(input.value)" #input [(ngModel)] ="filterData"/>
       </mat-form-field>
+      <button type="button" class="btn btn-primary col-sm-2" (click)="exportAsXLSX()">Descargar Excel</button>
+    </div>
     <table
       mat-table
       [dataSource]="dataSource"

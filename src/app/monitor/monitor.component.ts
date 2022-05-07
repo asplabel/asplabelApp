@@ -14,6 +14,7 @@ import { IRecord } from './record.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../auth/auth.service';
 import { DatePipe } from '@angular/common';
+import { ExcelService } from './excel.service';
 
 @Component({
   selector: 'app-monitor',
@@ -35,7 +36,8 @@ export class MonitorComponent implements OnInit, AfterViewInit, OnDestroy {
     private recordService: MonitorService,
     private _snackBar: MatSnackBar,
     private authService: AuthService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private excelService:ExcelService
   ) {}
 
   @ViewChild(MatSort) sort: MatSort;
@@ -126,5 +128,9 @@ export class MonitorComponent implements OnInit, AfterViewInit, OnDestroy {
   applyFilter(filterValue: string) {
     //const filterValue = (event.target as HTMLInputElement).value
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  exportAsXLSX():void {
+    this.excelService.exportAsExcelFile(this.dataSource.data, 'asplabel_data');
   }
 }
